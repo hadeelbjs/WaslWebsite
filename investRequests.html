@@ -29,9 +29,11 @@
             width: 25vw;
         }
 
-        header span {
+        header svg {
             margin-right: auto;
             margin-left: 1vw;
+            width: 13vw;
+            font-weight: 1000;
         }
 
         .wrapper {
@@ -49,7 +51,7 @@
         }
 
         .material-symbols-outlined {
-            font-size: 28px;
+            font-size: 30px;
             color: white;
             cursor: pointer;
         }
@@ -103,6 +105,7 @@
         .reject {
             background-color: #072c5746;
         }
+       
 
         @media (min-width: 768px) {
             .container {
@@ -110,7 +113,10 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
             }
+            body{
+                height: 100vh;
 
+            }
             header img {
                 width: 12vw;
             }
@@ -139,8 +145,7 @@
 <body>
     <header>
         <img src="waslLogo.png" alt="logo">
-        <span id="menu" class="material-symbols-outlined">menu</span>
-    </header>
+        <svg id="menu" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960"  fill="#072d57"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>    </header>
     <main>
         <div class="wrapper">
             <h1>الطلبات</h1>
