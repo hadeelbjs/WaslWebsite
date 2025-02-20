@@ -3,52 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Reem+Kufi+Fun:wght@400..700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Reem+Kufi+Fun:wght@400..700&display=swap" rel="stylesheet">
     <title>طلبات الاستثمار</title>
 
-    <!-- تحميل أيقونات Material Symbols -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-
+    
     <style>
-        
         /* الألوان والخطوط */
         body {
-            font-family: "Baloo Bhaijaan 2",'Tajawal', 'Cairo', sans-serif;
+            font-family: "Baloo Bhaijaan 2", 'Tajawal', 'Cairo', sans-serif;
             direction: rtl;
             text-align: right;
-            background: whitesmoke;
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0); 
             margin: 0;
             padding: 0;
+            height: 100vh;
         }
 
-        /* ترويسة الصفحة */
         header {
             display: flex;
             align-items: center;
             padding: 15px;
         }
+
         header img {
             width: 25vw;
         }
+
         header span {
             margin-right: auto;
             margin-left: 1vw;
         }
+
         .wrapper {
             max-width: 1200px;
             margin: auto;
             padding: 15px;
         }
+
         h1 {
             margin: 0;
             font-size: 3em;
             margin-right: 1vw;
-            margin-bottom: 1vw;
+            margin-bottom: 1vh;
             color: #072D57;
         }
 
@@ -57,38 +54,29 @@
             color: white;
             cursor: pointer;
         }
+
         #menu {
             font-size: 28px;
             color: #072D57 !important;
             cursor: pointer;
         }
 
-        /* حاوية الطلبات */
         .container {
             padding: 15px;
         }
 
         .invRequest {
-            background: rgba(255, 255, 255, 0.2); 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px); 
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 15px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
             margin-bottom: 12px;
-            position: relative;
-            background: rgba(154, 154, 154, 0.2);
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
             font-size: large;
         }
 
-
-        
-
-        /* الأزرار */
         .actions {
             display: flex;
             gap: 8px;
@@ -110,31 +98,36 @@
         }
 
         .approve {
-            background-color:  #072D57; 
+            background-color: #072D57;
         }
 
         .reject {
             background-color: #072c5746;
         }
+
         @media (min-width: 768px) {
             .container {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
             }
+
             header img {
-            width: 12vw;
-        }
+                width: 12vw;
+            }
+
             .invRequest {
                 box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
             }
+
             h1 {
                 text-align: center;
                 font-size: 3.2em;
             }
-            #menu{
+            
+            #menu {
                 display: none;
-        }
+            }
         }
 
         @media (min-width: 1024px) {
@@ -146,57 +139,56 @@
 </head>
 <body>
     <header>
-       
-        <img src="waslLogo.png" alt="logo" >
-        <span id="menu" class="material-symbols-outlined">menu</span><br>
-        
+        <img src="waslLogo.png" alt="logo">
+        <span id="menu" class="material-symbols-outlined">menu</span>
     </header>
     <main>
-    <div class="wrapper">
-    <h1>الطلبات</h1> 
-    <div class="container">
-        <div class="invRequest">
-            <p><strong>عنوان الفكرة:</strong> وصل</p>
-            <hr>
-            <p><strong>مقدم الطلب:</strong> اسم شخص</p>
-            <div class="actions">
-                <button class="btn approve">
-                    <span class="material-symbols-outlined">check</span>
-                </button>
-                <button class="btn reject">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-        </div>
+        <div class="wrapper">
+            <h1>الطلبات</h1>
+            <div class="container">
+                <div class="invRequest">
+                    <p><strong>عنوان الفكرة:</strong> وصل</p>
+                    <hr>
+                    <p><strong>مقدم الطلب:</strong> اسم شخص</p>
+                    <div class="actions">
+                        <button class="btn approve">
+                            <span class="material-symbols-outlined">check</span>
+                        </button>
+                        <button class="btn reject">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                </div>
 
-        <div class="invRequest">
-            <p><strong>عنوان الفكرة:</strong> وصل</p>
-            <hr>
-            <p><strong>مقدم الطلب:</strong> اسم شخص</p>
-            <div class="actions">
-                <button class="btn approve">
-                    <span class="material-symbols-outlined">check</span>
-                </button>
-                <button class="btn reject">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-            </div>
-        </div>
+                <div class="invRequest">
+                    <p><strong>عنوان الفكرة:</strong> وصل</p>
+                    <hr>
+                    <p><strong>مقدم الطلب:</strong> اسم شخص</p>
+                    <div class="actions">
+                        <button class="btn approve">
+                            <span class="material-symbols-outlined">check</span>
+                        </button>
+                        <button class="btn reject">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                </div>
 
-        <div class="invRequest">
-            <p><strong>عنوان الفكرة:</strong> وصل</p>
-            <hr>
-            <p><strong>مقدم الطلب:</strong> اسم شخص</p>
-            <div class="actions">
-                <button class="btn approve">
-                    <span class="material-symbols-outlined">check</span>
-                </button>
-                <button class="btn reject">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
+                <div class="invRequest">
+                    <p><strong>عنوان الفكرة:</strong> وصل</p>
+                    <hr>
+                    <p><strong>مقدم الطلب:</strong> اسم شخص</p>
+                    <div class="actions">
+                        <button class="btn approve">
+                            <span class="material-symbols-outlined">check</span>
+                        </button>
+                        <button class="btn reject">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div></div>
-</main>
+    </main>
 </body>
 </html>

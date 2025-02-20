@@ -13,15 +13,19 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back" />
     <title>فكرتي</title>
     <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
         body {
             font-family: 'Baloo Bhaijaan 2','Tajawal', 'Cairo', sans-serif;
             direction: rtl;
             text-align: right;
             color: #09315D;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0); 
         }
         h1{
-            margin-top: 3vh;
+            margin-top: 9vh;
         }
         main{
             margin-left: 4vw;
@@ -131,8 +135,33 @@
         }
 
         button:last-of-type {
-            background-color: #7d7d7db9;
+            background-color: #b0bbc683;
         }
+        .cont {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(45deg,#fff, #b0bbc6,#ffff, #8f776d68, #09325d4a); /* Subtle blue-gray gradient */
+            background-size: 300% 300% ;
+            animation: color 12s ease-in-out infinite;
+        }
+        @keyframes color {
+            0%{
+                background-position: 0 50%;
+            }
+            50%{
+                background-position: 100% 50%;
+            }
+            100%{
+                background-position: 0 50%;
+            }
+        }
+        span{
+                margin-top: 5vh;
+                margin-bottom: 2vh;
+                display: block;
+            }
         @media (min-width: 768px) {
             
             
@@ -140,6 +169,7 @@
                 text-align: center;
                 font-size: 2em;
             }
+           
             
         }
     </style>
