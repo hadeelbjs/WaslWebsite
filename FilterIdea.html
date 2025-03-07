@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>فرز حسب</title>
+
+    <!-- Import Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+            color: #09315D;
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        /* زر الرجوع */
+        .filter-back-arrow {
+            position: absolute;
+            left: 2vw;
+            top: 2vh;
+            font-size: 40px;
+            color: #072D57;
+            cursor: pointer;
+        }
+
+        .filter-container {
+            width: 90%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 85vh;
+            margin-top: 50px;
+            padding-top: 20px;
+        }
+
+        .filter-title {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .filter-section {
+            margin-bottom: 50px;
+        }
+
+        .filter-section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .filter-date-container {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .filter-slider-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 30px;
+            height: 6px;
+            background: #C0C0C0;
+            border-radius: 5px;
+        }
+
+        .filter-slider-track {
+            position: absolute;
+            height: 6px;
+            background: #09315D;
+            border-radius: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .filter-slider {
+            width: 100%;
+            appearance: none;
+            height: 6px;
+            background: transparent;
+            outline: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .filter-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #09315D;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+        }
+
+        .filter-dropdown-container {
+            margin-bottom: 50px;
+        }
+
+        .filter-dropdown {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            font-family: 'Tajawal', sans-serif;
+            border-radius: 10px;
+            border: none;
+            background: #E0E0E0;
+            color: #09315D;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        .filter-buttons-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: auto;
+            padding-bottom: 20px;
+        }
+
+        .filter-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-family: 'Tajawal', sans-serif;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .filter-btn-primary {
+            background: #09315D;
+            color: white;
+        }
+
+        .filter-btn-secondary {
+            background: #C0C0C0;
+            color: #666;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- زر الرجوع -->
+    <a href = "Ideas.html"> <span id="filter-back-button" class="filter-back-arrow material-symbols-outlined" >
+        arrow_back
+    </span> </a>
+
+    <div id="filter-container" class="filter-container">
+        <h2 id="filter-title" class="filter-title">فرز حسب</h2>
+
+        <div id="filter-date-section" class="filter-section">
+            <div id="filter-date-title" class="filter-section-title">تاريخ النشر</div>
+            <div id="filter-date-range" class="filter-date-container">
+                <span id="filter-date-start">11/12/1429</span>
+                <span id="filter-date-end">11/12/1444</span>
+            </div>
+
+            <div id="filter-slider-wrapper" class="filter-slider-container">
+                <div id="filter-slider-track" class="filter-slider-track"></div>
+                <input id="filter-slider1" class="filter-slider" type="range" min="1429" max="1444" value="1429" step="1" oninput="updateFilterSlider()">
+                <input id="filter-slider2" class="filter-slider" type="range" min="1429" max="1444" value="1444" step="1" oninput="updateFilterSlider()">
+            </div>
+        </div>
+
+        <div id="filter-category-section" class="filter-section">
+            <div id="filter-category-title" class="filter-section-title">الفئة</div>
+            <div id="filter-category-dropdown-container" class="filter-dropdown-container">
+                <select id="filter-category-dropdown" class="filter-dropdown">
+                    <option value="">فئة الفكرة</option>
+                    <option value="tech">تقنية</option>
+                    <option value="health">صحة</option>
+                    <option value="education">تعليم</option>
+                    <option value="environment">بيئة</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="filter-buttons-container" class="filter-buttons-container">
+            <button id="filter-view-results-btn" class="filter-btn filter-btn-primary">عرض النتائج</button>
+            <button id="filter-reset-btn" class="filter-btn filter-btn-secondary">إعادة تعيين</button>
+        </div>
+    </div>
+
+    <script>
+
+        function updateFilterSlider() {
+            let slider1 = document.getElementById("filter-slider1");
+            let slider2 = document.getElementById("filter-slider2");
+            let dateStart = document.getElementById("filter-date-start");
+            let dateEnd = document.getElementById("filter-date-end");
+            let track = document.getElementById("filter-slider-track");
+
+            let minValue = parseInt(slider1.value);
+            let maxValue = parseInt(slider2.value);
+
+            if (minValue > maxValue) {
+                [minValue, maxValue] = [maxValue, minValue];
+            }
+
+            dateStart.textContent = "11/12/" + minValue;
+            dateEnd.textContent = "11/12/" + maxValue;
+
+            slider1.value = minValue;
+            slider2.value = maxValue;
+
+            let percentMin = ((minValue - 1429) / (1444 - 1429)) * 100;
+            let percentMax = ((maxValue - 1429) / (1444 - 1429)) * 100;
+
+            track.style.left = percentMin + "%";
+            track.style.width = (percentMax - percentMin) + "%";
+        }
+
+        updateFilterSlider();
+    </script>
+
+</body>
+</html>

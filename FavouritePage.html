@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المفضلة</title>
+
+    <!-- Import Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Reset basic styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Page styling */
+        body {
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+            color: #09315D;
+            background: #FFFFFF;
+        }
+
+        /* Navbar styling */
+        .navbar-fav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: transparent;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Logo styling */
+        .logo-fav img {
+            width: 60px;
+            height: auto;
+        }
+
+        /* Hamburger menu styling */
+        .humburger-fav {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1100;
+            position: relative;
+            width: 30px;
+            height: 30px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .humburger-fav .bar-fav {
+            width: 30px;
+            height: 4px;
+            background-color: #09315D;
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Hide the bars when menu is active and show "X" */
+        .humburger-fav.active .bar-fav {
+            display: none;
+        }
+
+        .humburger-fav.active::before {
+            content: "✖"; /* X icon */
+            font-size: 28px;
+            color: #09315D;
+        }
+
+        /* Page title */
+        .favourite-page-title {
+            font-size: 26px;
+            font-weight: bold;
+            margin: 20px;
+            text-align: right;
+        }
+
+        /* Favorite card styling */
+        .favourite-page-card {
+            background: #F0F0F0;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            height: 180px;
+            position: relative;
+        }
+
+        /* Close button */
+        .favourite-page-close {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            cursor: pointer;
+            font-size: 22px;
+            color: #09315D;
+            background: none;
+            border: none;
+        }
+
+        /* Innovator image */
+        .favourite-page-card img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid #09315D;
+            object-fit: cover;
+        }
+
+        /* Image container */
+        .favourite-page-card-image {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Innovator's name */
+        .favourite-page-card-creator {
+            font-size: 14px;
+            color: #09315D;
+            margin-top: 5px;
+        }
+
+        /* Card content */
+        .favourite-page-card-content {
+            flex: 1;
+            text-align: right;
+            margin-right: 20px;
+        }
+
+        /* Idea title */
+        .favourite-page-card-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Date styling */
+        .favourite-page-card-date {
+            font-size: 16px;
+            color: #09315D;
+            margin-top: 8px;
+        }
+
+        /* Sidebar menu */
+        .menu-overlay-fav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: right 0.4s ease-in-out;
+            z-index: 1000;
+        }
+
+        .menu-overlay-fav.active {
+            right: 0;
+        }
+
+        .menu-overlay-fav a {
+            font-size: 24px;
+            color: #09315D;
+            text-decoration: none;
+            padding: 15px;
+            transition: color 0.3s;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav id="navbar-fav" class="navbar-fav">
+        <div id="logo-fav" class="logo-fav">
+            <a href="#">
+                <img src="images/Logo.png" alt="الشعار">
+            </a>
+        </div>
+        <div id="humburger-icon" class="humburger-fav" onclick="toggleMenuFav()">
+            <span class="bar-fav"></span>
+            <span class="bar-fav"></span>
+            <span class="bar-fav"></span>
+        </div>
+    </nav>
+
+    <!-- Page title -->
+    <h2 id="favourite-page-title" class="favourite-page-title">المفضلة</h2>
+
+    <!-- Favorite cards -->
+    <div id="fav-card-1" class="favourite-page-card">
+        <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
+        <div class="favourite-page-card-content">
+            <div class="favourite-page-card-title">أجهزة استشعار لمراقبة الجودة</div>
+            <div class="favourite-page-card-date">٢٠٢٣/٠٢/٢٠</div>
+        </div>
+        <div class="favourite-page-card-image">
+            <img src="images/innovator7.jpg" alt="صورة المبتكر">
+            <div class="favourite-page-card-creator">سارة عبدالله</div>
+        </div>
+    </div>
+
+    <div id="fav-card-2" class="favourite-page-card">
+        <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
+        <div class="favourite-page-card-content">
+            <div class="favourite-page-card-title">تطبيق لمراقبة الأنشطة</div>
+            <div class="favourite-page-card-date">٢٠٢٣/٠٥/١٥</div>
+        </div>
+        <div class="favourite-page-card-image">
+            <img src="images/innovator5.jpg" alt="صورة المبتكر">
+            <div class="favourite-page-card-creator">فهد محمد</div>
+        </div>
+    </div>
+
+    <div id="fav-card-3" class="favourite-page-card">
+        <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
+        <div class="favourite-page-card-content">
+            <div class="favourite-page-card-title">تحليل الحمض النووي بسهولة</div>
+            <div class="favourite-page-card-date">٢٠٢٣/١١/٠٣</div>
+        </div>
+        <div class="favourite-page-card-image">
+            <img src="images/innovator6.jpg" alt="صورة المبتكر">
+            <div class="favourite-page-card-creator">عبدالرحمن صالح</div>
+        </div>
+    </div>
+
+    <!-- Sidebar menu -->
+    <div id="menuOverlayFav" class="menu-overlay-fav">
+        <a href="index.html">الصفحة الرئيسية</a>
+        <a href="#">الملف الشخصي</a>
+        <a href="investRequests.html">طلبات الاستثمار </a>
+        <a href="FavouritePage.html">المفضلة</a>
+        <a href="#"> تسجيل الخروج</a>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function removeCardFav(button) {
+            button.parentElement.remove();
+        }
+
+        function toggleMenuFav() {
+            var menu = document.getElementById("menuOverlayFav");
+            var humburger = document.getElementById("humburger-icon");
+
+            menu.classList.toggle("active");
+            humburger.classList.toggle("active"); // لتغيير الأيقونة إلى X عند الفتح
+        }
+    </script>
+
+</body>
+</html>
