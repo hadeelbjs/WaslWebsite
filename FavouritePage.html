@@ -180,8 +180,130 @@
             padding: 15px;
             transition: color 0.3s;
         }
+        .profile-link{
+            text-decoration: none;
+        }
+        .menu-overlay-fav a {
+    text-decoration: none;
+    color: #09315D;
+}
 
+.profile-link {
+    text-decoration: none;
+    color: #09315D;
+}
+
+.menu-overlay-fav a:visited,
+.profile-link:visited {
+    color: #09315D;
+}
+
+.profile-link img {
+    width: 90px; 
+    height: 90px; 
+    border-radius: 50%; 
+    border: 3px solid #09315D; 
+    object-fit: cover; 
+    display: block; 
+}
+
+.modal {
+    display: none; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    background: rgba(0, 0, 0, 0.8); 
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    padding: 15px;
+    z-index: 1000;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content {
+    background: #2a2d34;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.modal-content h2 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+.modal-content p {
+    font-size: 12px;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 8px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.modal-buttons button:last-child {
+    background: #0c2340;
+    color: white;
+    font-weight: bold;
+}
+
+.modal-buttons button:first-child {
+    background: transparent;
+    border: 1px solid #ccc;
+    color: #ccc;
+}
     </style>
+
+
+<script>
+       
+
+    function openLogoutModal() {
+        document.getElementById("logoutModal").style.display = "block";
+    }
+    
+    function closeLogoutModal() {
+        document.getElementById("logoutModal").style.display = "none";
+    }
+    
+    function confirmLogout() {
+        window.location.href = "index.html"; 
+    }
+    
+    
+    function toggleMenu() {
+        var menu = document.getElementById("menuOverlay");
+        var hamburgerIcon = document.querySelector("#hamburgerIcon");
+        var closeIcon = document.getElementById("closeIcon");
+    
+        if (menu.classList.contains("active")) {
+            menu.classList.remove("active");
+        hamburgerIcon.style.display = "block"; 
+        closeIcon.style.display = "none"; 
+    } else {
+        menu.classList.add("active");
+        hamburgerIcon.style.display = "none"; 
+        closeIcon.style.display = "block"; 
+    }
+}
+    </script>
+
+
 </head>
 <body>
 
@@ -203,41 +325,61 @@
     <h2 id="favourite-page-title" class="favourite-page-title">المفضلة</h2>
 
     <!-- Favorite cards -->
+    
     <div id="fav-card-1" class="favourite-page-card">
         <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
+        
         <div class="favourite-page-card-content">
-            <div class="favourite-page-card-title">أجهزة استشعار لمراقبة الجودة</div>
-            <div class="favourite-page-card-date">٢٠٢٣/٠٢/٢٠</div>
+            <div class="favourite-page-card-title" onclick="window.location.href='IdeaDetails1.html';" style="cursor: pointer;">
+                أجهزة استشعار لمراقبة الجودة
+            </div>
+            <div class="favourite-page-card-date">١٤٤٤/٨/٢٩</div>
         </div>
+    
         <div class="favourite-page-card-image">
-            <img src="images/innovator7.jpg" alt="صورة المبتكر">
+            <a href="account1.html" class="profile-link">
+                <img src="images/innovator7.jpg" alt="صورة المبتكر">
+            </a>
             <div class="favourite-page-card-creator">سارة عبدالله</div>
         </div>
     </div>
-
+    
     <div id="fav-card-2" class="favourite-page-card">
         <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
+        
         <div class="favourite-page-card-content">
-            <div class="favourite-page-card-title">تطبيق لمراقبة الأنشطة</div>
-            <div class="favourite-page-card-date">٢٠٢٣/٠٥/١٥</div>
+            <div class="favourite-page-card-title" onclick="window.location.href='IdeaDetails2.html';" style="cursor: pointer;">
+                تطبيق لمراقبة الأنشطة
+            </div>
+            <div class="favourite-page-card-date">١٤٤٤/١٠/٢٤</div>
         </div>
+    
         <div class="favourite-page-card-image">
-            <img src="images/innovator5.jpg" alt="صورة المبتكر">
+            <a href="account2.html" class="profile-link">
+                <img src="images/innovator5.jpg" alt="صورة المبتكر">
+            </a>
             <div class="favourite-page-card-creator">فهد محمد</div>
         </div>
     </div>
-
+    
     <div id="fav-card-3" class="favourite-page-card">
         <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
+        
         <div class="favourite-page-card-content">
-            <div class="favourite-page-card-title">تحليل الحمض النووي بسهولة</div>
-            <div class="favourite-page-card-date">٢٠٢٣/١١/٠٣</div>
+            <div class="favourite-page-card-title" onclick="window.location.href='IdeaDetails3.html';" style="cursor: pointer;">
+                تحليل الحمض النووي بسهولة
+            </div>
+            <div class="favourite-page-card-date">١٤٤٥/١٠/٢٤</div>
         </div>
+    
         <div class="favourite-page-card-image">
-            <img src="images/innovator6.jpg" alt="صورة المبتكر">
+            <a href="account3.html" class="profile-link">
+                <img src="images/innovator6.jpg" alt="صورة المبتكر">
+            </a>
             <div class="favourite-page-card-creator">عبدالرحمن صالح</div>
         </div>
     </div>
+
 
     <!-- Sidebar menu -->
     <div id="menuOverlayFav" class="menu-overlay-fav">
@@ -245,9 +387,22 @@
         <a href="#">الملف الشخصي</a>
         <a href="investRequests.html">طلبات الاستثمار </a>
         <a href="FavouritePage.html">المفضلة</a>
-        <a href="#"> تسجيل الخروج</a>
+        <a href="#" onclick="openLogoutModal()">تسجيل الخروج</a>
+    </div>
     </div>
 
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h2>تسجيل الخروج</h2>
+            <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
+            <div class="modal-buttons">
+                <button onclick="closeLogoutModal()">تراجع</button>
+                <button onclick="confirmLogout()">تسجيل الخروج</button>
+            </div>
+        </div>
+    </div>
+
+    
     <!-- JavaScript -->
     <script>
         function removeCardFav(button) {
@@ -259,8 +414,13 @@
             var humburger = document.getElementById("humburger-icon");
 
             menu.classList.toggle("active");
-            humburger.classList.toggle("active"); // لتغيير الأيقونة إلى X عند الفتح
+            humburger.classList.toggle("active"); // Change the icon to X when opened
         }
+
+        function confirmLogout() {
+            window.location.href = "index.html"; // Redirect to logout at HomePage
+        }
+          
     </script>
 
 </body>
