@@ -140,20 +140,266 @@
                 grid-template-columns: repeat(3, 1fr);
             }
         }
+        header {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+        }
+
+        header img {
+            width: 25vw;
+        }
+        #menu {
+            font-size: 28px;
+            color: #072D57;
+            cursor: pointer;
+            margin-right: auto;
+            display: block; /* يظهر فقط في الجوالات */
+        }
+
+        /* القائمة الجانبية */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0; /* تأكد أنها تبدأ من الحافة اليمنى */
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #072D57;
+            font-size: 24px;
+            padding: 10px;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #0a448f;
+        }
+
+        .close-btn {
+            font-size: 30px;
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            cursor: pointer;
+            color: #072D57;
+        }
+        #space {
+            margin-top: 10vh;
+        }
+
+        @media (min-width: 768px) {
+            header img {
+                width: 15vw;
+            }
+            #menu {
+                display: none; /* إخفاء زر الهامبرغر */
+            }
+
+            .sidebar {
+                margin-right: 10vw ;
+                position: static;
+                transform: none;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                height: auto;
+                width: auto;
+                background: none;
+                box-shadow: none;
+                gap: 15px;
+            }
+            #log-out {
+                margin-right: 18vw;
+                text-decoration: underline;
+            }
+            .sidebar a {
+                font-size: 18px;
+                padding: 8px 15px;
+            }
+
+            .close-btn {
+                display: none; /* إخفاء زر الإغلاق */
+            }
+        }
+
+        body.no-scroll {
+            overflow: hidden;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* مسافة بين الصورة والاسم */
+        }
+
+        .user-info img {
+            width: 20vw; 
+            height: 20vw;
+            border-radius: 50%;
+            object-fit: cover; 
+        }
+
+        .modal {
+            display: none; 
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            background: rgba(0, 0, 0, 0.8); 
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            padding: 15px;
+            z-index: 1000;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content {
+            background: #2a2d34;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .modal-content h2 {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .modal-content p {
+            font-size: 12px;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 8px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .modal-buttons button:last-child {
+            background: #0c2340;
+            color: white;
+            font-weight: bold;
+        }
+
+        .modal-buttons button:first-child {
+            background: transparent;
+            border: 1px solid #ccc;
+            color: #ccc;
+        }
+
+
     </style>
 </head>
 <body>
     <header>
-        <img src="waslLogo.png" alt="logo">
-        <svg id="menu" xmlns="http://www.w3.org/2000/svg"  viewBox="0 -960 960 960"  fill="#072d57"><path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/></svg>    </header>
+        <img src="images/waslLogo.png" alt="logo">
+        <nav class="sidebar" id="sidebar">
+            <span class="close-btn" id="closeBtn">✖</span>
+            <span id="space"></span>
+            <a href="index.html">الصفحة الرئيسية</a>
+            <a href="profile.html">الملف الشخصي</a>
+            <a href="investRequests.html">طلبات الاستثمار</a>
+            <a href="FavouritePage.html">المفضلة</a>
+            <a href="#" onclick="openLogoutModal()">تسجيل الخروج</a>
+        </nav>
+        <svg id="menu" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#072D57">
+            <path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/>
+        </svg>
+    </header>
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h2>تسجيل الخروج</h2>
+            <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
+            <div class="modal-buttons">
+                <button onclick="closeLogoutModal()">تراجع</button>
+                <button onclick="confirmLogout()">تسجيل الخروج</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const menu = document.getElementById("menu");
+        const sidebar = document.getElementById("sidebar");
+        const closeBtn = document.getElementById("closeBtn");
+
+        menu.addEventListener("click", () => {
+            sidebar.classList.add("open");
+            document.body.classList.add("no-scroll");
+        });
+
+        closeBtn.addEventListener("click", () => {
+            sidebar.classList.remove("open");
+            document.body.classList.remove("no-scroll");
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!sidebar.contains(event.target) && event.target !== menu) {
+                sidebar.classList.remove("open");
+                document.body.classList.remove("no-scroll");
+            }
+        });
+        
+            function confirmLogout() {
+                window.location.href = "index.html"; 
+            }
+            
+        function openLogoutModal() {
+            document.getElementById("logoutModal").style.display = "block";
+        }
+        
+function closeLogoutModal() {
+    document.getElementById("logoutModal").style.display = "none";
+}
+
+function confirmLogout() {
+    window.location.href = "index.html"; 
+}
+
+    </script>
+    
+    </header>
     <main>
         <div class="wrapper">
             <h1>الطلبات</h1>
             <div class="container">
                 <div class="invRequest">
-                    <p><strong>عنوان الفكرة:</strong> وصل</p>
+                    <p><strong>عنوان الفكرة:</strong></p>
+                        <p>أجهزة استشعار لمراقبة الجودة</p>
                     <hr>
-                    <p><strong>مقدم الطلب:</strong> اسم شخص</p>
+                    <p><strong>مقدم الطلب:</strong> </p>
+                    <div class="user-info">
+                        <img src="images/innovator7.jpg" alt="صورة نوره احمد">
+                        <p>نوره احمد</p>
+                    </div>
                     <div class="actions">
                         <button class="btn approve">
                             <span class="material-symbols-outlined">check</span>
@@ -165,9 +411,14 @@
                 </div>
 
                 <div class="invRequest">
-                    <p><strong>عنوان الفكرة:</strong> وصل</p>
+                    <p><strong>عنوان الفكرة:</strong> </p>
+                        <p>تطبيق لمراقبة الأنشطة</p>
                     <hr>
-                    <p><strong>مقدم الطلب:</strong> اسم شخص</p>
+                    <p><strong>مقدم الطلب:</strong> </p>
+                    <div class="user-info">
+                        <img src="images/innovator5.jpg" alt="صورة صالح">
+                        <p>صالح ابراهيم</p>
+                    </div>
                     <div class="actions">
                         <button class="btn approve">
                             <span class="material-symbols-outlined">check</span>
@@ -179,9 +430,13 @@
                 </div>
 
                 <div class="invRequest">
-                    <p><strong>عنوان الفكرة:</strong> وصل</p>
+                    <p><strong>عنوان الفكرة:</strong></p><p>تحليل الحمض النووي بسهولة</p>
                     <hr>
-                    <p><strong>مقدم الطلب:</strong> اسم شخص</p>
+                    <p><strong>مقدم الطلب:</strong> </p>
+                    <div class="user-info">
+                        <img src="images/innovator6.jpg" alt="صورة عبدالله">
+                        <p>عبدالله تركي</p>   
+                    </div>
                     <div class="actions">
                         <button class="btn approve">
                             <span class="material-symbols-outlined">check</span>
