@@ -205,8 +205,86 @@
 text-decoration: none;
 
         }
+        .modal {
+    display: none; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    background: rgba(0, 0, 0, 0.8); 
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    padding: 15px;
+    z-index: 1000;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content {
+    background: #2a2d34;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.modal-content h2 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.modal-content p {
+    font-size: 12px;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 8px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.modal-buttons button:last-child {
+    background: #0c2340;
+    color: white;
+    font-weight: bold;
+}
+
+.modal-buttons button:first-child {
+    background: transparent;
+    border: 1px solid #ccc;
+    color: #ccc;
+}
+
      
     </style>
+    <script>
+
+
+function openLogoutModal() {
+    document.getElementById("logoutModal").style.display = "block";
+}
+
+function closeLogoutModal() {
+    document.getElementById("logoutModal").style.display = "none";
+}
+
+function confirmLogout() {
+    window.location.href = "index.html"; 
+}
+
+    </script>
 </head>
 <body>
     
@@ -231,7 +309,7 @@ text-decoration: none;
         <a href="Profile.html">الملف الشخصي</a>
         <a href="investRequests.html">طلبات الاستثمار</a>
         <a href="FavouritePage.html">المفضلة</a>
-        <a href="#">تسجيل الخروج</a>
+        <a href="#" onclick="openLogoutModal()">تسجيل الخروج</a>
     </div>
     
 
@@ -290,7 +368,16 @@ text-decoration: none;
     
 
     <a href="myIdea.html" >  <button class="add-btn">+</button> </a>
-
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h2>تسجيل الخروج</h2>
+            <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
+            <div class="modal-buttons">
+                <button onclick="closeLogoutModal()">تراجع</button>
+                <button onclick="confirmLogout()">تسجيل الخروج</button>
+            </div>
+        </div>
+    </div>
     <script>
         function toggleMenu() {
             var menu = document.getElementById("menuOverlay");
@@ -308,8 +395,9 @@ text-decoration: none;
                 closeIcon.classList.add("visible");
             }
         }
+        
     </script>
-    
+   
 
 </body>
 </html>
