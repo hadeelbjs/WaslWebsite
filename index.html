@@ -34,7 +34,9 @@ body, html {
     position: absolute;
     top: 0; 
     left: 0;
+    
 }
+
 
 .menu-icon {
     position: absolute;
@@ -291,42 +293,7 @@ p {
     z-index: 1000;
 }
 
-.side-menu {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: right 0.3s ease-in-out;
-    z-index: 999;
-}
 
-.menu-content {
-    text-align: center;
-}
-
-.menu-content ul {
-    list-style: none;
-    padding: 0;
-
-}
-
-.menu-content ul li {
-    padding: 15px 0;
-    font-size: 20px;
-}
-
-.menu-content ul li a {
-    text-decoration: none;
-    color: #0c2a4e;
-    font-weight: bold;
-    font-family: 'Tajawal';
-
-}
 
 .close-btn {
     position: absolute;
@@ -401,17 +368,80 @@ p {
     border: 1px solid #ccc;
     color: #ccc;
 }
-    </style>
-    <script>
-        function openMenu() {
-    document.getElementById("sideMenu").style.right = "0";
-    document.querySelector(".menu-icon").style.display = "none";
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: right 0.4s ease-in-out;
+    z-index: 1000;
 }
 
-function closeMenu() {
-    document.getElementById("sideMenu").style.right = "-100%";
-    document.querySelector(".menu-icon").style.display = "block";
+.menu-overlay.active {
+    right: 0;
 }
+
+.menu-overlay a {
+    font-size: 24px;
+    color: #09315D;
+    text-decoration: none;
+    padding: 15px;
+    transition: color 0.3s;
+}
+
+.menu-overlay a:hover {
+    color: #072D57;
+}
+
+.close-menu {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #09315D;
+}
+
+#hamburgerIcon.hidden {
+    display: none;
+}
+
+#closeIcon {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #09315D;
+    position: absolute;
+    top: 15px;
+    left: 20px;
+}
+.navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    z-index: 1001; /
+}
+
+#hamburgerIcon {
+    z-index: 1002; 
+    position: relative; 
+}
+
+    </style>
+    <script>
+       
 
 function openLogoutModal() {
     document.getElementById("logoutModal").style.display = "block";
@@ -425,16 +455,22 @@ function confirmLogout() {
     window.location.href = "index.html"; 
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    let logoutLink = document.querySelector('a[href="logout.html"]');
-    if (logoutLink) {
-        logoutLink.addEventListener("click", function(event) {
-            event.preventDefault(); 
-            openLogoutModal(); 
-        });
-    }
-});
 
+function toggleMenu() {
+    var menu = document.getElementById("menuOverlay");
+    var hamburgerIcon = document.querySelector("#hamburgerIcon");
+    var closeIcon = document.getElementById("closeIcon");
+
+    if (menu.classList.contains("active")) {
+        menu.classList.remove("active");
+        hamburgerIcon.style.display = "block"; 
+        closeIcon.style.display = "none"; 
+    } else {
+        menu.classList.add("active");
+        hamburgerIcon.style.display = "none"; 
+        closeIcon.style.display = "block"; 
+    }
+}
     </script>
 </head>
 <body>
@@ -443,20 +479,28 @@ document.addEventListener("DOMContentLoaded", function() {
             <img src="images/Wasl.jpg" alt="الخلفية">
         </div>
     
-        <div class="menu-icon" onclick="openMenu()">☰</div>
-    
-        <div class="side-menu" id="sideMenu">
-            <div class="close-btn" onclick="closeMenu()">×</div>
-            <div class="menu-content">
-                <ul>
-                    <li><a href="index.html">الصفحة الرئيسية</a></li>
-                    <li><a href="profile.html">الملف الشخصي</a></li>
-                    <li><a href="investRequests.html">طلبات الاستثمار</a></li>
-                    <li><a href="FavouritePage.html">المفضلة</a></li>
-                    <li><a href="logout.html">تسجيل الخروج</a></li>
-                </ul>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/Logo.png" alt="الشعار">
+                </a>
             </div>
+        
+            <svg id="hamburgerIcon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#09315D" width="40" height="40" style="cursor: pointer;">
+                <path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/>
+            </svg>
+        </nav>
+        
+        <div class="menu-overlay" id="menuOverlay">
+            <span class="close-menu" id="closeIcon" onclick="toggleMenu()">✖</span>
+        
+            <a href="index.html">الصفحة الرئيسية</a>
+            <a href="profile.html">الملف الشخصي</a>
+            <a href="investRequests.html">طلبات الاستثمار</a>
+            <a href="FavouritePage.html">المفضلة</a>
+            <a href="#" onclick="openLogoutModal()">تسجيل الخروج</a>
         </div>
+        
     </div>
 
     <div class="logo">
@@ -529,9 +573,14 @@ document.addEventListener("DOMContentLoaded", function() {
         <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
         <div class="modal-buttons">
             <button onclick="closeLogoutModal()">تراجع</button>
-            <button onclick="confirmLogout()">تسجيل الدخول</button>
+            <button onclick="confirmLogout()">تسجيل الخروج</button>
         </div>
     </div>
 </div>
+<script>
+
+
+</script>
 </body>
+
 </html>
