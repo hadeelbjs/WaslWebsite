@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>صفحة المبتكر</title>
+  
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+}
+
+body {
+    background-color: #fff;
+	  direction: rtl;
+
+}
+
+.profile-header-background {
+  background: url('images/back.png') no-repeat center center;
+  background-size: cover;
+  height: 10vh;
+  border-bottom-left-radius: 100px;
+}
+
+.profile-settings-icon {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.profile-card {
+  max-width: 450px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+
+
+.profile img {
+  display:block;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #002147;
+  left:30px;
+}
+
+.profile h2 {
+  color: #002147;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.profile-ideas-section {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.profile-ideas-section h3 {
+  color: #002147;
+  margin-bottom: 10px;
+  text-align:center;
+}
+
+.profile-ideas-container {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.profile-idea-box {
+  background-color: white;
+  padding: 15px;
+  border-radius: 12px;
+  width: 160px;
+  position: relative;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.profile-idea-icons {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+}
+
+
+.profile-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.no-style-link{
+text-decoration:none;
+color:inherit;
+}
+
+.profile-idea-img {
+  width: 50px;
+  height: 50px;
+  display: block;
+  margin: 10px auto;
+}
+
+.profile-idea-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 5px;
+}
+
+.profile-idea-field, .profile-idea-date {
+  font-size: 14px;
+  color: #555;
+}
+
+
+.profile-name{	
+background-color: #f5f5f5;
+text-align:center;
+color: #122C52;
+  border-radius: 8px;
+}
+
+.profile-contact-info {
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.profile-contact-info h3 {
+  color: #002147;
+  margin-bottom: 10px;
+  text-align:center;
+}
+
+.profile-contact-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.profile-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.profile-contact-item img {
+  width: 24px;
+  height: 24px;
+
+}
+
+.profile-contact-item span {
+  font-size: 16px;
+  color: #002147;
+}
+</style>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> 
+</head>
+<body>
+
+  <div class="profile-header-background">
+  
+  </div> 
+
+  <div class="profile-card">
+    <div class="profile">
+      <img src="images/innovator7.jpg" alt="الصورة الشخصية">
+      <h2>سارة عبدالله</h2>
+    </div>
+<br>	
+<!-- قسم معلومات التواصل -->
+    <div class="profile-name">
+     <br><h3>عن سـارة</h3>
+	 <p>شخص طموح أسعى دائمًا للابتكار وتطوير الحلول الحديثة. أحب استكشاف الأفكار الجديدة التي تساهم في تحسين الحياة من حولي.</p>
+   <br>
+   </div>
+<br>	
+    <!-- قسم الأفكار -->
+    <div class="profile-ideas-section">
+      <h3>أفكار سارة</h3>
+      <div class="profile-ideas-container">
+        <div class="profile-idea-box">
+          <p class="profile-idea-title">
+		  <a href="IdeaDetails.html" class="no-style-link">أجهزة استشعار لمراقبة الجودة</a>
+		  </p>
+          <p class="profile-idea-field">مجال الفكرة: الصناعة</p>
+          <p class="profile-idea-date">١٤٤٤/٨/٢٩</p>
+        </div>
+      </div>
+    </div>
+<br>
+    <!-- قسم معلومات التواصل -->
+    <div class="profile-contact-info">
+      <h3>معلومات التواصل</h3>
+      <div class="profile-contact-icons">
+        <div class="profile-contact-item">          
+          <span>saral2al</span>
+		  <img src="images/x..png" alt="تويتر">
+        </div>
+        <div class="profile-contact-item">         
+          <span>saral2al</span>
+		  <img src="images/linkedn.png" alt="لينكدإن">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
