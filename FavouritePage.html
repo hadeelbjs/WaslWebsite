@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="format-detection" content="telephone=no">
     <title>المفضلة</title>
 
     <!-- Import Fonts -->
@@ -151,9 +152,11 @@
             font-size: 16px;
             color: #09315D;
             margin-top: 8px;
-            pointer-events: none;
-            text-decoration: none;
-            color:#09315D
+            text-decoration: none !important;
+            color: #09315D !important;
+            cursor: text !important;
+            pointer-events: none !important;
+            
         }
 
         /* Sidebar menu */
@@ -271,11 +274,7 @@
     color: #ccc;
 }
         
-  .favourite-page-card-date {
-    text-decoration: none !important;
-    color: #09315D !important;
-    cursor: default !important;
-}
+
     </style>
 
 
