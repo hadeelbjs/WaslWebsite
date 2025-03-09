@@ -116,6 +116,11 @@
             color: #09315D;
             font-family: 'Baloo Bhaijaan 2','Tajawal', 'Cairo', sans-serif;
         }
+        input::placeholder {
+            font-family: 'Baloo Bhaijaan 2', 'Tajawal', 'Cairo', sans-serif; /* نفس الخط المستخدم في النص */
+            font-size: 16px; /* حجم النص */
+            color: #09315D; /* لون النص */
+        }
 
         button {
             width: 86vw;
@@ -176,6 +181,7 @@
            
             
         }
+      
     </style>
 </head>
 <body>
@@ -184,23 +190,24 @@
     </header>
     <main>
         <h1>أكتب نبذة عن فكرتك</h1>
-        <form method="post" action="">
+        <form method="" action="" onsubmit="event.preventDefault(); history.back();">
             <div class="input-container">
-                <input type="text" id="ideaTitle" required placeholder=" ">
+                <input type="text" id="ideaTitle" required value="أجهزة استشعار لمراقبة الجودة">
                 <label for="ideaTitle">عنوان الفكرة</label>
             </div>
             <div class="input-container">
-                <textarea id="ideaDes" name="idea-description" placeholder=" "></textarea>
+                <textarea id="ideaDes" name="idea-description" placeholder=" ">تستخدم أجهزة الاستشعار الحديثة لمراقبة جودة المنتجات في الوقت الفعلي، مما يساعد في الكشف  عن العيوب</textarea>
                 <label for="ideaDes">وصف الفكرة</label>
             </div>
-            <select name="domain" id="domain" class="input-container selectList" >
-                <option value="" disabled selected>مجال الفكرة</option>
-                <option value="volvo">التكنولوجيا والبرمجة</option>
-                <option value="saab">التعليم والتدريب</option>
-                <option value="mercedes">الصحة</option>
-                <option value="audi">الترفيه</option>
+            <select name="domain" id="domain" class="input-container selectList">
+                <option value="" disabled>مجال الفكرة</option>
+                <option value="التكنولوجيا والبرمجة">التكنولوجيا والبرمجة</option>
+                <option value="التعليم والتدريب">التعليم والتدريب</option>
+                <option value="الصحة">الصحة</option>
+                <option value="الترفيه">الترفيه</option>
+                <option value="الصناعة" selected>الصناعة</option>
             </select>
-            <button type="submit"> تحديث وإرسال</button>
+            <button type="submit" >تحديث وإرسال</button>
             <button type="reset">إعادة تعيين</button>
         </form>
     </main>

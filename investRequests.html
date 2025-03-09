@@ -154,14 +154,13 @@
             color: #072D57;
             cursor: pointer;
             margin-right: auto;
-            display: block; /* يظهر فقط في الجوالات */
-        }
+            display: block;}
 
-        /* القائمة الجانبية */
+        
         .sidebar {
             position: fixed;
             top: 0;
-            right: 0; /* تأكد أنها تبدأ من الحافة اليمنى */
+            right: 0; 
             width: 100vw;
             height: 100vh;
             background: white;
@@ -204,40 +203,6 @@
             margin-top: 10vh;
         }
 
-        @media (min-width: 768px) {
-            header img {
-                width: 15vw;
-            }
-            #menu {
-                display: none; /* إخفاء زر الهامبرغر */
-            }
-
-            .sidebar {
-                margin-right: 10vw ;
-                position: static;
-                transform: none;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                height: auto;
-                width: auto;
-                background: none;
-                box-shadow: none;
-                gap: 15px;
-            }
-            #log-out {
-                margin-right: 18vw;
-                text-decoration: underline;
-            }
-            .sidebar a {
-                font-size: 18px;
-                padding: 8px 15px;
-            }
-
-            .close-btn {
-                display: none; /* إخفاء زر الإغلاق */
-            }
-        }
 
         body.no-scroll {
             overflow: hidden;
@@ -316,8 +281,48 @@
             border: 1px solid #ccc;
             color: #ccc;
         }
+        
+        @media (min-width: 768px) {
+            header img {
+                width: 15vw;
+            }
+            #menu {
+                display: none; 
+            }
 
+            .sidebar {
+                margin-right: 10vw ;
+                position: static;
+                transform: none;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                height: auto;
+                width: auto;
+                background: none;
+                box-shadow: none;
+                gap: 15px;
+            }
+            #log-out {
+                margin-right: 18vw;
+                text-decoration: underline;
+            }
+            .sidebar a {
+                font-size: 18px;
+                padding: 8px 15px;
+            }
 
+            .close-btn {
+                display: none; 
+            }
+            
+            .user-info img {
+               width: 5vw; 
+               height: 5vw;
+               border-radius: 50%;
+                object-fit: cover; 
+                }
+        }
     </style>
 </head>
 <body>
