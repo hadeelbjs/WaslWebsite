@@ -1,8 +1,8 @@
 # AUTHORS
 Contributors:
-- Ghaida Alhussain
-- Fajer Alamro
-- Sara Alhowaimel
-- Hadeel Bin Jassas
-- Deem Aljarba
+- Ghaida Alhussain - 444201213
+- Fajer Alamro - 444200800
+- Sara Alhowaimel - 444200462
+- Hadeel Bin Jassas - 444200936
+- Deem Aljarba - 444200523
 
