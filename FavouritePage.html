@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="telephone=no">
     <title>المفضلة</title>
 
     <!-- Import Fonts -->
@@ -152,11 +152,9 @@
             font-size: 16px;
             color: #09315D;
             margin-top: 8px;
-            text-decoration: none !important;
-            color: #09315D !important;
-            cursor: text !important;
-            pointer-events: none !important;
-            
+            pointer-events: none;
+            text-decoration: none;
+            color:#09315D
         }
 
         /* Sidebar menu */
@@ -273,8 +271,12 @@
     border: 1px solid #ccc;
     color: #ccc;
 }
-        
 
+.favourite-page-card-date {
+    text-decoration: none !important;
+    color: #09315D !important;
+    cursor: default !important;
+}
     </style>
 
 
@@ -356,14 +358,14 @@
         <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
         
         <div class="favourite-page-card-content">
-            <div class="favourite-page-card-title" onclick="window.location.href='IdeaDetails2.html';" style="cursor: pointer;">
+            <div class="favourite-page-card-title" >
                 تطبيق لمراقبة الأنشطة
             </div>
             <div class="favourite-page-card-date">١٤٤٤/١٠/٢٤</div>
         </div>
     
         <div class="favourite-page-card-image">
-            <a href="account2.html" class="profile-link">
+         
                 <img src="images/innovator5.jpg" alt="صورة المبتكر">
             </a>
             <div class="favourite-page-card-creator">فهد محمد</div>
@@ -374,14 +376,14 @@
         <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
         
         <div class="favourite-page-card-content">
-            <div class="favourite-page-card-title" onclick="window.location.href='IdeaDetails3.html';" style="cursor: pointer;">
+            <div class="favourite-page-card-title">
                 تحليل الحمض النووي بسهولة
             </div>
             <div class="favourite-page-card-date">١٤٤٥/١٠/٢٤</div>
         </div>
     
         <div class="favourite-page-card-image">
-            <a href="account3.html" class="profile-link">
+           
                 <img src="images/innovator6.jpg" alt="صورة المبتكر">
             </a>
             <div class="favourite-page-card-creator">عبدالرحمن صالح</div>
