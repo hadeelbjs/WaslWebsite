@@ -604,76 +604,102 @@ body {
         });
     </script>
 <script type="module">
-
     import { auth, db } from "./LogIn-Register.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-function loadUserIdeas(ideas) {
-    const ideasContainer = document.querySelector(".profile-ideas-container");
-    ideasContainer.innerHTML = ''; 
+    import { doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-    if (!ideas || ideas.length === 0) {
-        ideasContainer.innerHTML = "<p style='text-align: center; color: #666;'>لا توجد أفكار بعد.</p>";
-        return;
+    // دالة لتحميل الأفكار الخاصة بالمستخدم
+    function loadUserIdeas() {
+        const user = auth.currentUser;  // الحصول على المستخدم الحالي
+        if (user) {
+            const ideasContainer = document.querySelector(".profile-ideas-container");
+            ideasContainer.innerHTML = ''; // إعادة تعيين محتوى الحاوية
+
+            const ideasRef = collection(db, "users", user.uid, "ideas"); // الحصول على مجموعة الأفكار الخاصة بالمستخدم
+            getDocs(ideasRef)
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        ideasContainer.innerHTML = "<p style='text-align: center; color: #666;'>لا توجد أفكار بعد.</p>";
+                        return;
+                    }
+
+                    querySnapshot.forEach((doc) => {
+                        const idea = doc.data();
+                        const ideaElement = `
+                            <div class="profile-idea-box">
+                                <div class="profile-idea-icons">
+                                    <img src="images/delete.png" alt="حذف" class="profile-icon close-icon" onclick="deleteIdea('${doc.id}')">
+                                    <img src="images/update.png" alt="تحديث" class="profile-icon refresh-icon" onclick="window.location.href='updateIdea.html';">
+                                </div>
+                                <p class="profile-idea-title">${idea.title}</p>
+                                <p class="profile-idea-field">مجال الفكرة: ${idea.category}</p>
+                                <p class="profile-idea-date">${idea.date}</p>
+                            </div>
+                        `;
+                        ideasContainer.innerHTML += ideaElement;
+                    });
+                })
+                .catch((error) => {
+                    console.error("حدث خطأ أثناء تحميل الأفكار:", error);
+                    ideasContainer.innerHTML = "<p style='text-align: center; color: #666;'>حدث خطأ في تحميل الأفكار.</p>";
+                });
+        } else {
+            console.warn("⚠ لا يوجد مستخدم مسجّل دخول.");
+        }
     }
 
-    ideas.forEach(idea => {
-        const ideaElement = `
-            <div class="profile-idea-box">
-                <div class="profile-idea-icons">
-                    <img src="images/delete.png" alt="حذف" class="profile-icon close-icon">
-                    <img src="images/update.png" alt="تحديث" class="profile-icon refresh-icon" onclick="window.location.href='updateIdea.html';">
-                </div>
-                <p class="profile-idea-title">${idea.title}</p>
-                <p class="profile-idea-field">مجال الفكرة: ${idea.category}</p>
-                <p class="profile-idea-date">${idea.date}</p>
-            </div>
-        `;
-        ideasContainer.innerHTML += ideaElement;
-    });
-}
+    // دالة لحذف فكرة
+    async function deleteIdea(ideaId) {
+        const user = auth.currentUser;  // الحصول على المستخدم الحالي
+        if (user) {
+            try {
+                const ideaRef = doc(db, "users", user.uid, "ideas", ideaId); // مرجع الفكرة
+                await deleteDoc(ideaRef); // حذف الفكرة من قاعدة البيانات
+                alert("تم حذف الفكرة بنجاح!");
+                loadUserIdeas(); // إعادة تحميل الأفكار بعد الحذف
+            } catch (error) {
+                console.error("حدث خطأ أثناء حذف الفكرة:", error);
+            }
+        } else {
+            alert("يجب أن تكون مسجل دخولًا أولاً!");
+        }
+    }
 
+    // تحميل بيانات المستخدم عند تسجيل الدخول
     onAuthStateChanged(auth, async (user) => {
         if (user) {
-            console.log(" المستخدم المسجّل دخوله:", user.uid);
-
+            console.log("المستخدم المسجّل دخوله:", user.uid);
             try {
                 const userRef = doc(db, "users", user.uid);
                 const userSnap = await getDoc(userRef);
 
                 if (userSnap.exists()) {
                     const userData = userSnap.data();
-                    console.log(" البيانات المسترجعة من Firestore:", userData);
+                    console.log("البيانات المسترجعة من Firestore:", userData);
 
-               
                     const usernameElement = document.getElementById("username");
-                    if (userData.username && userData.username.trim() !== "") {
-                        usernameElement.textContent = userData.username;
-                    } else {
-                        usernameElement.textContent = "مستخدم مجهول";
-                    }
+                    usernameElement.textContent = userData.username || "مستخدم مجهول";
 
-            
                     const contactInfo = userData.contactInfo || {};
                     document.getElementById("x-handle").textContent = contactInfo.xHandle || "لم يتم الإضافة";
                     document.getElementById("linkedin-handle").textContent = contactInfo.linkedinHandle || "لم يتم الإضافة";
 
-  
-                    loadUserIdeas(userData.ideas || []);
+                    loadUserIdeas();  // تحميل الأفكار عند تحميل البيانات
                 } else {
-                    console.error(" لم يتم العثور على بيانات المستخدم في Firestore.");
+                    console.error("لم يتم العثور على بيانات المستخدم في Firestore.");
                     document.getElementById("username").textContent = "لم يتم العثور على البيانات.";
                 }
             } catch (error) {
-                console.error(" حدث خطأ أثناء جلب البيانات:", error);
+                console.error("حدث خطأ أثناء جلب البيانات:", error);
                 document.getElementById("username").textContent = "خطأ في تحميل البيانات.";
             }
         } else {
             console.warn("⚠ لا يوجد مستخدم مسجّل دخول، سيتم توجيهه إلى صفحة تسجيل الدخول.");
-            window.location.href = "login.html";
+            window.location.href = "login.html";  // توجيه المستخدم إلى صفحة تسجيل الدخول
         }
     });
 </script>
+
 
 
 
