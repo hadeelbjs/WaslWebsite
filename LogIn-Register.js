@@ -23,32 +23,33 @@ export async function registerUser() {
     const username = document.getElementById("username").value.trim(); 
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
-    const xHandle = document.getElementById("xHandle").value.trim() || "";  
-    const linkedinHandle = document.getElementById("linkedinHandle").value.trim() || "";  
+    const xHandle = document.getElementById("xHandle").value.trim();  
+    const linkedinHandle = document.getElementById("linkedinHandle").value.trim();  
 
     if (!username) {
-        alert(" يرجى إدخال اسم المستخدم!");
+        alert("يرجى إدخال اسم المستخدم!");
         return;
     }
 
     try {
-        console.log("🚀 جاري إنشاء الحساب...");
+        console.log(" جاري إنشاء الحساب...");
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        console.log("✅ المستخدم تم إنشاؤه بنجاح:", user.uid);
+        console.log(" المستخدم تم إنشاؤه بنجاح:", user.uid);
+
+        const contactInfo = {};
+        if (xHandle) contactInfo.xHandle = xHandle;
+        if (linkedinHandle) contactInfo.linkedinHandle = linkedinHandle;
 
         await setDoc(doc(db, "users", user.uid), {
             username: username,  
             email: email,
             userId: user.uid,
-            contactInfo: {
-                xHandle: xHandle,
-                linkedinHandle: linkedinHandle
-            },
+            contactInfo: contactInfo, 
             ideas: []
         });
 
-        console.log("✅ البيانات تم تخزينها في Firestore بنجاح!");
+        console.log(" البيانات تم تخزينها في Firestore بنجاح!");
         alert("تم إنشاء الحساب بنجاح!");
         window.location.href = "Login.html";
     } catch (error) {
@@ -56,6 +57,7 @@ export async function registerUser() {
         alert("خطأ أثناء التسجيل: " + error.message);
     }
 }
+
 
 
 export async function loginUser() {
