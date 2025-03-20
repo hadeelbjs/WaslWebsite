@@ -135,7 +135,7 @@ body {
         <h2>إنشاء حساب جديد</h2>
         <p>مسجل بالفعل؟ قم بتسجيل الدخول <a href="Login.html">هنا</a></p>
 		<br>
-        <form id='regID' onsubmit="registerUser(); return false;" >
+        <form id='regID' onsubmit="registerUser(); return false;">
             <label for="username">اسم المستخدم</label>
             <input type="text" id="username" placeholder="مثال: Ghaida" required>
         
@@ -145,16 +145,24 @@ body {
             <label for="password">كلمة المرور</label>
             <input type="password" id="password" placeholder="******" required>
         
+     
+            <label for="xHandle">حساب X (اختياري)</label>
+            <input type="text" id="xHandle" placeholder="@yourhandle">
+        
+        
+            <label for="linkedinHandle">اسم المستخدم في LinkedIn (اختياري)</label>
+            <input type="text" id="linkedinHandle" placeholder="اسم المستخدم في لينكدإن">
+        
             <button type="submit" id="registerBtn">قم بالتسجيل</button>
-
         </form>
+        
         <script type="module" src="LogIn-Register.js"></script>
         
     </div>
 	<br><br>
 	<div class="reg-footer-background"></div> 
     <script type="module">
-        import { registerUser } from "./firebase.js";
+        import { registerUser } from "./LogIn-Register.js";
         document.getElementById("registerBtn").addEventListener("click", (event) => {
             event.preventDefault(); 
             registerUser();

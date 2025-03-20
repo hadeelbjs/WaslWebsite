@@ -20,25 +20,40 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 export async function registerUser() {
-    const username = document.getElementById("username").value;
-    const email = document.getElementById("email").value;
+    const username = document.getElementById("username").value.trim(); 
+    const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
+    const xHandle = document.getElementById("xHandle").value.trim() || "";  
+    const linkedinHandle = document.getElementById("linkedinHandle").value.trim() || "";  
+
+    if (!username) {
+        alert(" يرجى إدخال اسم المستخدم!");
+        return;
+    }
 
     try {
+        console.log("🚀 جاري إنشاء الحساب...");
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+        console.log("✅ المستخدم تم إنشاؤه بنجاح:", user.uid);
 
         await setDoc(doc(db, "users", user.uid), {
-            username: username,
+            username: username,  
             email: email,
             userId: user.uid,
-            ideas: []  
+            contactInfo: {
+                xHandle: xHandle,
+                linkedinHandle: linkedinHandle
+            },
+            ideas: []
         });
 
+        console.log("✅ البيانات تم تخزينها في Firestore بنجاح!");
         alert("تم إنشاء الحساب بنجاح!");
         window.location.href = "Login.html";
     } catch (error) {
-        alert("خطأ: " + error.message);
+        console.error(" خطأ أثناء التسجيل:", error.message);
+        alert("خطأ أثناء التسجيل: " + error.message);
     }
 }
 
@@ -55,3 +70,4 @@ export async function loginUser() {
         alert("خطأ: " + error.message);
     }
 }
+export { db, auth };

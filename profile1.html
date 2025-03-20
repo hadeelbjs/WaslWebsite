@@ -370,6 +370,82 @@ body {
     color: #ccc;
 }
 
+
+body {
+    background-color: #fff;
+    direction: rtl;
+    font-family: 'Tajawal', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+.profile-card {
+    max-width: 500px;
+    margin: 60px auto; 
+    padding: 25px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* phase 4*/
+.profile {
+    margin-bottom: 20px; 
+}
+
+.profile img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #002147;
+}
+
+
+.profile h2 {
+    color: #002147;
+    margin-top: 10px;
+    font-size: 22px;
+}
+
+
+.profile-ideas-section {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 30px 0; }
+
+
+.profile-idea-box {
+    background-color: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 15px; 
+}
+
+.profile-contact-info {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+}
+
+.profile-contact-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+.profile-contact-item span {
+    font-size: 16px;
+    color: #002147;
+}
+
+
     </style>
 	
 	<script>
@@ -426,38 +502,32 @@ body {
     <div class="profile-card">
         <div class="profile">
             <img src="images/innovator7.jpg" alt="الصورة الشخصية">
-            <h2>سـارة عبدالله</h2>
+            <h2 id="username">تحميل البيانات...</h2>
+
         </div>
 <br><br>
         <div class="profile-ideas-section">
             <h3>أفكاري</h3>
             <div class="profile-ideas-container">
-                <div class="profile-idea-box">
-				<br>
-                    <div class="profile-idea-icons">
-                        <img src="images/delete.png" alt="حذف" class="profile-icon close-icon">
-                        <img src="images/update.png" alt="تحديث" class="profile-icon refresh-icon" onclick="window.location.href='updateIdea.html';">
-                    </div>
-                    <p class="profile-idea-title">أجهزة استشعار لمراقبة الجودة</p>
-                    <p class="profile-idea-field">مجال الفكرة: الصناعة</p>
-                    <p class="profile-idea-date">١٤٤٤/٨/٢٩</p>
-                </div>
+                <p style="text-align: center; color: #666;">جارِ تحميل الأفكار...</p>
             </div>
+            
         </div>
 <br><br>
-        <div class="profile-contact-info">
-            <h3>معلومات التواصل</h3>
-            <div class="profile-contact-icons">
-                <div class="profile-contact-item">       
-                    <span>saral2al</span>
-                    <img src="images/x..png" alt="تويتر">
-                </div>
-                <div class="profile-contact-item">        
-                    <span>saral2al</span>
-                    <img src="images/linkedn.png" alt="لينكدإن">
-                </div>
-            </div>
+<div class="profile-contact-info">
+    <h3>معلومات التواصل</h3>
+    <div class="profile-contact-icons">
+        <div class="profile-contact-item">
+            <span id="x-handle">تحميل...</span>
+            <img src="images/x..png" alt="X">
         </div>
+        <div class="profile-contact-item">
+            <span id="linkedin-handle">تحميل...</span>
+            <img src="images/linkedn.png" alt="LinkedIn">
+        </div>
+    </div>
+</div>
+
     </div>
 
     <div id="delete-confirmation" class="confirmation-popup">
@@ -533,6 +603,79 @@ body {
             });
         });
     </script>
+<script type="module">
+
+    import { auth, db } from "./LogIn-Register.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+function loadUserIdeas(ideas) {
+    const ideasContainer = document.querySelector(".profile-ideas-container");
+    ideasContainer.innerHTML = ''; 
+
+    if (!ideas || ideas.length === 0) {
+        ideasContainer.innerHTML = "<p style='text-align: center; color: #666;'>لا توجد أفكار بعد.</p>";
+        return;
+    }
+
+    ideas.forEach(idea => {
+        const ideaElement = `
+            <div class="profile-idea-box">
+                <div class="profile-idea-icons">
+                    <img src="images/delete.png" alt="حذف" class="profile-icon close-icon">
+                    <img src="images/update.png" alt="تحديث" class="profile-icon refresh-icon" onclick="window.location.href='updateIdea.html';">
+                </div>
+                <p class="profile-idea-title">${idea.title}</p>
+                <p class="profile-idea-field">مجال الفكرة: ${idea.category}</p>
+                <p class="profile-idea-date">${idea.date}</p>
+            </div>
+        `;
+        ideasContainer.innerHTML += ideaElement;
+    });
+}
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            console.log(" المستخدم المسجّل دخوله:", user.uid);
+
+            try {
+                const userRef = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userRef);
+
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    console.log(" البيانات المسترجعة من Firestore:", userData);
+
+               
+                    const usernameElement = document.getElementById("username");
+                    if (userData.username && userData.username.trim() !== "") {
+                        usernameElement.textContent = userData.username;
+                    } else {
+                        usernameElement.textContent = "مستخدم مجهول";
+                    }
+
+            
+                    const contactInfo = userData.contactInfo || {};
+                    document.getElementById("x-handle").textContent = contactInfo.xHandle || "لم يتم الإضافة";
+                    document.getElementById("linkedin-handle").textContent = contactInfo.linkedinHandle || "لم يتم الإضافة";
+
+  
+                    loadUserIdeas(userData.ideas || []);
+                } else {
+                    console.error(" لم يتم العثور على بيانات المستخدم في Firestore.");
+                    document.getElementById("username").textContent = "لم يتم العثور على البيانات.";
+                }
+            } catch (error) {
+                console.error(" حدث خطأ أثناء جلب البيانات:", error);
+                document.getElementById("username").textContent = "خطأ في تحميل البيانات.";
+            }
+        } else {
+            console.warn("⚠ لا يوجد مستخدم مسجّل دخول، سيتم توجيهه إلى صفحة تسجيل الدخول.");
+            window.location.href = "login.html";
+        }
+    });
+</script>
+
+
 
 </body>
 </html>
