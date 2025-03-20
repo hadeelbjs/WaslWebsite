@@ -184,7 +184,7 @@
     </header>
     <main>
         <h1>أكتب نبذة عن فكرتك</h1>
-        <form method="post" action="">
+        <form id="ideaForm" method="POST" action="">
             <div class="input-container">
                 <input type="text" id="ideaTitle" required placeholder=" ">
                 <label for="ideaTitle">عنوان الفكرة</label>
@@ -205,5 +205,84 @@
             <button type="reset">إعادة تعيين</button>
         </form>
     </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-database.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        
+        // 🔥 1. إعداد Firebase
+        const firebaseConfig = {
+          apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
+          authDomain: "wasl-523b4.firebaseapp.com",
+          databaseURL: "https://wasl-523b4-default-rtdb.firebaseio.com",
+          projectId: "wasl-523b4",
+          storageBucket: "wasl-523b4.firebasestorage.app",
+          messagingSenderId: "410509570015",
+          appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a",
+          measurementId: "G-DD60XW5EVT"
+        };
+        
+        // ✅ 2. تهيئة Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+        
+        let currentUser = null; // لتخزين المستخدم الحالي
+        
+        // 🔹 3. التأكد من تسجيل دخول المستخدم عند تحميل الصفحة
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user; // حفظ المستخدم
+            } else {
+                currentUser = null;
+            }
+        });
+        
+        // 🔥 4. دالة إضافة الفكرة
+        document.getElementById("ideaForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+        
+            const ideaTitle = document.getElementById("ideaTitle").value.trim();
+            const ideaDes = document.getElementById("ideaDes").value.trim();
+            const domain = document.getElementById("domain").value;
+        
+            if (ideaTitle === "" || ideaDes === "" || domain === "") {
+                alert("! يرجى التأكد من ملء جميع الحقول");
+                return;
+            }
+        
+            // ✅ التأكد من أن المستخدم مسجل دخول
+            if (!currentUser) {
+                alert("يجب تسجيل الدخول لإضافة فكرة!");
+                return;
+            }
+        
+            // 🔥 5. إضافة الفكرة إلى قاعدة البيانات
+            const ideasRef = ref(db, "ideas");
+            const newIdeaRef = push(ideasRef);
+            const ideaData = {
+                id: newIdeaRef.key,  // حفظ الـ ID لتسهيل جلب البيانات لاحقًا
+                title: ideaTitle,
+                description: ideaDes,
+                domain: domain,
+                userId: currentUser.uid, // ربط الفكرة بالمستخدم
+                timestamp: new Date().toISOString()
+            };
+        
+            set(newIdeaRef, ideaData)
+            .then(() => {
+                alert("! تمت إضافة الفكرة بنجاح");
+                document.getElementById("ideaForm").reset();
+        
+                // 🔄 تحديث الصفحة تلقائيًا بعد الإضافة
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error("حدث خطأ أثناء حفظ البيانات:", error);
+                alert("حدث خطأ أثناء إضافة الفكرة، حاول مرة أخرى!");
+            });
+        });
+        </script>
 </body>
 </html>
