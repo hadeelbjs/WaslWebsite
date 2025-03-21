@@ -23,9 +23,10 @@ body {
 	.reg-footer-background {
     background: url('images/back.png') no-repeat center center;
     background-size: cover;
-    height: 12vh; 
+    height: 15vh; 
     border-top-left-radius: 2px;
     border-top-right-radius: 100px;
+   
 }
 
 .reg-login-container {
@@ -67,7 +68,7 @@ body {
 }
 
 .reg-login-container input {
-    padding: 12px;
+    padding: 7px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -75,6 +76,7 @@ body {
     width: 100%;
     background-color: #F3F3F3;
     border: none;
+
 }
 
 .reg-login-container button {
@@ -87,6 +89,7 @@ body {
     cursor: pointer;
     transition: 0.3s;
     width: 100%;
+
 }
 
 .reg-login-container a {
@@ -101,6 +104,7 @@ body {
 
 .reg-login-container button:hover {
     background: #0E2140;
+    
 }
 
 
@@ -127,6 +131,10 @@ body {
     }
 
 }
+
+
+
+
 </style>
 </head>
 <body>   
@@ -144,7 +152,9 @@ body {
         
             <label for="password">كلمة المرور</label>
             <input type="password" id="password" placeholder="******" required>
-        
+            <label for="profileImage" class="file-label">الصورة الشخصية (اختياري)</label>
+            <input type="file" id="profileImage" accept="image/*" class="file-input">
+            
      
             <label for="xHandle">حساب X (اختياري)</label>
             <input type="text" id="xHandle" placeholder="@yourhandle">

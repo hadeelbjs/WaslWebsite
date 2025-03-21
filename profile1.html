@@ -501,7 +501,8 @@ body {
 
     <div class="profile-card">
         <div class="profile">
-            <img src="images/innovator7.jpg" alt="الصورة الشخصية">
+            <img id="profile-img" src="images/innovator7.jpg" alt="الصورة الشخصية">
+
             <h2 id="username">تحميل البيانات...</h2>
 
         </div>
@@ -604,35 +605,37 @@ body {
         });
     </script>
 <script type="module">
-
     import { auth, db } from "./LogIn-Register.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
     import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-function loadUserIdeas(ideas) {
-    const ideasContainer = document.querySelector(".profile-ideas-container");
-    ideasContainer.innerHTML = ''; 
 
-    if (!ideas || ideas.length === 0) {
-        ideasContainer.innerHTML = "<p style='text-align: center; color: #666;'>لا توجد أفكار بعد.</p>";
-        return;
+ 
+    function loadUserIdeas(ideas) {
+        const ideasContainer = document.querySelector(".profile-ideas-container");
+        ideasContainer.innerHTML = ''; 
+
+        if (!Array.isArray(ideas) || ideas.length === 0) {
+            ideasContainer.innerHTML = "<p style='text-align: center; color: #666;'>لا توجد أفكار بعد.</p>";
+            return;
+        }
+
+        ideas.forEach(idea => {
+            const ideaElement = `
+                <div class="profile-idea-box">
+                    <div class="profile-idea-icons">
+                        <img src="images/delete.png" alt="حذف" class="profile-icon close-icon">
+                        <img src="images/update.png" alt="تحديث" class="profile-icon refresh-icon" onclick="window.location.href='updateIdea.html';">
+                    </div>
+                    <p class="profile-idea-title">${idea.title}</p>
+                    <p class="profile-idea-field">مجال الفكرة: ${idea.category}</p>
+                    <p class="profile-idea-date">${idea.date}</p>
+                </div>
+            `;
+            ideasContainer.innerHTML += ideaElement;
+        });
     }
 
-    ideas.forEach(idea => {
-        const ideaElement = `
-            <div class="profile-idea-box">
-                <div class="profile-idea-icons">
-                    <img src="images/delete.png" alt="حذف" class="profile-icon close-icon">
-                    <img src="images/update.png" alt="تحديث" class="profile-icon refresh-icon" onclick="window.location.href='updateIdea.html';">
-                </div>
-                <p class="profile-idea-title">${idea.title}</p>
-                <p class="profile-idea-field">مجال الفكرة: ${idea.category}</p>
-                <p class="profile-idea-date">${idea.date}</p>
-            </div>
-        `;
-        ideasContainer.innerHTML += ideaElement;
-    });
-}
-
+ 
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             console.log(" المستخدم المسجّل دخوله:", user.uid);
@@ -645,27 +648,34 @@ function loadUserIdeas(ideas) {
                     const userData = userSnap.data();
                     console.log(" البيانات المسترجعة من Firestore:", userData);
 
-               
-                    const usernameElement = document.getElementById("username");
-                    if (userData.username && userData.username.trim() !== "") {
-                        usernameElement.textContent = userData.username;
+              
+                    document.getElementById("username").textContent = userData.username || "مستخدم مجهول";
+
+        
+                    if (userData.contactInfo) {
+                        document.getElementById("x-handle").textContent = userData.contactInfo.xHandle || "لم يتم الإضافة";
+                        document.getElementById("linkedin-handle").textContent = userData.contactInfo.linkedinHandle || "لم يتم الإضافة";
                     } else {
-                        usernameElement.textContent = "مستخدم مجهول";
+                        document.getElementById("x-handle").textContent = "لم يتم الإضافة";
+                        document.getElementById("linkedin-handle").textContent = "لم يتم الإضافة";
                     }
 
             
-                    const contactInfo = userData.contactInfo || {};
-                    document.getElementById("x-handle").textContent = contactInfo.xHandle || "لم يتم الإضافة";
-                    document.getElementById("linkedin-handle").textContent = contactInfo.linkedinHandle || "لم يتم الإضافة";
+                    const profileImg = document.getElementById("profile-img");
+                    if (userData.profileImage) {
+                        profileImg.src = userData.profileImage;
+                    } else {
+                        profileImg.src = "images/default-avatar.png"; 
+                    }
 
-  
+                
                     loadUserIdeas(userData.ideas || []);
                 } else {
-                    console.error(" لم يتم العثور على بيانات المستخدم في Firestore.");
+                    console.error(" لم يتم العثور على بيانات المستخدم.");
                     document.getElementById("username").textContent = "لم يتم العثور على البيانات.";
                 }
             } catch (error) {
-                console.error(" حدث خطأ أثناء جلب البيانات:", error);
+                console.error(" خطأ أثناء جلب البيانات:", error);
                 document.getElementById("username").textContent = "خطأ في تحميل البيانات.";
             }
         } else {
@@ -674,6 +684,7 @@ function loadUserIdeas(ideas) {
         }
     });
 </script>
+
 
 
 
