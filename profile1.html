@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back" />
+
+    <title>الملف الشخصي</title>
+    <style>
+	@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+}
+
+body {
+    background-color: #fff;
+	  direction: rtl;
+
+}
+
+/* Navbar styling */
+        .navbar-fav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: transparent;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Logo styling */
+        .logo-fav img {
+            width: 60px;
+            height: auto;
+        }
+
+        /* Hamburger menu styling */
+        .humburger-fav {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1100;
+            position: relative;
+            width: 30px;
+            height: 30px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .humburger-fav .bar-fav {
+            width: 30px;
+            height: 4px;
+            background-color: #09315D;
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Hide the bars when menu is active and show "X" */
+        .humburger-fav.active .bar-fav {
+            display: none;
+        }
+
+        .humburger-fav.active::before {
+            content: "✖"; /* X icon */
+            font-size: 28px;
+            color: #09315D;
+        }
+
+        .profile-header-background {
+            background: url('images/back.png') no-repeat center center;
+            background-size: cover;
+            height: 10vh;
+            border-bottom-left-radius: 100px;
+        }
+
+        .profile-settings-icon {
+            position: absolute;
+            top: 18px;
+            right: 15px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        .profile-card {
+            max-width: 450px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .profile img {
+            display: block;
+            margin: 0 auto;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #002147;
+        }
+
+        .profile h2 {
+            color: #002147;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .profile-ideas-section {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .profile-ideas-section h3 {
+            color: #002147;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .profile-ideas-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .profile-idea-box {
+            background-color: white;
+            padding: 15px;
+            border-radius: 12px;
+            width: 160px;
+            position: relative;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .profile-idea-icons {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            display: flex;
+            flex-direction: row;
+            gap: 3px;
+        }
+
+        .profile-icon {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .profile-idea-img {
+            width: 50px;
+            height: 50px;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .profile-idea-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        .profile-idea-field, .profile-idea-date {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .profile-name {
+            background-color: #f5f5f5;
+            text-align: center;
+            color: #122C52;
+            border-radius: 8px;
+        }
+
+        .profile-contact-info {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .profile-contact-info h3 {
+            color: #002147;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .profile-contact-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .profile-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .profile-contact-item img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .profile-contact-item span {
+            font-size: 16px;
+            color: #002147;
+        }
+
+        .confirmation-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #002147;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            width: 250px;
+            display: none;
+        }
+
+        .confirmation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+        }
+
+        .confirmation-buttons button {
+            padding: 10px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #confirm-delete {
+            background: #1E2532;
+            color: white;
+        }
+
+        #cancel-delete {
+            background: #1E2532;
+            color: white;
+        }
+		
+		/* Sidebar menu */
+        .menu-overlay-fav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: right 0.4s ease-in-out;
+            z-index: 1000;
+        }
+
+        .menu-overlay-fav.active {
+            right: 0;
+        }
+
+        .menu-overlay-fav a {
+            font-size: 24px;
+            color: #09315D;
+            text-decoration: none;
+            padding: 15px;
+            transition: color 0.3s;
+        }
+        .profile-link{
+            text-decoration: none;
+        }
+        .menu-overlay-fav a {
+    text-decoration: none;
+    color: #09315D;
+}
+
+.profile-link {
+    text-decoration: none;
+    color: #09315D;
+}
+
+.menu-overlay-fav a:visited,
+.profile-link:visited {
+    color: #09315D;
+}
+
+.profile-link img {
+    width: 90px; 
+    height: 90px; 
+    border-radius: 50%; 
+    border: 3px solid #09315D; 
+    object-fit: cover; 
+    display: block; 
+}
+
+.modal {
+    display: none; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    background: rgba(0, 0, 0, 0.8); 
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    padding: 15px;
+    z-index: 1000;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content {
+    background: #2a2d34;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.modal-content h2 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+.modal-content p {
+    font-size: 12px;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 8px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.modal-buttons button:last-child {
+    background: #0c2340;
+    color: white;
+    font-weight: bold;
+}
+
+.modal-buttons button:first-child {
+    background: transparent;
+    border: 1px solid #ccc;
+    color: #ccc;
+}
+
+
+body {
+    background-color: #fff;
+    direction: rtl;
+    font-family: 'Tajawal', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+.profile-card {
+    max-width: 500px;
+    margin: 60px auto; 
+    padding: 25px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* phase 4*/
+.profile {
+    margin-bottom: 20px; 
+}
+
+.profile img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #002147;
+}
+
+
+.profile h2 {
+    color: #002147;
+    margin-top: 10px;
+    font-size: 22px;
+}
+
+
+.profile-ideas-section {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 30px 0; }
+
+
+.profile-idea-box {
+    background-color: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 15px; 
+}
+
+.profile-contact-info {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+}
+
+.profile-contact-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+
+.profile-contact-item span {
+    font-size: 16px;
+    color: #002147;
+}
+
+
+    </style>
+	
+	<script>
+       
+
+    function openLogoutModal() {
+        document.getElementById("logoutModal").style.display = "block";
+    }
+    
+    function closeLogoutModal() {
+        document.getElementById("logoutModal").style.display = "none";
+    }
+    
+    function confirmLogout() {
+        window.location.href = "index.html"; 
+    }
+    
+    
+    function toggleMenu() {
+        var menu = document.getElementById("menuOverlay");
+        var hamburgerIcon = document.querySelector("#hamburgerIcon");
+        var closeIcon = document.getElementById("closeIcon");
+    
+        if (menu.classList.contains("active")) {
+            menu.classList.remove("active");
+        hamburgerIcon.style.display = "block"; 
+        closeIcon.style.display = "none"; 
+    } else {
+        menu.classList.add("active");
+        hamburgerIcon.style.display = "none"; 
+        closeIcon.style.display = "block"; 
+    }
+}
+    </script>
+	
+</head>
+<body>
+
+ <!-- Navbar -->
+    <nav id="navbar-fav" class="navbar-fav">
+         <div class="profile-header-background">
+        <a href="settings1.html">
+            <img src="images/settings.png" alt="الإعدادات" class="profile-settings-icon">
+        </a>
+    </div> 
+        <div id="humburger-icon" class="humburger-fav" onclick="toggleMenuFav()">
+            <span class="bar-fav"></span>
+            <span class="bar-fav"></span>
+            <span class="bar-fav"></span>
+        </div>
+    </nav>
+    
+
+    <div class="profile-card">
+        <div class="profile">
+            <img id="profile-img" src="images/default-avatar.png" alt="الصورة الشخصية">
+
+            <h2 id="username">تحميل البيانات...</h2>
+
+        </div>
+<br><br>
+        <div class="profile-ideas-section">
+            <h3>أفكاري</h3>
+            <div class="profile-ideas-container">
+                <p style="text-align: center; color: #666;">جارِ تحميل الأفكار...</p>
+            </div>
+            
+        </div>
+<br><br>
+<div class="profile-contact-info">
+    <h3>معلومات التواصل</h3>
+    <div class="profile-contact-icons">
+        <div class="profile-contact-item">
+            <span id="x-handle">تحميل...</span>
+            <img src="images/x..png" alt="X">
+        </div>
+        <div class="profile-contact-item">
+            <span id="linkedin-handle">تحميل...</span>
+            <img src="images/linkedn.png" alt="LinkedIn">
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <div id="delete-confirmation" class="confirmation-popup">
+        <p>هل أنت متأكد انك تريد حذف الفكرة؟</p>
+        <div class="confirmation-buttons">
+            <button id="confirm-delete">حذف</button>
+            <button id="cancel-delete">إغلاق</button>
+        </div>
+    </div>
+
+<!-- Sidebar menu -->
+    <div id="menuOverlayFav" class="menu-overlay-fav">
+        <a href="Ideas.html">الصفحة الرئيسية</a>
+        <a href="profile1.html">الملف الشخصي</a>
+        <a href="investRequests.html">طلبات الاستثمار </a>
+        <a href="FavouritePage.html">المفضلة</a>
+        <a href="#" onclick="openLogoutModal()">تسجيل الخروج</a>
+    </div>
+    </div>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h2>تسجيل الخروج</h2>
+            <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
+            <div class="modal-buttons">
+                <button onclick="closeLogoutModal()">تراجع</button>
+                <button onclick="confirmLogout()">تسجيل الخروج</button>
+            </div>
+        </div>
+    </div>
+<script>
+	
+	       function removeCardFav(button) {
+            button.parentElement.remove();
+        }
+
+        function toggleMenuFav() {
+            var menu = document.getElementById("menuOverlayFav");
+            var humburger = document.getElementById("humburger-icon");
+
+            menu.classList.toggle("active");
+            humburger.classList.toggle("active"); // Change the icon to X when opened
+        }
+
+        function confirmLogout() {
+            window.location.href = "index.html"; // Redirect to logout at HomePage
+        }
+		
+        document.addEventListener("DOMContentLoaded", function () {
+            const deleteIcons = document.querySelectorAll(".close-icon");
+            const deletePopup = document.getElementById("delete-confirmation");
+            const confirmDelete = document.getElementById("confirm-delete");
+            const cancelDelete = document.getElementById("cancel-delete");
+            let currentIdeaBox = null;
+
+            deleteIcons.forEach(icon => {
+                icon.addEventListener("click", function () {
+                    currentIdeaBox = this.closest(".profile-idea-box");
+                    deletePopup.style.display = "block";
+                });
+            });
+
+            confirmDelete.addEventListener("click", function () {
+                if (currentIdeaBox) {
+                    currentIdeaBox.remove();
+                }
+                deletePopup.style.display = "none";
+            });
+
+            cancelDelete.addEventListener("click", function () {
+                deletePopup.style.display = "none";
+            });
+        });
+    </script>
+
+<script type="module">
+    import { auth, db } from "./LogIn-Register.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { doc, getDoc, collection, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+    // دالة لتحميل الأفكار المرتبطة باليوزر
+    function loadUserIdeas(userId) {
+        const ideasContainer = document.querySelector(".profile-ideas-container");
+        ideasContainer.innerHTML = ''; 
+
+        // استعلام لجلب الأفكار التي تخص هذا اليوزر
+        const ideasQuery = query(collection(db, "ideas"), where("userId", "==", userId));
+
+        getDocs(ideasQuery)
+            .then((snapshot) => {
+                if (snapshot.empty) {
+                    ideasContainer.innerHTML = "<p style='text-align: center; color: #666;'>لا توجد أفكار بعد.</p>";
+                    return;
+                }
+
+                snapshot.docs.forEach(docSnap => {
+                    const idea = docSnap.data();
+                    const ideaElement = `
+                        <div class="profile-idea-box" data-id="${docSnap.id}">
+                            <div class="profile-idea-icons">
+                                <img src="images/delete.png" alt="حذف" class="profile-icon close-icon">
+                                <img src="images/update.png" alt="تحديث" class="profile-icon refresh-icon" onclick="window.location.href='https://fajeralamro.github.io/TestSoft/updateIdea.html?id=${docSnap.id}';">
+                            </div>
+                            <p class="profile-idea-title">${idea.title}</p>
+                            <p class="profile-idea-field">مجال الفكرة: ${idea.domain}</p>
+                            <p class="profile-idea-date">${new Date(idea.createdAt.seconds * 1000).toLocaleDateString('ar-SA')}</p>
+                        </div>
+                    `;
+                    ideasContainer.innerHTML += ideaElement;
+                });
+
+                // إضافة مستمعي الأحداث لأزرار الحذف بعد إنشاء العناصر
+                setupDeleteListeners();
+            })
+            .catch((error) => {
+                console.error("خطأ في جلب الأفكار:", error);
+                ideasContainer.innerHTML = "<p style='text-align: center; color: #666;'>حدث خطأ أثناء تحميل الأفكار.</p>";
+            });
+    }
+
+    // دالة حذف الفكرة من Firestore
+    async function deleteIdeaFromFirestore(ideaId) {
+        try {
+            await deleteDoc(doc(db, "ideas", ideaId));
+            console.log("تم حذف الفكرة بنجاح من Firestore:", ideaId);
+            return true;
+        } catch (error) {
+            console.error("خطأ في حذف الفكرة من Firestore:", error);
+            return false;
+        }
+    }
+
+    // إعداد مستمعي الأحداث لأزرار الحذف
+    function setupDeleteListeners() {
+        const deleteIcons = document.querySelectorAll(".close-icon");
+        const deletePopup = document.getElementById("delete-confirmation");
+        const confirmDelete = document.getElementById("confirm-delete");
+        const cancelDelete = document.getElementById("cancel-delete");
+        let currentIdeaBox = null;
+        let currentIdeaId = null;
+
+        deleteIcons.forEach(icon => {
+            icon.addEventListener("click", function() {
+                currentIdeaBox = this.closest(".profile-idea-box");
+                currentIdeaId = currentIdeaBox.getAttribute("data-id");
+                deletePopup.style.display = "block";
+            });
+        });
+
+        confirmDelete.addEventListener("click", async function() {
+            if (currentIdeaBox && currentIdeaId) {
+                // محاولة حذف الفكرة من Firestore
+                const deleted = await deleteIdeaFromFirestore(currentIdeaId);
+                
+                if (deleted) {
+                    // إزالة العنصر من واجهة المستخدم فقط إذا تم الحذف بنجاح
+                    currentIdeaBox.remove();
+                } else {
+                    // إظهار رسالة خطأ للمستخدم
+                    alert("حدث خطأ أثناء محاولة حذف الفكرة. يرجى المحاولة مرة أخرى.");
+                }
+            }
+            deletePopup.style.display = "none";
+        });
+
+        cancelDelete.addEventListener("click", function() {
+            deletePopup.style.display = "none";
+        });
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            console.log("المستخدم المسجّل دخوله:", user.uid);
+
+            try {
+                const userRef = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userRef);
+
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    console.log("البيانات المسترجعة من Firestore:", userData);
+
+                    // تحميل معلومات المستخدم
+                    document.getElementById("username").textContent = userData.username || "مستخدم مجهول";
+                    const profileImg = document.getElementById("profile-img");
+                    if (userData.profileImage) {
+                        profileImg.src = userData.profileImage;
+                    } else {
+                        profileImg.src = "images/default-avatar.png"; 
+                    }
+
+                    // تحديث معلومات التواصل - با استخدام contactInfo
+                    if (userData.contactInfo && userData.contactInfo.linkedinHandle) {
+                        document.getElementById("linkedin-handle").textContent = userData.contactInfo.linkedinHandle;
+                        document.getElementById("linkedin-handle").href = `https://www.linkedin.com/in/${userData.contactInfo.linkedinHandle}`;
+                    } else {
+                        document.getElementById("linkedin-handle").textContent = "تحميل...";
+                    }
+
+                    if (userData.contactInfo && userData.contactInfo.xHandle) {
+                        document.getElementById("x-handle").textContent = userData.contactInfo.xHandle;
+                        document.getElementById("x-handle").href = `https://twitter.com/${userData.contactInfo.xHandle}`;
+                    } else {
+                        document.getElementById("x-handle").textContent = "تحميل...";
+                    }
+
+                    // تحميل الأفكار التي أضافها المستخدم
+                    loadUserIdeas(user.uid);
+                } else {
+                    console.error("لم يتم العثور على بيانات المستخدم.");
+                    document.getElementById("username").textContent = "لم يتم العثور على البيانات.";
+                }
+            } catch (error) {
+                console.error("خطأ أثناء جلب البيانات:", error);
+                document.getElementById("username").textContent = "خطأ في تحميل البيانات.";
+            }
+        } else {
+            console.warn("⚠ لا يوجد مستخدم مسجّل دخول، سيتم توجيهه إلى صفحة تسجيل الدخول.");
+            window.location.href = "login.html";
+        }
+    });
+</script>
+</body>
+</html>

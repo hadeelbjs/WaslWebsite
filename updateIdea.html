@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back" />
+    <title>تحديث الفكرة</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            font-family: 'Baloo Bhaijaan 2','Tajawal', 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+            color: #09315D;
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0); 
+        }
+        h1{
+            margin-top: 9vh;
+        }
+        main{
+            margin-left: 4vw;
+            margin-right: 4vw;
+        }
+        .material-symbols-outlined {
+            font-size: 40px;
+            color: #072D57;
+            position: absolute;
+            left: 2vw;
+            cursor: pointer;
+        }
+
+        form {
+            width: 80vw;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .input-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .input-container input,
+        .input-container textarea, select {
+            width: 80vw;
+            padding: 15px;
+            background: rgba(154, 154, 154, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+            font-family: 'Baloo Bhaijaan 2','Tajawal', 'Cairo', sans-serif;
+            color: #09315D;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .input-container textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        .input-container label {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #072D57;
+            transition: 0.3s ease-in-out;
+            pointer-events: none;
+        }
+
+        .input-container input:focus + label,
+        .input-container textarea:focus + label,
+        .input-container input:not(:placeholder-shown) + label,
+        .input-container textarea:not(:placeholder-shown) + label {
+            top: 5px;
+            font-size: 12px;
+            color: #09315D;
+        }
+
+        select {
+            width: 82.3vw;
+            height: 10vh;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 12px;            
+            display: block;
+            margin: 20px 0;
+            background: rgba(154, 154, 154, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            width: 86vw;
+            padding: 0.5em;
+            margin: 1vw;
+            font-size: 18px;
+            border: none;
+            font-family: 'Baloo Bhaijaan 2','Tajawal', 'Cairo', sans-serif;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:first-of-type {
+            margin-top: 4vh;
+            background-color: #09315D;
+        }
+
+        button:last-of-type {
+            background-color: #b0bbc683;
+            margin-bottom: 3vh;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span class="material-symbols-outlined" onclick="history.back();">arrow_back</span><br>
+    </header>
+    <main>
+        <h1>أكتب نبذة عن فكرتك</h1>
+        <form id="updateIdeaForm">
+            <div class="input-container">
+                <input type="text" id="ideaTitle" required>
+                <label for="ideaTitle">عنوان الفكرة</label>
+            </div>
+            <div class="input-container">
+                <textarea id="ideaDes" name="idea-description" placeholder=" "></textarea>
+                <label for="ideaDes">وصف الفكرة</label>
+            </div>
+            <select name="domain" id="domain" class="input-container selectList">
+                <option value="" disabled>مجال الفكرة</option>
+                <option value="التكنولوجيا والبرمجة">التكنولوجيا والبرمجة</option>
+                <option value="التعليم والتدريب">التعليم والتدريب</option>
+                <option value="الصحة">الصحة</option>
+                <option value="الترفيه">الترفيه</option>
+                <option value="الصناعة">الصناعة</option>
+            </select>
+            <button type="submit">تحديث وإرسال</button>
+            <button type="reset">إعادة تعيين</button>
+        </form>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
+            authDomain: "wasl-523b4.firebaseapp.com",
+            projectId: "wasl-523b4",
+            storageBucket: "wasl-523b4.appspot.com",
+            messagingSenderId: "410509570015",
+            appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // جلب معرّف الفكرة من الرابط
+        const urlParams = new URLSearchParams(window.location.search);
+        const ideaId = urlParams.get('id');
+
+        // دالة لتحميل الفكرة
+        async function loadIdea() {
+            if (ideaId) {
+                const ideaRef = doc(db, "ideas", ideaId);
+                const ideaSnap = await getDoc(ideaRef);
+                if (ideaSnap.exists()) {
+                    const ideaData = ideaSnap.data();
+                    document.getElementById('ideaTitle').value = ideaData.title;
+                    document.getElementById('ideaDes').value = ideaData.description;
+                    document.getElementById('domain').value = ideaData.domain;
+                } else {
+                    alert("لم يتم العثور على الفكرة.");
+                }
+            } else {
+                alert("لا يوجد معرف للفكرة.");
+            }
+        }
+
+        // تحميل الفكرة عند تحميل الصفحة
+        loadIdea();
+
+        // دالة لتحديث الفكرة
+        document.getElementById('updateIdeaForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const updatedTitle = document.getElementById('ideaTitle').value;
+            const updatedDescription = document.getElementById('ideaDes').value;
+            const updatedDomain = document.getElementById('domain').value;
+
+            if (!updatedTitle || !updatedDescription || !updatedDomain) {
+                alert("يرجى ملء جميع الحقول.");
+                return;
+            }
+
+            const ideaRef = doc(db, "ideas", ideaId);
+            try {
+                await updateDoc(ideaRef, {
+                    title: updatedTitle,
+                    description: updatedDescription,
+                    domain: updatedDomain
+                });
+                alert("تم تحديث الفكرة بنجاح!");
+                window.location.href = 'https://fajeralamro.github.io/TestSoft/profile1.html?id=${docSnap.id}'; // العودة إلى الصفحة الشخصية
+            } catch (error) {
+                console.error("حدث خطأ أثناء تحديث الفكرة:", error);
+                alert("حدث خطأ أثناء التحديث.");
+            }
+        });
+    </script>
+</body>
+</html>
+

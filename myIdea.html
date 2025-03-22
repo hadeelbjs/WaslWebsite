@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Reem+Kufi+Fun:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+        
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back" />
+    <title>فكرتي</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            font-family: 'Baloo Bhaijaan 2','Tajawal', 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+            color: #09315D;
+            background: linear-gradient(135deg, #f5f5f5, #e0e0e0); 
+        }
+        h1{
+            margin-top: 9vh;
+        }
+        main{
+            margin-left: 4vw;
+            margin-right: 4vw;
+        }
+        .material-symbols-outlined {
+            font-size: 40px;
+            color: #072D57;
+            position: absolute;
+            left: 2vw;
+            cursor: pointer;
+        }
+
+        form {
+            width: 80vw;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .input-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .input-container input,
+        .input-container textarea, select {
+            width: 80vw;
+            padding: 15px;
+            background: rgba(154, 154, 154, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+            font-family: 'Baloo Bhaijaan 2','Tajawal', 'Cairo', sans-serif;
+            color: #09315D;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .input-container textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        .input-container label {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            font-size: 16px;
+            color: #072D57;
+            transition: 0.3s ease-in-out;
+            pointer-events: none;
+        }
+        .input-container textarea + label {
+            top: 20%;
+           
+        }
+
+        .input-container input:focus + label,
+        .input-container textarea:focus + label,
+        .input-container input:not(:placeholder-shown) + label,
+        .input-container textarea:not(:placeholder-shown) + label {
+            top: 5px;
+            font-size: 12px;
+            color: #09315D;
+        }
+
+        select {
+            width: 82.3vw;
+            height: 10vh;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 12px;            
+            display: block;
+            margin: 20px 0;
+            background: rgba(154, 154, 154, 0.2);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+
+            box-sizing: content-box;
+        }
+        select option {
+            background: white;
+            width: 82vw;
+            color: #09315D;
+            font-family: 'Baloo Bhaijaan 2','Tajawal', 'Cairo', sans-serif;
+        }
+
+        button {
+            width: 86vw;
+            padding: 0.5em;
+            margin: 1vw;
+            font-size: 18px;
+            border: none;
+            font-family: 'Baloo Bhaijaan 2','Tajawal', 'Cairo', sans-serif;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:first-of-type {
+            margin-top: 4vh;
+
+            background-color: #09315D;
+        }
+
+        button:last-of-type {
+            background-color: #b0bbc683;
+            margin-bottom: 3vh;
+        }
+        .cont {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(45deg,#fff, #b0bbc6,#ffff, #8f776d68, #09325d4a); /* Subtle blue-gray gradient */
+            background-size: 300% 300% ;
+            animation: color 12s ease-in-out infinite;
+        }
+        @keyframes color {
+            0%{
+                background-position: 0 50%;
+            }
+            50%{
+                background-position: 100% 50%;
+            }
+            100%{
+                background-position: 0 50%;
+            }
+        }
+        span{
+                margin-top: 5vh;
+                margin-bottom: 2vh;
+                margin-left: 2vw;
+                display: block;
+            }
+        @media (min-width: 768px) {
+            
+            
+            h1 {
+                text-align: center;
+                font-size: 2em;
+            }
+           
+            
+        }
+    </style>
+</head>
+<body>
+    <header>
+<span class="material-symbols-outlined" onclick="history.back();">arrow_back</span><br>
+    </header>
+    <main>
+        <h1>أكتب نبذة عن فكرتك</h1>
+        <form id="ideaForm">
+            <div class="input-container">
+                <input type="text" id="ideaTitle" required placeholder=" ">
+                <label for="ideaTitle">عنوان الفكرة</label>
+            </div>
+            <div class="input-container">
+                <textarea id="ideaDes" name="idea-description" placeholder=" "></textarea>
+                <label for="ideaDes">وصف الفكرة</label>
+            </div>
+            <select name="domain" id="domain" class="input-container selectList" required>
+                <option value="" disabled selected>مجال الفكرة</option>
+                <option value="التكنولوجيا والبرمجة">التكنولوجيا والبرمجة</option>
+                <option value="التعليم والتدريب">التعليم والتدريب</option>
+                <option value="الصحة">الصحة</option>
+                <option value="الترفيه">الترفيه</option>
+                <option value="الصناعة">الصناعة</option>
+            </select>
+            <button type="submit">إرسال</button>
+            <button type="reset" id="reset-btn">إعادة تعيين</button>
+        </form>
+    </main>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, doc, updateDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
+        authDomain: "wasl-523b4.firebaseapp.com",
+        projectId: "wasl-523b4",
+        storageBucket: "wasl-523b4.appspot.com",
+        messagingSenderId: "410509570015",
+        appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a",
+        measurementId: "G-DD60XW5EVT"
+    };
+
+    initializeApp(firebaseConfig);
+    const db = getFirestore();
+    const auth = getAuth();
+
+    let currentUser = null;
+    onAuthStateChanged(auth, (user) => {
+        currentUser = user;
+        if (currentUser) {
+            // إذا كان المستخدم مسجلاً، استرجع صورته
+            getUserProfilePicture();
+        }
+    });
+
+    // دالة لاسترجاع صورة بروفايل المستخدم
+    async function getUserProfilePicture() {
+        // إذا كانت صورة البروفايل موجودة في Firebase Auth
+        const profilePic = currentUser.photoURL || null;
+
+        // في حال كانت الصورة فارغة، استخدم الصورة الافتراضية
+        const profileImageElement = document.getElementById("profile-img");
+        profileImageElement.src = profilePic ? profilePic : "images/default-avatar.png";
+    }
+
+    // عند إرسال الفكرة
+    document.getElementById("ideaForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        console.log("💥 Submit clicked");
+
+        if (!currentUser) return alert("يجب تسجيل الدخول");
+
+        const title = document.getElementById("ideaTitle").value.trim();
+        const description = document.getElementById("ideaDes").value.trim();
+        const domain = document.getElementById("domain").value;
+        if (!title || !description || !domain) return alert("املأ جميع الحقول");
+
+        const userRef = doc(db, "users", currentUser.uid);
+        const userSnap = await getDoc(userRef);
+        const userData = userSnap.exists() ? userSnap.data() : {};
+
+        // استخدم صورة البروفايل من مجموعة اليوزر أو الصورة في Auth أو الصورة الافتراضية
+        let userProfilePic = userData.profileImage || currentUser.photoURL || "images/default-profile.png";
+
+        const idea = {
+            title,
+            description,
+            domain,
+            userId: currentUser.uid,
+            username: userData.username || currentUser.displayName || "مستخدم",
+            userProfilePic, // هنا نضيف صورة البروفايل
+            createdAt: serverTimestamp()
+        };
+
+        try {
+            const docRef = await addDoc(collection(db, "ideas"), idea);
+            console.log("✅ Idea added:", docRef.id);
+
+            await updateDoc(userRef, {
+                [`ideas.${docRef.id}`]: { title, domain, createdAt: idea.createdAt }
+            });
+
+            alert("تمت إضافة فكرتك!");
+            e.target.reset();
+            history.back();
+        } catch (err) {
+            console.error("❌ Error adding idea:", err);
+            alert("حدث خطأ أثناء الإضافة.");
+        }
+    });
+
+    // عند الضغط على زر "إعادة تعيين"، استرجاع البيانات القديمة
+    document.getElementById("reset-btn").addEventListener("click", async () => {
+        const ideaId = window.location.search.split('=')[1];  // استخراج الـ ID من الرابط
+        if (ideaId) {
+            const ideaRef = doc(db, "ideas", ideaId);
+            const ideaSnap = await getDoc(ideaRef);
+            if (ideaSnap.exists()) {
+                const ideaData = ideaSnap.data();
+                document.getElementById("ideaTitle").value = ideaData.title;
+                document.getElementById("ideaDes").value = ideaData.description;
+                document.getElementById("domain").value = ideaData.domain;
+            }
+        }
+    });
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&family=Reem+Kufi+Fun:wght@400..700&display=swap" rel="stylesheet">
+    <title>صفحة الأفكار</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Baloo Bhaijaan 2','Tajawal', 'Cairo', sans-serif;
+            direction: rtl;
+            text-align: right;
+            color: #09315D;
+            background: #FFFFFF;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: transparent;
+            position: relative;
+        }
+        .logo img {
+            width: 80px; 
+   
+        }
+        .humburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1100;
+            color: #09315D;
+        }
+        .humburger .bar {
+            width: 35px;
+            height: 5px;
+            background-color:  #09315D;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: right 0.4s ease-in-out;
+            z-index: 1000;
+        }
+        .menu-overlay.active {
+            right: 0;
+        }
+        .menu-overlay a {
+            font-size: 24px;
+            color: #09315D;
+            text-decoration: none;
+            padding: 15px;
+            transition: color 0.3s;
+        }
+        .menu-overlay a:hover {
+            color: #072D57;
+        }
+        .close-menu {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #09315D;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 12px;
+            padding: 8px;
+            width: 85vw;
+            margin: auto;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar input {
+            border: none;
+            outline: none;
+            background: transparent;
+            flex: 1;
+            font-size: 16px;
+        }
+        h1 {
+            font-size: 2em;
+            color: #072D57;
+            text-align: right;
+            margin-right: 5px;
+            margin-top: 5vh;
+           padding-right: 15px;
+        }
+        .idea-card {
+            background: #ECECEC;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            font-size: large;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 90vw;
+            margin: auto;
+            color: #09315D;
+            margin-top: 30px;
+            flex-direction: row-reverse;
+            cursor: pointer;
+        }
+        .idea-card .profile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 25%;
+        }
+        .idea-card img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            border: 3px solid #09315D;
+        }
+        .idea-card .creator {
+            text-align: center;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .idea-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .add-btn {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            background-color: #09315D;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 12px;
+            padding: 8px;
+            width: 85vw;
+            margin: auto;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            background: transparent;
+            flex: 1;
+            font-size: 16px;
+        }
+
+        .filter-icon {
+            width: 24px; 
+            height: 24px;
+            cursor: pointer;
+            margin-left: 10px; 
+        }
+        #closeIcon {
+            display: none; 
+            font-size: 28px;
+            cursor: pointer;
+            color: #09315D;
+            position: absolute;
+            top: 15px;
+            left: 20px;
+        }
+        .humburger.hidden {
+            display: none; 
+        }
+        #closeIcon.visible {
+            display: block;
+        }
+        .IdeaLink {
+            text-decoration: none !important;
+        }
+        .modal {
+            display: none; 
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            background: rgba(0, 0, 0, 0.8); 
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            padding: 15px;
+            z-index: 1000;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-content {
+            background: #2a2d34;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .modal-content h2 {
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .modal-content p {
+            font-size: 12px;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .modal-buttons button {
+            flex: 1;
+            padding: 8px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .modal-buttons button:last-child {
+            background: #0c2340;
+            color: white;
+            font-weight: bold;
+        }
+
+        .modal-buttons button:first-child {
+            background: transparent;
+            border: 1px solid #ccc;
+            color: #ccc;
+        }
+        
+        /* أنماط نموذج إضافة فكرة */
+        .input-container {
+            position: relative;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .input-container input, 
+        .input-container textarea,
+        .input-container select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #09315D;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Baloo Bhaijaan 2', sans-serif;
+        }
+        
+        .input-container label {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            color: #09315D;
+        }
+        
+        .input-container input:focus ~ label,
+        .input-container input:not(:placeholder-shown) ~ label,
+        .input-container textarea:focus ~ label,
+        .input-container textarea:not(:placeholder-shown) ~ label {
+            top: -10px;
+            right: 10px;
+            background: white;
+            padding: 0 5px;
+            font-size: 12px;
+        }
+        
+        .selectList {
+            padding: 10px;
+            border: 1px solid #09315D;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #09315D;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        #ideaForm button {
+            padding: 10px 20px;
+            background-color: #09315D;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-family: 'Baloo Bhaijaan 2', sans-serif;
+        }
+        
+        #ideaForm button[type="reset"] {
+            background-color: transparent;
+            color: #09315D;
+            border: 1px solid #09315D;
+        }
+        
+        .no-ideas-message {
+            text-align: center;
+            margin: 50px auto;
+            font-size: 18px;
+            color: #09315D;
+        }
+    </style>
+
+    <script>
+
+         function toggleMenu() {
+            var menu = document.getElementById("menuOverlay");
+            var hamburgerIcon = document.querySelector("#hamburgerIcon");
+
+            var closeIcon = document.getElementById("closeIcon");
+    
+            if (menu.classList.contains("active")) {
+                menu.classList.remove("active");
+                hamburgerIcon.classList.remove("hidden");
+                closeIcon.classList.remove("visible");
+            } else {
+                menu.classList.add("active");
+                hamburgerIcon.classList.add("hidden");
+                closeIcon.classList.add("visible");
+            }
+        }
+        
+        function openLogoutModal() {
+            document.getElementById("logoutModal").style.display = "block";
+        }
+
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
+
+        function confirmLogout() {
+            window.location.href = "index.html"; 
+        }
+    </script>
+</head>
+<body>
+    
+    <nav class="navbar">
+        <div class="logo">
+            <a href="Ideas.html">
+                <img src="images/waslLogo.png" alt="الشعار">
+            </a>
+        </div>
+    
+        <svg id="hamburgerIcon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#09315D" width="40" height="40" style="cursor: pointer;">
+            <path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/>
+        </svg>
+    </nav>
+
+    <div class="menu-overlay" id="menuOverlay">
+        <span class="close-menu" id="closeIcon" onclick="toggleMenu()">✖</span>
+
+        <a href="Ideas.html">الصفحة الرئيسية</a>
+        <a href="profile1.html">الملف الشخصي</a>
+        <a href="investRequests.html">طلبات الاستثمار</a>
+        <a href="FavouritePage.html">المفضلة</a>
+        <a href="#" onclick="openLogoutModal()">تسجيل الخروج</a>
+    </div>
+    
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="ابحث">
+        <a href="FilterIdea.html"><img src="images/filter-icon.png" alt="فلتر" class="filter-icon"></a>
+    </div>
+
+    <main>
+        <h1>تصّفح الأفكار</h1>
+
+        <!-- رسالة في حالة عدم وجود أفكار -->
+        <p id="no-ideas-message" class="no-ideas-message">لا توجد أفكار حالياً.</p>
+
+        <!-- الحاوية التي ستتم إضافة الأفكار إليها -->
+        <div id="ideas-container"></div>
+    </main>
+    
+    <a href="myIdea.html"><button class="add-btn">+</button></a>
+
+    <div id="logoutModal" class="modal">
+        <div class="modal-content">
+            <h2>تسجيل الخروج</h2>
+            <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
+            <div class="modal-buttons">
+                <button onclick="closeLogoutModal()">تراجع</button>
+                <button onclick="confirmLogout()">تسجيل الخروج</button>
+            </div>
+        </div>
+    </div>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
+        authDomain: "wasl-523b4.firebaseapp.com",
+        projectId: "wasl-523b4",
+        storageBucket: "wasl-523b4.firebasestorage.app",
+        messagingSenderId: "410509570015",
+        appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const ideasContainer = document.getElementById("ideas-container");
+    const noIdeasMessage = document.getElementById("no-ideas-message");
+
+    onAuthStateChanged(auth, user => {
+        if (!user) window.location.href = "login.html";
+    });
+
+    const ideasQuery = query(collection(db, "ideas"), orderBy("createdAt", "desc"));
+
+onSnapshot(ideasQuery, snapshot => {
+    ideasContainer.innerHTML = "";
+    if (snapshot.empty) {
+        noIdeasMessage.style.display = "block";
+        return;
+    }
+    noIdeasMessage.style.display = "none";
+
+    snapshot.docs.forEach(docSnap => {
+        const idea = docSnap.data();
+        
+        // التأكد من الصورة الصحيحة
+        let photoSrc = idea.userProfilePic || "images/default-avatar.png"; // استخدام الحقل الصحيح
+        if (photoSrc && !photoSrc.startsWith("http")) {
+            photoSrc = `/${photoSrc.replace(/^\/?/, "")}`; // تأكد من عدم وجود / في بداية الرابط
+        }
+
+        const card = document.createElement("div");
+        card.className = "idea-card";
+        
+        card.innerHTML = `
+            <div class="profile">
+                <img src="${photoSrc}" alt="${idea.username}" 
+                     onerror="this.onerror=null; this.src='images/default-avatar.png';">
+                <p class="creator">${idea.username}</p>
+            </div>
+            <div class="idea-content">
+                <p><strong>${idea.title}</strong></p>
+                <p>مجال الفكرة: ${idea.domain}</p>
+                <p>${new Date(idea.createdAt.toDate()).toLocaleDateString('ar-SA')}</p>
+            </div>
+        `;
+        
+        // إضافة حدث الضغط على الكارد للتوجيه إلى تفاصيل الفكرة
+card.addEventListener("click", () => {
+    window.location.href = `https://fajeralamro.github.io/TestSoft/IdeaDetails.html?id=${docSnap.id}`;
+});
+
+        ideasContainer.appendChild(card);
+    });
+});
+
+
+</script>
+
+</body>
+</html>
+
+
