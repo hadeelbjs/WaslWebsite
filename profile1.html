@@ -634,7 +634,7 @@ body {
                             </div>
                             <p class="profile-idea-title">${idea.title}</p>
                             <p class="profile-idea-field">مجال الفكرة: ${idea.domain}</p>
-                            <p class="profile-idea-date">${new Date(idea.createdAt.seconds * 1000).toLocaleDateString('ar-SA')}</p>
+                            <p class="profile-idea-date">${idea.createdAtHijri}</p>
                         </div>
                     `;
                     ideasContainer.innerHTML += ideaElement;
