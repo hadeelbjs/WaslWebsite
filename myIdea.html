@@ -205,7 +205,8 @@
             <button type="reset" id="reset-btn">إعادة تعيين</button>
         </form>
     </main>
-<script type="module">
+
+    <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
     import { getFirestore, collection, addDoc, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
@@ -216,8 +217,7 @@
         projectId: "wasl-523b4",
         storageBucket: "wasl-523b4.appspot.com",
         messagingSenderId: "410509570015",
-        appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a",
-        measurementId: "G-DD60XW5EVT"
+        appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a"
     };
 
     initializeApp(firebaseConfig);
@@ -227,15 +227,18 @@
     let currentUser = null;
     onAuthStateChanged(auth, (user) => {
         currentUser = user;
-        if (currentUser) {
-            getUserProfilePicture();
-        }
+        if (currentUser) getUserProfilePicture();
     });
 
     async function getUserProfilePicture() {
         const profilePic = currentUser.photoURL || null;
         const profileImageElement = document.getElementById("profile-img");
         profileImageElement.src = profilePic ? profilePic : "images/default-avatar.png";
+    }
+
+    // ✅ تحويل الأرقام إلى عربية
+    function toArabicNumber(str) {
+        return str.replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
     }
 
     document.getElementById("ideaForm").addEventListener("submit", async (e) => {
@@ -254,57 +257,53 @@
         const userData = userSnap.exists() ? userSnap.data() : {};
         let userProfilePic = userData.profileImage || currentUser.photoURL || "images/default-profile.png";
 
-function toArabicNumber(str) {
-    return str.replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
-}
+        // ✅ التاريخ الهجري (رقمي بالأرقام العربية)
+        const now = new Date();
+        const hijriFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
 
-const now = new Date();
-const hijriFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-});
+        const parts = hijriFormatter.formatToParts(now);
+        let day = "", month = "", year = "";
 
-const parts = hijriFormatter.formatToParts(now);
-let day = "", month = "", year = "";
+        parts.forEach(part => {
+            if (part.type === 'day') day = part.value.padStart(2, '0');
 
-parts.forEach(part => {
-    if (part.type === 'day') day = part.value.padStart(2, '0');
-    
-    if (part.type === 'month') {
-        const hijriMonths = {
-            "محرم": "01",
-            "صفر": "02",
-            "ربيع الأول": "03",
-            "ربيع الآخر": "04",
-            "جمادى الأولى": "05",
-            "جمادى الآخرة": "06",
-            "رجب": "07",
-            "شعبان": "08",
-            "رمضان": "09",
-            "شوال": "10",
-            "ذو القعدة": "11",
-            "ذو الحجة": "12"
-        };
+            if (part.type === 'month') {
+                const hijriMonths = {
+                    "محرم": "01",
+                    "صفر": "02",
+                    "ربيعالاول": "03",
+                    "ربيعالاخر": "04",
+                    "جمادىالاولى": "05",
+                    "جمادىالاخرة": "06",
+                    "رجب": "07",
+                    "شعبان": "08",
+                    "رمضان": "09",
+                    "شوال": "10",
+                    "ذوالقعدة": "11",
+                    "ذوالحجة": "12"
+                };
 
-        const rawMonth = part.value
-            .normalize("NFKD")
-            .replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06ED]/g, '')
-            .replace(/\s+/g, '');
+                const rawMonth = part.value
+                    .normalize("NFKD")
+                    .replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06ED]/g, '')
+                    .replace(/\s+/g, '');
 
-        for (const [name, num] of Object.entries(hijriMonths)) {
-            if (rawMonth.includes(name.replace(/\s+/g, ''))) {
-                month = num;
-                break;
+                for (const [name, num] of Object.entries(hijriMonths)) {
+                    if (rawMonth.includes(name)) {
+                        month = num;
+                        break;
+                    }
+                }
             }
-        }
-    }
 
-    if (part.type === 'year') year = part.value;
-});
+            if (part.type === 'year') year = part.value;
+        });
 
-const hijriDate = toArabicNumber(`${day}/${month}/${year} هـ`);
-
+        const hijriDate = toArabicNumber(`${day}/${month}/${year} هـ`);
 
         const idea = {
             title,
