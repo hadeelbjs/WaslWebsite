@@ -254,58 +254,57 @@
         const userData = userSnap.exists() ? userSnap.data() : {};
         let userProfilePic = userData.profileImage || currentUser.photoURL || "images/default-profile.png";
 
-        // 🟢 دالة لتحويل الأرقام إلى عربية
-        function toArabicNumber(str) {
-            return str.replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
-        }
+function toArabicNumber(str) {
+    return str.replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+}
 
-        // ✅ التاريخ الهجري
-        const now = new Date();
-        const hijriFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        });
+const now = new Date();
+const hijriFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+});
 
-        const parts = hijriFormatter.formatToParts(now);
-        let day = "", month = "", year = "";
+const parts = hijriFormatter.formatToParts(now);
+let day = "", month = "", year = "";
 
-        parts.forEach(part => {
-            if (part.type === 'day') day = part.value.padStart(2, '0');
+parts.forEach(part => {
+    if (part.type === 'day') day = part.value.padStart(2, '0');
+    
+    if (part.type === 'month') {
+        const hijriMonths = {
+            "محرم": "01",
+            "صفر": "02",
+            "ربيع الأول": "03",
+            "ربيع الآخر": "04",
+            "جمادى الأولى": "05",
+            "جمادى الآخرة": "06",
+            "رجب": "07",
+            "شعبان": "08",
+            "رمضان": "09",
+            "شوال": "10",
+            "ذو القعدة": "11",
+            "ذو الحجة": "12"
+        };
 
-            if (part.type === 'month') {
-                const hijriMonths = {
-                    "محرم": "01",
-                    "صفر": "02",
-                    "ربيعالاول": "03",
-                    "ربيعالاخر": "04",
-                    "جمادىالاولى": "05",
-                    "جمادىالاخرة": "06",
-                    "رجب": "07",
-                    "شعبان": "08",
-                    "رمضان": "09",
-                    "شوال": "10",
-                    "ذوالقعدة": "11",
-                    "ذوالحجة": "12"
-                };
+        const rawMonth = part.value
+            .normalize("NFKD")
+            .replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06ED]/g, '')
+            .replace(/\s+/g, '');
 
-                const rawMonth = part.value
-                    .normalize("NFKD")
-                    .replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06ED]/g, '')
-                    .replace(/\s+/g, '');
-
-                for (const [name, num] of Object.entries(hijriMonths)) {
-                    if (rawMonth.includes(name)) {
-                        month = num;
-                        break;
-                    }
-                }
+        for (const [name, num] of Object.entries(hijriMonths)) {
+            if (rawMonth.includes(name.replace(/\s+/g, ''))) {
+                month = num;
+                break;
             }
+        }
+    }
 
-            if (part.type === 'year') year = part.value;
-        });
+    if (part.type === 'year') year = part.value;
+});
 
-        const hijriDate = toArabicNumber(`${day}/${month}/${year} هـ`);
+const hijriDate = toArabicNumber(`${day}/${month}/${year} هـ`);
+
 
         const idea = {
             title,
