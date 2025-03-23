@@ -487,7 +487,7 @@ onSnapshot(ideasQuery, snapshot => {
         
         // إضافة حدث الضغط على الكارد للتوجيه إلى تفاصيل الفكرة
 card.addEventListener("click", () => {
-    window.location.href = 'https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}`;
+window.location.href = `https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}`;
 });
 
         ideasContainer.appendChild(card);
