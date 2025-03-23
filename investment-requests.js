@@ -1,6 +1,6 @@
 import{db, app, auth, storage} from "./index.js";
-import {onAuthStateChanged } from "firebase/auth";
-import { collection, query, where, getDocs, setDoc, addDoc, serverTimestamp } from "firebase/firestore";
+import {onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import { collection, query, where, getDocs, setDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 
 window.onload = function () {
