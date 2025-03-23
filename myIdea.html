@@ -282,19 +282,24 @@ parts.forEach(part => {
         const hijriMonths = {
             "محرم": "01",
             "صفر": "02",
-            "ربيع الأول": "03",
-            "ربيع الآخر": "04",
-            "جمادى الأولى": "05",
-            "جمادى الآخرة": "06",
+            "ربيعالاول": "03",
+            "ربيعالاخر": "04",
+            "جمادىالاولى": "05",
+            "جمادىالاخرة": "06",
             "رجب": "07",
             "شعبان": "08",
             "رمضان": "09",
             "شوال": "10",
-            "ذو القعدة": "11",
-            "ذو الحجة": "12"
+            "ذوالقعدة": "11",
+            "ذوالحجة": "12"
         };
 
-        const rawMonth = part.value.trim().replace(/[\u064B-\u065F]/g, ''); // إزالة التشكيل
+        // تنقية الاسم من التشكيل + المسافات + تطبيع Unicode
+        const rawMonth = part.value
+            .normalize("NFKD")
+            .replace(/[\u064B-\u065F\u0610-\u061A\u06D6-\u06ED]/g, '') // التشكيل
+            .replace(/\s+/g, '') // المسافات
+
         for (const [name, num] of Object.entries(hijriMonths)) {
             if (rawMonth.includes(name)) {
                 month = num;
@@ -305,7 +310,7 @@ parts.forEach(part => {
 
     if (part.type === 'year') year = part.value;
 });
-
+console.log("🟡 part.value (month):", part.value);
 const hijriDate = `${day}/${month}/${year}`;
   
     const idea = {
