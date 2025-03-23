@@ -449,7 +449,7 @@
         if (!user) window.location.href = "login.html";
     });
 
-    const ideasQuery = query(collection(db, "ideas"), orderBy("createdAt", "desc"));
+const ideasQuery = query(collection(db, "ideas"));
 
 onSnapshot(ideasQuery, snapshot => {
     ideasContainer.innerHTML = "";
@@ -480,13 +480,14 @@ onSnapshot(ideasQuery, snapshot => {
             <div class="idea-content">
                 <p><strong>${idea.title}</strong></p>
                 <p>مجال الفكرة: ${idea.domain}</p>
-                <p>${new Date(idea.createdAt.toDate()).toLocaleDateString('ar-SA')}</p>
+<p>${idea.createdAtHijri}</p>
+
             </div>
         `;
         
         // إضافة حدث الضغط على الكارد للتوجيه إلى تفاصيل الفكرة
 card.addEventListener("click", () => {
-    window.location.href = `https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}`;
+    window.location.href = `https://fajeralamro.github.io/TestSoft/IdeaDetails.html?id=${docSnap.id}`;
 });
 
         ideasContainer.appendChild(card);
