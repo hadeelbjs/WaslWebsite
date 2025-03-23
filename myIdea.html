@@ -263,10 +263,43 @@ document.getElementById("ideaForm").addEventListener("submit", async (e) => {
     let userProfilePic = userData.profileImage || currentUser.photoURL || "images/default-profile.png";
 
 const now = new Date();
-const day = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { day: '2-digit' }).format(now);
-const month = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { month: '2-digit' }).format(now);
-const year = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { year: 'numeric' }).format(now);
+const hijriFormatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+});
+
+const parts = hijriFormatter.formatToParts(now);
+
+let day = "";
+let month = "";
+let year = "";
+
+// ناخذ كل جزء لحاله من التاريخ
+parts.forEach(part => {
+    if (part.type === 'day') day = part.value.padStart(2, '0');
+    if (part.type === 'month') {
+        const hijriMonths = {
+            "محرم": "01",
+            "صفر": "02",
+            "ربيع الأول": "03",
+            "ربيع الآخر": "04",
+            "جمادى الأولى": "05",
+            "جمادى الآخرة": "06",
+            "رجب": "07",
+            "شعبان": "08",
+            "رمضان": "09",
+            "شوال": "10",
+            "ذو القعدة": "11",
+            "ذو الحجة": "12"
+        };
+        month = hijriMonths[part.value.trim()];
+    }
+    if (part.type === 'year') year = part.value;
+});
+
 const hijriDate = `${day}/${month}/${year} هـ`;
+
 
   
     const idea = {
