@@ -262,16 +262,13 @@ document.getElementById("ideaForm").addEventListener("submit", async (e) => {
     // صورة البروفايل
     let userProfilePic = userData.profileImage || currentUser.photoURL || "images/default-profile.png";
 
-    // 🗓️ توليد تاريخ هجري موحد في كل الأجهزة
-    const now = new Date();
-    const formatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-    });
-    const hijriDate = formatter.format(now) + " هـ";
+const now = new Date();
+const day = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { day: '2-digit' }).format(now);
+const month = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { month: '2-digit' }).format(now);
+const year = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { year: 'numeric' }).format(now);
+const hijriDate = `${day}/${month}/${year} هـ`;
 
-    // 📦 كائن الفكرة
+  
     const idea = {
         title,
         description,
