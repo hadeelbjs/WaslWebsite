@@ -303,7 +303,7 @@
             if (part.type === 'year') year = part.value;
         });
 
-        const hijriDate = toArabicNumber(`${year}/${month}/${day} هـ`);
+const hijriDate = '\u200F' + toArabicNumber(`${day} / ${month} / ${year} هـ`);
 
         const idea = {
             title,
