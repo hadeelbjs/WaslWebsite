@@ -243,7 +243,7 @@
         profileImageElement.src = profilePic ? profilePic : "images/default-avatar.png";
     }
 
-    // عند إرسال الفكرة
+ // عند إرسال الفكرة
 document.getElementById("ideaForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     console.log("💥 Submit clicked");
@@ -262,13 +262,14 @@ document.getElementById("ideaForm").addEventListener("submit", async (e) => {
     // صورة البروفايل
     let userProfilePic = userData.profileImage || currentUser.photoURL || "images/default-profile.png";
 
-    // 🗓️ التاريخ الهجري مع الوقت
+    // 🗓️ توليد تاريخ هجري موحد في كل الأجهزة
     const now = new Date();
-    const hijriDate = now.toLocaleDateString('ar-SA', {
-        year: 'numeric',
+    const formatter = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
+        day: '2-digit',
         month: '2-digit',
-        day: '2-digit'
+        year: 'numeric'
     });
+    const hijriDate = formatter.format(now) + " هـ";
 
     // 📦 كائن الفكرة
     const idea = {
@@ -278,7 +279,7 @@ document.getElementById("ideaForm").addEventListener("submit", async (e) => {
         userId: currentUser.uid,
         username: userData.username || currentUser.displayName || "مستخدم",
         userProfilePic,
-        createdAtHijri: hijriDate // ✅ نحفظ التاريخ الهجري كنص
+        createdAtHijri: hijriDate
     };
 
     try {
