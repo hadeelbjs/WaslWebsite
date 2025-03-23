@@ -145,7 +145,8 @@ color: #09315D;
 <div class="input-box" id="idea-domain">مجال الفكرة: ...</div>
 
 
-        <button class="investment-btn" id="rb" >طلب استثمار</button>
+       
+        <button class="investment-btn">طلب استثمار</button>
     </div>
 
 <script type="module">
@@ -178,7 +179,7 @@ color: #09315D;
                 document.querySelector("#idea-title").textContent = ideaData.title;
                 document.querySelector("#idea-description").textContent = ideaData.description;
                 document.querySelector("#idea-domain").textContent = ideaData.domain;
-                document.querySelector("#idea-date").textContent = new Date(ideaData.createdAt.toDate()).toLocaleDateString('ar-SA');
+               document.querySelector("#idea-date").textContent = "تاريخ النشر: " + ideaData.createdAtHijri;
             } else {
                 console.error("❌ لا توجد فكرة بهذا المعرف");
             }
@@ -188,12 +189,7 @@ color: #09315D;
     } else {
         console.log("❌ معرّف الفكرة غير موجود في الرابط");
     }
-    
 </script>
-<script src="investment-requests.js" type="module">
-    const button = document.getElementById('rb');
-    button.addEventListener(onclick,requestInvestment )
-    
-</script>
+
 </body>
 </html>
