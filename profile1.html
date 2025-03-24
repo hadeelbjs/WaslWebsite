@@ -555,10 +555,12 @@ body {
             <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
             <div class="modal-buttons">
                 <button onclick="closeLogoutModal()">تراجع</button>
-                <button onclick="confirmLogout()">تسجيل الخروج</button>
+                <button id="confirmLogoutBtn">تسجيل الخروج</button>
+                                
             </div>
         </div>
     </div>
+    
 <script>
 	
 	       function removeCardFav(button) {
@@ -576,6 +578,7 @@ body {
         function confirmLogout() {
             window.location.href = "index.html"; // Redirect to logout at HomePage
         }
+        
 		
         document.addEventListener("DOMContentLoaded", function () {
             const deleteIcons = document.querySelectorAll(".close-icon");
@@ -756,5 +759,26 @@ body {
 });
 
 </script>
+<script type="module">
+    import { logoutUser } from './Logout.js';
+  
+    window.openLogoutModal = function () {
+      document.getElementById("logoutModal").style.display = "block";
+    }
+  
+    window.closeLogoutModal = function () {
+      document.getElementById("logoutModal").style.display = "none";
+    }
+  
+    window.addEventListener("DOMContentLoaded", () => {
+      const logoutBtn = document.getElementById("confirmLogoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", logoutUser);
+      }
+    });
+  </script>
+  
+  
+
 </body>
 </html>
