@@ -5,6 +5,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstati
 import { getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
     authDomain: "wasl-523b4.firebaseapp.com",
@@ -30,6 +31,8 @@ export async function registerUser() {
     
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
+    const dob = document.getElementById("dob").value.trim();
+
     const xHandle = document.getElementById("xHandle").value.trim() || "";
     const linkedinHandle = document.getElementById("linkedinHandle").value.trim() || "";
     const profileImage = document.getElementById("profileImage").files[0];
@@ -47,9 +50,13 @@ export async function registerUser() {
         alert("يرجى إدخال كلمة المرور");
         return;
     }
+    if (!dob) {
+        alert("يرجى إدخال تاريخ الميلاد!");
+        return;
+    }
+    
 
 
-    // ✅ التحقق من قوة الباسورد
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     if (!passwordPattern.test(password)) {
         alert("كلمة المرور يجب أن تحتوي على 8 خانات على الأقل، وحرف صغير وكبير، ورقم، ورمز خاص.");
@@ -96,6 +103,7 @@ export async function registerUser() {
             username,
             email,
             userId: user.uid,
+            dob,
             contactInfo: {
                 xHandle,
                 linkedinHandle

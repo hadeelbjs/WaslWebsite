@@ -68,7 +68,7 @@ body {
 }
 
 .reg-login-container input {
-    padding: 7px;
+    padding: 6px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -82,13 +82,14 @@ body {
 .reg-login-container button {
     background: #122C52;
     color: white;
-    padding: 12px;
+    padding: 14px;
     border: none;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
     transition: 0.3s;
     width: 100%;
+    margin-top: 3%;
 
 }
 
@@ -155,7 +156,9 @@ body {
             <label for="profileImage" class="file-label">الصورة الشخصية (اختياري)</label>
             <input type="file" id="profileImage" accept="image/*" class="file-input">
             
-     
+            <label for="dob">تاريخ الميلاد</label>
+<input type="date" id="dob" required>
+
             <label for="xHandle">حساب X (اختياري)</label>
             <input type="text" id="xHandle" placeholder="@yourhandle">
         
