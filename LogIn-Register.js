@@ -104,6 +104,7 @@ export async function registerUser() {
             email,
             userId: user.uid,
             dob,
+            favorites: [], 
             contactInfo: {
                 xHandle,
                 linkedinHandle
@@ -153,6 +154,10 @@ export async function loginUser() {
         }
 
         const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
+        localStorage.setItem("uid", userCredential.user.uid);
+
+
+
         alert("تم تسجيل الدخول بنجاح!");
         window.location.href = "profile1.html";
     } catch (error) {
