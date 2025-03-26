@@ -436,7 +436,7 @@ body {
 .profile-contact-icons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 15px;
 }
 
 
@@ -445,6 +445,25 @@ body {
     color: #002147;
 }
 
+.profile-contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.icon-circle {
+    background-color: #0b1e3c; 
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-2px); 
+
+}
 
     </style>
 	
@@ -515,6 +534,11 @@ body {
             
         </div>
 <br><br>
+
+
+  
+
+
 <div class="profile-contact-info">
     <h3>معلومات التواصل</h3>
     <div class="profile-contact-icons">
@@ -526,9 +550,23 @@ body {
             <span id="linkedin-handle">تحميل...</span>
             <img src="images/linkedn.png" alt="LinkedIn">
         </div>
+        <div class="profile-contact-item">
+            <span id="user-email">تحميل...</span>
+            <div class="icon-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24" fill="#fff" style="margin-top: 0px;">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 2v.01L12 13 20 6.01V6H4zm0 12h16V8l-8 6-8-6v10z"/>
+              </svg>
+            </div>
+          </div>
+          
+          
+              
+
     </div>
 
-   
+   <br>
+
+      
 
 </div>
 
@@ -719,6 +757,9 @@ body {
 
                     // تحميل معلومات المستخدم
                     document.getElementById("username").textContent = userData.username || "مستخدم مجهول";
+                    document.getElementById("username").textContent = userData.username || "مستخدم مجهول";
+document.getElementById("user-email").textContent = userData.email || "البريد غير متوفر";
+
                     const profileImg = document.getElementById("profile-img");
                     if (userData.profileImage) {
                         profileImg.src = userData.profileImage;
