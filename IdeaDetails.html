@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-   
+  
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,11 +11,11 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Caudex:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-        
+       
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back" />
-    
+   
     <title>تفاصيل الفكرة</title>
-
+ 
     <style>
         * {
             margin: 0;
@@ -60,8 +60,8 @@
             width: 30px;
             height: 30px;
             cursor: pointer;
-         
-
+        
+ 
         }
         h2 {
             font-size: 2em;
@@ -97,14 +97,14 @@
             align-self: center;
         }
         .textarea-box {
-    min-height: 140px; 
+    min-height: 140px;
     height: auto;
     overflow-y: auto;
 }
 a {
 text-decoration: none;
 color: #09315D;
-
+ 
 
 }
 .material-symbols-outlined {
@@ -118,7 +118,7 @@ color: #09315D;
     position: absolute;
     top: 5px;
     right: 15px;
-    width: 80px; 
+    width: 80px;
 }
     </style>
 </head>
@@ -133,63 +133,108 @@ color: #09315D;
             </a>
         </div>
         <h2>تفاصيل الفكرة</h2>
-
+ 
         <div class="fav-icon-container">
             <img src="images/favIcon.png" alt="المفضلة" class="fav-icon">
         </div>
-
-<!-- هذه هي الأماكن التي سيتم تحديثها عبر JavaScript -->
+ 
+<!--  الأماكن التي سيتم تحديثها عبر JavaScript -->
 <div class="input-box" id="idea-title">عنوان الفكرة: ...</div>
 <div class="textarea-box" id="idea-description">وصف الفكرة: ...</div>
 <div class="input-box" id="idea-date">تاريخ النشر: ...</div>
 <div class="input-box" id="idea-domain">مجال الفكرة: ...</div>
+ 
 
-
-       
+      
         <button class="investment-btn">طلب استثمار</button>
     </div>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
-        authDomain: "wasl-523b4.firebaseapp.com",
-        projectId: "wasl-523b4",
-        storageBucket: "wasl-523b4.appspot.com",
-        messagingSenderId: "410509570015",
-        appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // جلب معرّف الفكرة من الرابط
-    const urlParams = new URLSearchParams(window.location.search);
-    const ideaId = urlParams.get('id'); // الحصول على الـ id من الرابط
-
-    if (ideaId) {
-        // جلب تفاصيل الفكرة من Firestore باستخدام المعرف
-        const ideaRef = doc(db, "ideas", ideaId);
-        getDoc(ideaRef).then(ideaSnap => {
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import {
+          getFirestore,
+          doc,
+          getDoc,
+          updateDoc,
+          arrayUnion
+        } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+       
+        // Firebase Config
+        const firebaseConfig = {
+          apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
+          authDomain: "wasl-523b4.firebaseapp.com",
+          projectId: "wasl-523b4",
+          storageBucket: "wasl-523b4.appspot.com",
+          messagingSenderId: "410509570015",
+          appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a"
+        };
+       
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+       
+        document.addEventListener("DOMContentLoaded", async () => {
+          console.log("✅ الصفحة جاهزة");
+       
+          const ideaId = new URLSearchParams(window.location.search).get("id");
+          const favIcon = document.querySelector(".fav-icon");
+          const userId = localStorage.getItem("uid");
+       
+          if (!ideaId) {
+            console.warn("❌ لا يوجد معرف للفكرة بالرابط");
+            return;
+          }
+       
+          console.log("📌 ideaId:", ideaId);
+       
+          // ✅ استرجاع تفاصيل الفكرة وعرضها
+          try {
+            const ideaRef = doc(db, "ideas", ideaId);
+            const ideaSnap = await getDoc(ideaRef);
+       
             if (ideaSnap.exists()) {
-                const ideaData = ideaSnap.data();
-                // عرض البيانات مثل العنوان والوصف ومجال الفكرة
-                document.querySelector("#idea-title").textContent = ideaData.title;
-                document.querySelector("#idea-description").textContent = ideaData.description;
-                document.querySelector("#idea-domain").textContent = ideaData.domain;
-               document.querySelector("#idea-date").textContent = "تاريخ النشر: " + ideaData.createdAtHijri;
+              const idea = ideaSnap.data();
+       
+              console.log("📄 تفاصيل الفكرة:", idea);
+       
+              document.querySelector("#idea-title").textContent = idea.title || "—";
+              document.querySelector("#idea-description").textContent = idea.description || "—";
+              document.querySelector("#idea-domain").textContent = idea.domain || "—";
+              document.querySelector("#idea-date").textContent = "تاريخ النشر: " + (idea.createdAtHijri || "—");
+       
             } else {
-                console.error("❌ لا توجد فكرة بهذا المعرف");
+              console.error("❌ لم يتم العثور على الفكرة");
             }
-        }).catch(error => {
-            console.error("❌ حدث خطأ أثناء جلب تفاصيل الفكرة:", error);
+          } catch (error) {
+            console.error("❌ خطأ في جلب الفكرة:", error);
+          }
+       
+          // ✅ زر المفضلة
+          if (!userId) {
+            alert("⚠️ يجب تسجيل الدخول أولاً");
+            return;
+          }
+       
+          if (favIcon) {
+            favIcon.addEventListener("click", async () => {
+              console.log("⭐ تم الضغط على زر المفضلة");
+       
+              try {
+                const userRef = doc(db, "users", userId);
+                await updateDoc(userRef, {
+                  favorites: arrayUnion(ideaId)
+                });
+       
+                alert("🌟 تمت الإضافة للمفضلة!");
+                console.log("✅ تمت إضافة الفكرة:", ideaId);
+              } catch (error) {
+                console.error("❌ خطأ أثناء الإضافة للمفضلة:", error);
+              }
+            });
+          } else {
+            console.warn("⚠️ لم يتم العثور على زر المفضلة");
+          }
         });
-    } else {
-        console.log("❌ معرّف الفكرة غير موجود في الرابط");
-    }
-</script>
-
+        </script>
+       
 </body>
 </html>
+ 
