@@ -446,22 +446,24 @@ onSnapshot(ideasQuery, snapshot => {
         const card = document.createElement("div");
         card.className = "idea-card";
       
-card.innerHTML = `
-  <div class="profile">
-    <a href="account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
+        card.innerHTML = `
+            <div class="profile">
+                <img src="${photoSrc}" alt="${idea.username}"
+                     onerror="this.onerror=null; this.src='images/default-avatar.png';">
+                <p class="creator">${idea.username}</p>
+            </div>
+            <div class="idea-content">
+                <p><strong>${idea.title}</strong></p>
+                <p>مجال الفكرة: ${idea.domain}</p>
+<p>${idea.createdAtHijri}</p>
+            </div>
+        `;
+     
+        // إضافة حدث الضغط على الكارد للتوجيه إلى تفاصيل الفكرة
+card.addEventListener("click", () => {
+window.location.href = `https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}`;
+});
+console.log("🔍 يتم التوجيه إلى:", `IdeaDetails.html?id=${docSnap.id}`);
         ideasContainer.appendChild(card);
     });
 });
@@ -528,23 +530,21 @@ onSnapshot(filteredIdeasQuery, snapshot => {
         }
         const card = document.createElement("div");
         card.className = "idea-card";
-card.innerHTML = `
-  <div class="profile">
-    <a href="account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
-
+        card.innerHTML = `
+            <div class="profile">
+                <img src="${photoSrc}" alt="${idea.username}"
+                     onerror="this.onerror=null; this.src='images/default-avatar.png';">
+                <p class="creator">${idea.username}</p>
+            </div>
+            <div class="idea-content">
+                <p><strong>${idea.title}</strong></p>
+                <p>مجال الفكرة: ${idea.domain}</p>
+                <p>${idea.createdAtHijri}</p>
+            </div>
+        `;
+        card.addEventListener("click", () => {
+            location.href = `IdeaDetails.html?id=${docSnap.id}`;
+        });
         ideasContainer.appendChild(card);
     });
 });
@@ -603,22 +603,22 @@ if (minDate && maxDate) {
 
             const card = document.createElement("div");
             card.className = "idea-card";
-card.innerHTML = `
-  <div class="profile">
-    <a href="account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
+            card.innerHTML = `
+                <div class="profile">
+                    <img src="${photoSrc}" alt="${idea.username}"
+                        onerror="this.onerror=null; this.src='images/default-avatar.png';">
+                    <p class="creator">${idea.username}</p>
+                </div>
+                <div class="idea-content">
+                    <p><strong>${idea.title}</strong></p>
+                    <p>مجال الفكرة: ${idea.domain}</p>
+                    <p>${idea.createdAtHijri}</p>
+                </div>
+            `;
+
+            card.addEventListener("click", () => {
+                location.href = `IdeaDetails.html?id=${idea.id}`;
+            });
 
             ideasContainer.appendChild(card);
         });
@@ -680,22 +680,22 @@ if (category && minDate && maxDate) {
 
             const card = document.createElement("div");
             card.className = "idea-card";
-card.innerHTML = `
-  <div class="profile">
-    <a href="account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
+            card.innerHTML = `
+                <div class="profile">
+                    <img src="${photoSrc}" alt="${idea.username}"
+                        onerror="this.onerror=null; this.src='images/default-avatar.png';">
+                    <p class="creator">${idea.username}</p>
+                </div>
+                <div class="idea-content">
+                    <p><strong>${idea.title}</strong></p>
+                    <p>مجال الفكرة: ${idea.domain}</p>
+                    <p>${idea.createdAtHijri}</p>
+                </div>
+            `;
+
+            card.addEventListener("click", () => {
+                location.href = `IdeaDetails.html?id=${idea.id}`;
+            });
 
             ideasContainer.appendChild(card);
         });
@@ -732,22 +732,22 @@ searchInput.addEventListener("keypress", function(event) {
                 //  إنشاء بطاقة لكل فكرة مطابقة
                 const card = document.createElement("div");
                 card.className = "idea-card";
-card.innerHTML = `
-  <div class="profile">
-    <a href="account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
+                card.innerHTML = `
+                    <div class="profile">
+                        <img src="${photoSrc}" alt="${idea.username}"
+                             onerror="this.onerror=null; this.src='images/default-avatar.png';">
+                        <p class="creator">${idea.username}</p>
+                    </div>
+                    <div class="idea-content">
+                        <p><strong>${idea.title}</strong></p>
+                        <p>مجال الفكرة: ${idea.domain}</p>
+                        <p>${idea.createdAtHijri}</p>
+                    </div>
+                `;
+                // توجيه إلى تفاصيل الفكرة عند الضغط
+                card.addEventListener("click", () => {
+                    window.location.assign(`IdeaDetails.html?id=${docSnap.id}`);
+                });
                 ideasContainer.appendChild(card);
             });
         });
