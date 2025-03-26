@@ -1,172 +1,221 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إعدادات الحساب</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_back" />
-
-	<style>
-	@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Tajawal', sans-serif;
-    direction: rtl;
-}
-
-body {
-    background-color: #fff;
-	  direction: rtl;
-
-}
-
-.back-button {
-    position: absolute;
-    right: 330px;
-    top: 15px;
-    text-decoration: none;
-    font-size: 40px;
-    color: #122C52;
-}
-
-.profile-title {
-    font-size: 22px;
-    color: #122C52;
-    margin-top: 40px;
-	text-align:center;
-}
-
-.profile-picture {
-    width: 120px;
-    height: 120px;
-    margin: 10px auto;
-    position: relative;
-}
-
-.profile-picture img {
-    width: 100%;
-    height: 100%;
-    box-sizing: content-box;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid #122C52;
-}
-
-.edit-icon {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background: #122C52;
-    color: white;
-    padding: 5px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.profile-form {
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-    width: 90%;
-    margin: 20px auto;
-	
-}
-
-.profile-form label {
-    font-weight: bold;
-    color: #333;
-    font-size: 14px;
-    margin: 10px 0 5px;
-}
-
-.profile-form input, .profile-form textarea {
-    padding: 12px;
-    border-radius: 10px;
-    width: 100%;
-    background-color: #F3F3F3;
-    font-size: 16px;
-    border: none;
-    margin-bottom: 10px;
-}
-
-.profile-form textarea {
-    height: 80px;
-    resize: none;
-}
-
-.profile-form button {
-    background: #122C52;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: 0.3s;
-    width: 100%;
-    margin-top: 15px;
-}
-
-.profile-form button:hover {
-    background: #0E2140;
-}
-
-@media (max-width: 480px) {
-    .profile-title {
-        font-size: 20px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>إعدادات الحساب</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Tajawal', sans-serif;
+      direction: rtl;
     }
-
-    .profile-form input, .profile-form textarea {
-        font-size: 14px;
+    body {
+      background-color: #fff;
     }
-
-    .profile-form button {
-        font-size: 16px;
-    }
-}
     .material-symbols-outlined {
-            font-size: 40px;
-            color: #072D57;
-            position: absolute;
-            left: 2vw;
-            margin-top: 5vh;
-            cursor: pointer;
+      font-size: 40px;
+      color: #072D57;
+      position: absolute;
+      left: 2vw;
+      margin-top: 5vh;
+      cursor: pointer;
     }
-   
-</style>
-
-
+    .profile-title {
+      font-size: 22px;
+      color: #122C52;
+      margin-top: 40px;
+      text-align: center;
+    }
+    .profile-picture {
+      width: 120px;
+      height: 120px;
+      margin: 10px auto;
+      position: relative;
+    }
+    .profile-picture img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #122C52;
+    }
+    .edit-icon {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background: #122C52;
+      color: white;
+      padding: 5px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .profile-form {
+      display: flex;
+      flex-direction: column;
+      text-align: right;
+      width: 90%;
+      margin: 20px auto;
+    }
+    .profile-form label {
+      font-weight: bold;
+      color: #333;
+      font-size: 14px;
+      margin: 10px 0 5px;
+    }
+    .profile-form input, .profile-form textarea {
+      padding: 12px;
+      border-radius: 10px;
+      width: 100%;
+      background-color: #F3F3F3;
+      font-size: 16px;
+      border: none;
+      margin-bottom: 10px;
+    }
+    .profile-form textarea {
+      height: 80px;
+      resize: none;
+    }
+    .profile-form button {
+      background: #122C52;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+      margin-top: 15px;
+    }
+    .profile-form button:hover {
+      background: #0E2140;
+    }
+  </style>
 </head>
 <body>
-    <span class="material-symbols-outlined" onclick="history.back();">arrow_back</span><br>
-	<br>
-    <h2 class="profile-title">سارة عبدالله</h2>
 
-    <div class="profile-picture">
-        <img src="images/innovator7.jpg" alt="الصورة الشخصية">
-        <label class="edit-icon">&#9998;</label>
-    </div>
+  <span class="material-symbols-outlined" onclick="history.back();">arrow_back</span><br>
+  <h2 class="profile-title" id="displayUsername">تحميل...</h2>
 
-    <form class="profile-form">
-        <label for="username">اسم المستخدم</label>
-        <input type="text" id="username" placeholder="saral2al">
+  <div class="profile-picture">
+    <img id="profilePreview" src="images/default-avatar.png" alt="الصورة الشخصية">
+    <label for="profileImage" class="edit-icon">&#9998;</label>
+    <input type="file" id="profileImage" accept="image/*" style="display: none;">
+  </div>
 
-        <label for="email">البريد الإلكتروني</label>
-        <input type="email" id="email" placeholder="Sara@gmail.com">
+  <form class="profile-form" id="settingsForm">
+    <label for="username">اسم المستخدم</label>
+    <input type="text" id="username">
 
-        <label for="dob">تاريخ الميلاد</label>
-        <input type="date" id="dob" placeholder="2004-07-04">
+    <label for="linkedinHandle">حساب LinkedIn</label>
+    <input type="text" id="linkedinHandle" placeholder="مثال: user-name">
 
-        <label for="password">كلمة المرور</label>
-        <input type="password" id="password" placeholder="********">
+    <label for="xHandle">حساب X</label>
+    <input type="text" id="xHandle" placeholder="مثال: @username">
 
-        <label for="bio">نبذة</label>
-        <textarea id="bio" placeholder="شخص طموح أسعى دائمًا للابتكار وتطوير الحلول الحديثة. أحب استكشاف الأفكار الجديدة التي تساهم في تحسين الحياة من حولي."></textarea>
+    <label for="bio">نبذة</label>
+    <textarea id="bio" placeholder="شخص طموح يسعى للابتكار..."></textarea>
 
-        <button type="submit">حفظ التعديلات</button>
-    </form>
+    <button type="submit">حفظ التعديلات</button>
+  </form>
+
+  <script type="module">
+    import { auth, db } from './LogIn-Register.js';
+    import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-storage.js";
+
+    const storage = getStorage();
+    const profileImageInput = document.getElementById("profileImage");
+    const profilePreview = document.getElementById("profilePreview");
+    let selectedImageFile = null;
+
+    profileImageInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        selectedImageFile = file;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          profilePreview.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    let currentUserId = null;
+
+    onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUserId = user.uid;
+    const userRef = doc(db, "users", currentUserId);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+
+      // إنشاء bio فارغ إذا ما كان موجود
+      if (!("bio" in data)) {
+        await updateDoc(userRef, { bio: "" });
+      }
+
+      document.getElementById("username").value = data.username || "";
+      document.getElementById("linkedinHandle").value = data.contactInfo?.linkedinHandle || "";
+      document.getElementById("xHandle").value = data.contactInfo?.xHandle || "";
+      document.getElementById("bio").value = data.bio || "";
+      document.getElementById("displayUsername").textContent = data.username || "الملف الشخصي";
+      if (data.profileImage) {
+        profilePreview.src = data.profileImage;
+      }
+    }
+  } else {
+    window.location.href = "login.html";
+  }
+});
+
+    document.getElementById("settingsForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentUserId) return;
+
+      const username = document.getElementById("username").value.trim();
+      const linkedinHandle = document.getElementById("linkedinHandle").value.trim();
+      const xHandle = document.getElementById("xHandle").value.trim();
+      const bio = document.getElementById("bio").value.trim();
+
+      if (!username) {
+        alert("يرجى تعبئة اسم المستخدم.");
+        return;
+      }
+
+      let updatedData = {
+        username,
+        bio,
+        contactInfo: {
+          linkedinHandle,
+          xHandle
+        }
+      };
+
+      try {
+        if (selectedImageFile) {
+          const storageRef = ref(storage, `profileImages/${currentUserId}`);
+          const snapshot = await uploadBytes(storageRef, selectedImageFile);
+          const downloadURL = await getDownloadURL(snapshot.ref);
+          updatedData.profileImage = downloadURL;
+        }
+
+        await updateDoc(doc(db, "users", currentUserId), updatedData);
+        alert("تم حفظ التعديلات بنجاح!");
+        location.reload();
+      } catch (error) {
+        console.error("خطأ:", error);
+        alert("حدث خطأ أثناء حفظ التعديلات.");
+      }
+    });
+  </script>
 </body>
 </html>
