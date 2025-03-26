@@ -111,7 +111,7 @@ export async function registerUser() {
             email,
             userId: user.uid,
             dob,
-            bio,
+         
             favorites: [], 
             contactInfo: {
                 xHandle,
