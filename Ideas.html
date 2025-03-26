@@ -30,8 +30,8 @@
             position: relative;
         }
         .logo img {
-            width: 80px; 
-   
+            width: 80px;
+  
         }
         .humburger {
             display: flex;
@@ -173,7 +173,6 @@
             margin: auto;
             box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
         }
-
         .search-bar input {
             border: none;
             outline: none;
@@ -181,15 +180,14 @@
             flex: 1;
             font-size: 16px;
         }
-
         .filter-icon {
-            width: 24px; 
+            width: 24px;
             height: 24px;
             cursor: pointer;
-            margin-left: 10px; 
+            margin-left: 10px;
         }
         #closeIcon {
-            display: none; 
+            display: none;
             font-size: 28px;
             cursor: pointer;
             color: #09315D;
@@ -197,8 +195,8 @@
             top: 15px;
             left: 20px;
         }
-        .humburger.hidden {
-            display: none; 
+       .humburger.hidden {
+            display: none;
         }
         #closeIcon.visible {
             display: block;
@@ -207,13 +205,13 @@
             text-decoration: none !important;
         }
         .modal {
-            display: none; 
+            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             width: 280px;
-            background: rgba(0, 0, 0, 0.8); 
+            background: rgba(0, 0, 0, 0.8);
             color: white;
             border-radius: 10px;
             text-align: center;
@@ -221,32 +219,27 @@
             z-index: 1000;
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
         }
-
         .modal-content {
             background: #2a2d34;
             padding: 15px;
             border-radius: 10px;
         }
-
         .modal-content h2 {
             font-size: 14px;
             font-weight: bold;
             color: #ffffff;
             margin-bottom: 5px;
         }
-
         .modal-content p {
             font-size: 12px;
             color: #ccc;
             margin-bottom: 15px;
         }
-
         .modal-buttons {
             display: flex;
             justify-content: space-between;
             gap: 10px;
         }
-
         .modal-buttons button {
             flex: 1;
             padding: 8px 0;
@@ -255,27 +248,25 @@
             cursor: pointer;
             font-size: 12px;
         }
-
         .modal-buttons button:last-child {
             background: #0c2340;
             color: white;
             font-weight: bold;
         }
-
         .modal-buttons button:first-child {
             background: transparent;
             border: 1px solid #ccc;
             color: #ccc;
         }
-        
+      
         /* أنماط نموذج إضافة فكرة */
         .input-container {
             position: relative;
             margin-bottom: 20px;
             width: 100%;
         }
-        
-        .input-container input, 
+      
+        .input-container input,
         .input-container textarea,
         .input-container select {
             width: 100%;
@@ -285,7 +276,7 @@
             font-size: 16px;
             font-family: 'Baloo Bhaijaan 2', sans-serif;
         }
-        
+      
         .input-container label {
             position: absolute;
             top: 10px;
@@ -294,7 +285,7 @@
             pointer-events: none;
             color: #09315D;
         }
-        
+      
         .input-container input:focus ~ label,
         .input-container input:not(:placeholder-shown) ~ label,
         .input-container textarea:focus ~ label,
@@ -305,7 +296,7 @@
             padding: 0 5px;
             font-size: 12px;
         }
-        
+      
         .selectList {
             padding: 10px;
             border: 1px solid #09315D;
@@ -315,7 +306,7 @@
             width: 100%;
             margin-bottom: 20px;
         }
-        
+      
         #ideaForm button {
             padding: 10px 20px;
             background-color: #09315D;
@@ -326,13 +317,13 @@
             margin-right: 10px;
             font-family: 'Baloo Bhaijaan 2', sans-serif;
         }
-        
+      
         #ideaForm button[type="reset"] {
             background-color: transparent;
             color: #09315D;
             border: 1px solid #09315D;
         }
-        
+      
         .no-ideas-message {
             text-align: center;
             margin: 50px auto;
@@ -340,15 +331,12 @@
             color: #09315D;
         }
     </style>
-
     <script>
-
          function toggleMenu() {
             var menu = document.getElementById("menuOverlay");
             var hamburgerIcon = document.querySelector("#hamburgerIcon");
-
             var closeIcon = document.getElementById("closeIcon");
-    
+  
             if (menu.classList.contains("active")) {
                 menu.classList.remove("active");
                 hamburgerIcon.classList.remove("hidden");
@@ -359,61 +347,53 @@
                 closeIcon.classList.add("visible");
             }
         }
-        
+      
         function openLogoutModal() {
             document.getElementById("logoutModal").style.display = "block";
         }
-
         function closeLogoutModal() {
             document.getElementById("logoutModal").style.display = "none";
         }
-
         function confirmLogout() {
-            window.location.href = "index.html"; 
+            window.location.href = "index.html";
         }
     </script>
 </head>
 <body>
-    
+  
     <nav class="navbar">
         <div class="logo">
             <a href="Ideas.html">
                 <img src="images/waslLogo.png" alt="الشعار">
             </a>
         </div>
-    
+   
         <svg id="hamburgerIcon" onclick="toggleMenu()" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#09315D" width="40" height="40" style="cursor: pointer;">
             <path d="M120-240v-60h720v60H120Zm0-210v-60h720v60H120Zm0-210v-60h720v60H120Z"/>
         </svg>
     </nav>
-
     <div class="menu-overlay" id="menuOverlay">
         <span class="close-menu" id="closeIcon" onclick="toggleMenu()">✖</span>
-
         <a href="Ideas.html">الصفحة الرئيسية</a>
         <a href="profile1.html">الملف الشخصي</a>
         <a href="investRequests.html">طلبات الاستثمار</a>
         <a href="FavouritePage.html">المفضلة</a>
         <a href="#" onclick="openLogoutModal()">تسجيل الخروج</a>
     </div>
-    
+  
     <div class="search-bar">
         <input type="text" id="searchInput" placeholder="ابحث">
         <a href="FilterIdea.html"><img src="images/filter-icon.png" alt="فلتر" class="filter-icon"></a>
     </div>
-
     <main>
         <h1>تصّفح الأفكار</h1>
-
         <!-- رسالة في حالة عدم وجود أفكار -->
         <p id="no-ideas-message" class="no-ideas-message">لا توجد أفكار حالياً.</p>
-
         <!-- الحاوية التي ستتم إضافة الأفكار إليها -->
         <div id="ideas-container"></div>
     </main>
-    
+  
     <a href="myIdea.html"><button class="add-btn">+</button></a>
-
     <div id="logoutModal" class="modal">
         <div class="modal-content">
             <h2>تسجيل الخروج</h2>
@@ -423,12 +403,11 @@
                 <button onclick="confirmLogout()">تسجيل الخروج</button>
             </div>
         </div>
-    </div>
+   </div>
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot, where, getDocs } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-
     const firebaseConfig = {
         apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
         authDomain: "wasl-523b4.firebaseapp.com",
@@ -437,20 +416,16 @@
         messagingSenderId: "410509570015",
         appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
-
+    const ideasCollection = collection(db,"ideas");
     const ideasContainer = document.getElementById("ideas-container");
     const noIdeasMessage = document.getElementById("no-ideas-message");
-
     onAuthStateChanged(auth, user => {
         if (!user) window.location.href = "login.html";
     });
-
 const ideasQuery = query(collection(db, "ideas"));
-
 onSnapshot(ideasQuery, snapshot => {
     ideasContainer.innerHTML = "";
     if (snapshot.empty) {
@@ -458,22 +433,20 @@ onSnapshot(ideasQuery, snapshot => {
         return;
     }
     noIdeasMessage.style.display = "none";
-
     snapshot.docs.forEach(docSnap => {
         const idea = docSnap.data();
-        
+      
         // التأكد من الصورة الصحيحة
         let photoSrc = idea.userProfilePic || "images/default-avatar.png"; // استخدام الحقل الصحيح
         if (photoSrc && !photoSrc.startsWith("http")) {
             photoSrc = `/${photoSrc.replace(/^\/?/, "")}`; // تأكد من عدم وجود / في بداية الرابط
         }
-
         const card = document.createElement("div");
         card.className = "idea-card";
-        
+      
         card.innerHTML = `
             <div class="profile">
-                <img src="${photoSrc}" alt="${idea.username}" 
+                <img src="${photoSrc}" alt="${idea.username}"
                      onerror="this.onerror=null; this.src='images/default-avatar.png';">
                 <p class="creator">${idea.username}</p>
             </div>
@@ -481,23 +454,304 @@ onSnapshot(ideasQuery, snapshot => {
                 <p><strong>${idea.title}</strong></p>
                 <p>مجال الفكرة: ${idea.domain}</p>
 <p>${idea.createdAtHijri}</p>
-
             </div>
         `;
-        
+     
         // إضافة حدث الضغط على الكارد للتوجيه إلى تفاصيل الفكرة
 card.addEventListener("click", () => {
 window.location.href = `https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}`;
 });
-
+console.log("🔍 يتم التوجيه إلى:", `IdeaDetails.html?id=${docSnap.id}`);
         ideasContainer.appendChild(card);
     });
 });
+// استخراج الفلاتر من URL والتأكد أنها ليست فارغة
+const urlParams = new URLSearchParams(window.location.search);
+const minDate = urlParams.get("minDate")?.trim() || "";
+const maxDate = urlParams.get("maxDate")?.trim() || "";
+const category = urlParams.get("category")?.trim() || "";
+// check
+console.log("✅ الفلاتر المستلمة:");
+console.log("📌 الفئة:", category);
+console.log("📅 التاريخ الأدنى:", minDate);
+console.log("📅 التاريخ الأقصى:", maxDate);
+//  تأكد أن البيانات تُرسل من `FilterIdea.html`
+console.log("📌 الفلترة المستلمة:", { category, minDate, maxDate });
+//check
+const testQuery = query(collection(db, "ideas"));
+onSnapshot(testQuery, snapshot => {
+    console.log("جميع البيانات بدون فلترة:", snapshot.docs.map(doc => doc.data()));
+});
+ 
+
+let ideasRef = collection(db, "ideas");
+
+let filters = [];
+//فلترة بناءً على الفئة إذا كانت محددة
+if (category && category.trim() !== "") {
+    console.log("🛠️ إضافة فلترة بناءً على الفئة:", category);
+    filters.push(where("domain", "==", category.trim()));
+}
+//  منع تشغيل فلترة الفئة إذا كان الفئة + التاريخ معًا محددين
+if (category && minDate && maxDate) {
+    console.log("⏳ تجاوز فلترة الفئة لأنها مدموجة مع التاريخ.");
+} else {
 
 
+
+//  تطبيق الاستعلام
+const filteredIdeasQuery = filters.length > 0 ? query(ideasRef, ...filters) : ideasRef;
+console.log("📌 الاستعلام النهائي:", filteredIdeasQuery);
+// تنفيذ الاستعلام
+onSnapshot(filteredIdeasQuery, snapshot => {
+    console.log("⚡ نتائج الاستعلام بعد الفلترة:", snapshot.docs.map(doc => doc.data()));
+});
+
+console.log("📌 الاستعلام النهائي:", filteredIdeasQuery);
+//  تنفيذ الاستعلام وجلب البيانات
+onSnapshot(filteredIdeasQuery, snapshot => {
+    console.log("⚡ نتائج الاستعلام بعد الفلترة:", snapshot.docs.map(doc => doc.data()));
+    ideasContainer.innerHTML = ""; // تفريغ المحتوى السابق
+    if (snapshot.empty) {
+        console.log("❌ لا توجد أفكار مطابقة للفلترة.");
+        noIdeasMessage.style.display = "block";
+        return;
+    }
+    noIdeasMessage.style.display = "none";
+ 
+    snapshot.docs.forEach(docSnap => {
+        const idea = docSnap.data();
+        
+        let photoSrc = idea.userProfilePic || "images/default-avatar.png";
+        if (photoSrc && !photoSrc.startsWith("http")) {
+            photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+        }
+        const card = document.createElement("div");
+        card.className = "idea-card";
+        card.innerHTML = `
+            <div class="profile">
+                <img src="${photoSrc}" alt="${idea.username}"
+                     onerror="this.onerror=null; this.src='images/default-avatar.png';">
+                <p class="creator">${idea.username}</p>
+            </div>
+            <div class="idea-content">
+                <p><strong>${idea.title}</strong></p>
+                <p>مجال الفكرة: ${idea.domain}</p>
+                <p>${idea.createdAtHijri}</p>
+            </div>
+        `;
+        card.addEventListener("click", () => {
+            location.href = `IdeaDetails.html?id=${docSnap.id}`;
+        });
+        ideasContainer.appendChild(card);
+    });
+});
+}
+
+// استخراج بيانات التاريخ من الـ URL
+if (category && minDate && maxDate) {
+    console.log("⏳ تجاوز فلترة الفئة لأنها مدموجة مع التاريخ.");
+} else {
+
+
+if (minDate && maxDate) {
+    console.log("🛠️ تفعيل فلترة بناءً على التاريخ:", minDate, "-", maxDate);
+    
+    // جلب جميع الأفكار بدون فلترة
+    getDocs(collection(db, "ideas")).then(snapshot => {
+        let filteredIdeas = [];
+
+        snapshot.docs.forEach(docSnap => {
+            const idea = docSnap.data();
+            let hijriDate = idea.createdAtHijri || ""; // جلب التاريخ الهجري من الداتا بيس
+
+            // إزالة المسافات والعلامات غير الضرورية
+            hijriDate = hijriDate.replace(/\s/g, "").replace("هـ", "");
+
+            // تحويل الأرقام العربية إلى أرقام لاتينية
+            const arabicToEnglishNumbers = str => str.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+            hijriDate = arabicToEnglishNumbers(hijriDate);
+
+            // استخراج السنة (آخر 4 أرقام)
+            let hijriYear = hijriDate.slice(-4);
+
+            console.log(`📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear}`);
+
+            // التحقق مما إذا كانت السنة ضمن النطاق المطلوب
+            if (hijriYear >= minDate && hijriYear <= maxDate) {
+                filteredIdeas.push(idea);
+            }
+        });
+
+        // تحديث واجهة المستخدم بالنتائج
+        ideasContainer.innerHTML = ""; // تفريغ المحتوى السابق
+        if (filteredIdeas.length === 0) {
+            console.log("❌ لا توجد أفكار ضمن هذا النطاق الزمني.");
+            noIdeasMessage.style.display = "block";
+            return;
+        }
+        noIdeasMessage.style.display = "none";
+
+        //  عرض الأفكار المطابقة
+        filteredIdeas.forEach(idea => {
+            let photoSrc = idea.userProfilePic || "images/default-avatar.png";
+            if (photoSrc && !photoSrc.startsWith("http")) {
+                photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+            }
+
+            const card = document.createElement("div");
+            card.className = "idea-card";
+            card.innerHTML = `
+                <div class="profile">
+                    <img src="${photoSrc}" alt="${idea.username}"
+                        onerror="this.onerror=null; this.src='images/default-avatar.png';">
+                    <p class="creator">${idea.username}</p>
+                </div>
+                <div class="idea-content">
+                    <p><strong>${idea.title}</strong></p>
+                    <p>مجال الفكرة: ${idea.domain}</p>
+                    <p>${idea.createdAtHijri}</p>
+                </div>
+            `;
+
+            card.addEventListener("click", () => {
+                location.href = `IdeaDetails.html?id=${idea.id}`;
+            });
+
+            ideasContainer.appendChild(card);
+        });
+    });
+}
+
+// إلغاء الفلترة عند الضغط على زر إعادة التعيين
+const resetButton = document.getElementById("resetFilter");
+if (resetButton) {
+    resetButton.addEventListener("click", () => {
+        window.location.href = "Ideas.html"; // يعيد تحميل الصفحة بدون فلاتر
+    });
+}
+}
+//  فلترة بناءً على الفئة + التاريخ معًا (يجب أن يتحقق الشرطان معًا)
+if (category && minDate && maxDate) {
+    console.log("🛠️ تفعيل فلترة بناءً على الفئة والتاريخ:", category, minDate, "-", maxDate);
+    
+    getDocs(collection(db, "ideas")).then(snapshot => {
+        let filteredIdeas = [];
+
+        snapshot.docs.forEach(docSnap => {
+            const idea = docSnap.data();
+            let hijriDate = idea.createdAtHijri || ""; // جلب التاريخ الهجري من الداتا بيس
+
+            // إزالة المسافات والعلامات غير الضرورية
+            hijriDate = hijriDate.replace(/\s/g, "").replace("هـ", "");
+
+            // تحويل الأرقام العربية إلى أرقام لاتينية
+            const arabicToEnglishNumbers = str => str.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+            hijriDate = arabicToEnglishNumbers(hijriDate);
+
+            // استخراج السنة (آخر 4 أرقام)
+            let hijriYear = hijriDate.slice(-4);
+
+            console.log(`📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear}`);
+
+            //  التحقق مما إذا كانت الفكرة تطابق "كلا" الشرطين (الفئة + التاريخ)
+            if (idea.domain === category && hijriYear >= minDate && hijriYear <= maxDate) {
+                filteredIdeas.push(idea);
+            }
+        });
+
+        // تحديث واجهة المستخدم بالنتائج
+        ideasContainer.innerHTML = ""; // تفريغ المحتوى السابق
+        if (filteredIdeas.length === 0) {
+            console.log("❌ لا توجد أفكار مطابقة للفئة والتاريخ.");
+            noIdeasMessage.style.display = "block";
+            return;
+        }
+        noIdeasMessage.style.display = "none";
+
+        // عرض الأفكار المطابقة
+        filteredIdeas.forEach(idea => {
+            let photoSrc = idea.userProfilePic || "images/default-avatar.png";
+            if (photoSrc && !photoSrc.startsWith("http")) {
+                photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+            }
+
+            const card = document.createElement("div");
+            card.className = "idea-card";
+            card.innerHTML = `
+                <div class="profile">
+                    <img src="${photoSrc}" alt="${idea.username}"
+                        onerror="this.onerror=null; this.src='images/default-avatar.png';">
+                    <p class="creator">${idea.username}</p>
+                </div>
+                <div class="idea-content">
+                    <p><strong>${idea.title}</strong></p>
+                    <p>مجال الفكرة: ${idea.domain}</p>
+                    <p>${idea.createdAtHijri}</p>
+                </div>
+            `;
+
+            card.addEventListener("click", () => {
+                location.href = `IdeaDetails.html?id=${idea.id}`;
+            });
+
+            ideasContainer.appendChild(card);
+        });
+    });
+}
+//  مرجع إلى حقل البحث
+const searchInput = document.getElementById("searchInput");
+// الاستماع لحدث "Enter" عند إدخال النص
+searchInput.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        const searchQuery = searchInput.value.trim(); // جلب النص المدخل وإزالة الفراغات
+        if (searchQuery === "") {
+            console.log("❌ لا يوجد نص في البحث.");
+            return;
+        }
+        console.log("🔍 البحث عن العنوان:", searchQuery);
+        // استعلام البحث عن العنوان
+        const searchQueryRef = query(collection(db, "ideas"), where("title", "==", searchQuery));
+        // تنفيذ الاستعلام وجلب البيانات
+        onSnapshot(searchQueryRef, snapshot => {
+            ideasContainer.innerHTML = ""; // تفريغ المحتوى السابق
+            if (snapshot.empty) {
+                console.log("❌ لا توجد أفكار مطابقة للبحث.");
+                noIdeasMessage.style.display = "block";
+                return;
+            }
+            noIdeasMessage.style.display = "none";
+            snapshot.docs.forEach(docSnap => {
+                const idea = docSnap.data();
+                let photoSrc = idea.userProfilePic || "images/default-avatar.png";
+                if (photoSrc && !photoSrc.startsWith("http")) {
+                    photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+                }
+                //  إنشاء بطاقة لكل فكرة مطابقة
+                const card = document.createElement("div");
+                card.className = "idea-card";
+                card.innerHTML = `
+                    <div class="profile">
+                        <img src="${photoSrc}" alt="${idea.username}"
+                             onerror="this.onerror=null; this.src='images/default-avatar.png';">
+                        <p class="creator">${idea.username}</p>
+                    </div>
+                    <div class="idea-content">
+                        <p><strong>${idea.title}</strong></p>
+                        <p>مجال الفكرة: ${idea.domain}</p>
+                        <p>${idea.createdAtHijri}</p>
+                    </div>
+                `;
+                // توجيه إلى تفاصيل الفكرة عند الضغط
+                card.addEventListener("click", () => {
+                    window.location.assign(`IdeaDetails.html?id=${docSnap.id}`);
+                });
+                ideasContainer.appendChild(card);
+            });
+        });
+    }
+});
 </script>
-
 </body>
 </html>
-
-
+ 
