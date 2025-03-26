@@ -180,13 +180,13 @@
             <div id="filter-date-title" class="filter-section-title">تاريخ النشر</div>
             <div id="filter-date-range" class="filter-date-container">
                 <span id="filter-date-start">11/12/1429</span>
-                <span id="filter-date-end">11/12/1444</span>
+                <span id="filter-date-end">11/12/1446</span>
             </div>
 
             <div id="filter-slider-wrapper" class="filter-slider-container">
                 <div id="filter-slider-track" class="filter-slider-track"></div>
-                <input id="filter-slider1" class="filter-slider" type="range" min="1429" max="1444" value="1429" step="1" oninput="updateFilterSlider()">
-                <input id="filter-slider2" class="filter-slider" type="range" min="1429" max="1444" value="1444" step="1" oninput="updateFilterSlider()">
+                <input id="filter-slider1" class="filter-slider" type="range" min="1429" max="1446" value="1429" step="1" oninput="updateFilterSlider()">
+                <input id="filter-slider2" class="filter-slider" type="range" min="1429" max="1446" value="1446" step="1" oninput="updateFilterSlider()">
             </div>
         </div>
 
@@ -194,11 +194,8 @@
             <div id="filter-category-title" class="filter-section-title">الفئة</div>
             <div id="filter-category-dropdown-container" class="filter-dropdown-container">
                 <select id="filter-category-dropdown" class="filter-dropdown">
-                    <option value="">فئة الفكرة</option>
-                    <option value="tech">تقنية</option>
-                    <option value="health">صحة</option>
-                    <option value="education">تعليم</option>
-                    <option value="environment">بيئة</option>
+                   <option value="">فئة الفكرة</option>
+                   
                 </select>
             </div>
         </div>
@@ -231,8 +228,8 @@
             slider1.value = minValue;
             slider2.value = maxValue;
 
-            let percentMin = ((minValue - 1429) / (1444 - 1429)) * 100;
-            let percentMax = ((maxValue - 1429) / (1444 - 1429)) * 100;
+            let percentMin = ((minValue - 1429) / (1446 - 1429)) * 100;
+            let percentMax = ((maxValue - 1429) / (1446 - 1429)) * 100;
 
             track.style.left = percentMin + "%";
             track.style.width = (percentMax - percentMin) + "%";
@@ -240,6 +237,62 @@
 
         updateFilterSlider();
     </script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
+        authDomain: "wasl-523b4.firebaseapp.com",
+        projectId: "wasl-523b4",
+        storageBucket: "wasl-523b4.firebasestorage.app",
+        messagingSenderId: "410509570015",
+        appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function loadCategories() {
+        const categoryDropdown = document.getElementById("filter-category-dropdown");
+        const querySnapshot = await getDocs(collection(db, "ideas"));
+        let categories = new Set();
+
+        querySnapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.domain) {
+                categories.add(data.domain);
+            }
+        });
+
+        categories.forEach(category => {
+            let option = document.createElement("option");
+            option.value = category;
+            option.textContent = category;
+            categoryDropdown.appendChild(option);
+        });
+    }
+
+    loadCategories();
+
+    document.getElementById("filter-view-results-btn").addEventListener("click", function() {
+        let minDate = document.getElementById("filter-slider1").value;
+        let maxDate = document.getElementById("filter-slider2").value;
+        let category = document.getElementById("filter-category-dropdown").value;
+        let params = new URLSearchParams();
+
+        if (category) params.append("category", category);
+        params.append("minDate", minDate);
+        params.append("maxDate", maxDate);
+
+        window.location.href = "Ideas.html?" + params.toString();
+    });
+
+    document.getElementById("filter-reset-btn").addEventListener("click", function() {
+        window.location.href = "Ideas.html";
+    });
+
+</script>
 
 </body>
 </html>
