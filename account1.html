@@ -19,12 +19,9 @@
 
 body {
     background-color: #fff;
-	  direction: rtl;
+	direction: rtl;
 
 }
-
-
-
 
 .profile-settings-icon {
   position: absolute;
@@ -43,8 +40,6 @@ body {
   border: 1px solid #ddd;
   border-radius: 8px;
 }
-
-
 
 .profile img {
   display:block;
@@ -77,6 +72,7 @@ body {
 
 .profile-ideas-container {
   display: flex;
+  flex-direction: column;
   gap: 15px;
   justify-content: center;
 }
@@ -85,7 +81,6 @@ body {
   background-color: white;
   padding: 15px;
   border-radius: 12px;
-  width: 160px;
   position: relative;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   text-align: center;
@@ -100,7 +95,6 @@ body {
   gap: 3px;
 }
 
-
 .profile-icon {
   width: 20px;
   height: 20px;
@@ -108,15 +102,8 @@ body {
 }
 
 .no-style-link{
-text-decoration:none;
-color:inherit;
-}
-
-.profile-idea-img {
-  width: 50px;
-  height: 50px;
-  display: block;
-  margin: 10px auto;
+  text-decoration:none;
+  color:inherit;
 }
 
 .profile-idea-title {
@@ -130,11 +117,10 @@ color:inherit;
   color: #555;
 }
 
-
-.profile-name{	
-background-color: #f5f5f5;
-text-align:center;
-color: #122C52;
+.profile-name{
+  background-color: #f5f5f5;
+  text-align:center;
+  color: #122C52;
   border-radius: 8px;
 }
 
@@ -165,7 +151,6 @@ color: #122C52;
 .profile-contact-item img {
   width: 24px;
   height: 24px;
-
 }
 
 .profile-contact-item span {
@@ -173,67 +158,117 @@ color: #122C52;
   color: #002147;
 }
 
-	   .material-symbols-outlined {
-            font-size: 40px;
-            color: #072D57;
-            position: absolute;
-            left: 2vw;
-            margin-top: 5vh;
-            cursor: pointer;
-    }
-
+.material-symbols-outlined {
+  font-size: 40px;
+  color: #072D57;
+  position: absolute;
+  left: 2vw;
+  margin-top: 5vh;
+  cursor: pointer;
+}
 </style>
 
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> 
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> 
 </head>
 <body>
+<span class="material-symbols-outlined" onclick="history.back();">arrow_back</span><br>
 
-  
-    <span class="material-symbols-outlined" onclick="history.back();">arrow_back</span><br>
-
-
-  <div class="profile-card">
-    <div class="profile">
-      <img src="images/innovator7.jpg" alt="الصورة الشخصية">
-      <h2>سارة عبدالله</h2>
-    </div>
-<br>	
-<!-- قسم معلومات التواصل -->
-    <div class="profile-name">
-     <br><h3>عن سـارة</h3>
-	 <p>شخص طموح أسعى دائمًا للابتكار وتطوير الحلول الحديثة. أحب استكشاف الأفكار الجديدة التي تساهم في تحسين الحياة من حولي.</p>
-   <br>
-   </div>
-<br>	
-    <!-- قسم الأفكار -->
-    <div class="profile-ideas-section">
-      <h3>أفكار سارة</h3>
-      <div class="profile-ideas-container">
-        <div class="profile-idea-box">
-          <p class="profile-idea-title">
-		  <a href="IdeaDetails.html" class="no-style-link">أجهزة استشعار لمراقبة الجودة</a>
-		  </p>
-          <p class="profile-idea-field">مجال الفكرة: الصناعة</p>
-          <p class="profile-idea-date">١٤٤٤/٨/٢٩</p>
-        </div>
+<div class="profile-card">
+  <div class="profile">
+    <img id="profile-img" src="images/default-avatar.png" alt="الصورة الشخصية">
+    <h2 id="username">اسم المستخدم</h2>
+  </div>
+  <br>
+  <div class="profile-name">
+    <br><h3>عن المستخدم</h3>
+    <p id="user-bio">لا توجد نبذة حالياً.</p>
+    <br>
+  </div>
+  <br>
+  <div class="profile-ideas-section">
+    <h3>أفكار المستخدم</h3>
+    <div class="profile-ideas-container" id="ideas-container"></div>
+  </div>
+  <br>
+  <div class="profile-contact-info">
+    <h3>معلومات التواصل</h3>
+    <div class="profile-contact-icons">
+      <div class="profile-contact-item">
+        <span id="x-handle">غير متاح</span>
+        <img src="images/x..png" alt="تويتر">
       </div>
-    </div>
-<br>
-    <!-- قسم معلومات التواصل -->
-    <div class="profile-contact-info">
-      <h3>معلومات التواصل</h3>
-      <div class="profile-contact-icons">
-        <div class="profile-contact-item">          
-          <span>saral2al</span>
-		  <img src="images/x..png" alt="تويتر">
-        </div>
-        <div class="profile-contact-item">         
-          <span>saral2al</span>
-		  <img src="images/linkedn.png" alt="لينكدإن">
-        </div>
+      <div class="profile-contact-item">
+        <span id="linkedin-handle">غير متاح</span>
+        <img src="images/linkedn.png" alt="لينكدإن">
       </div>
     </div>
   </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+  import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
+    authDomain: "wasl-523b4.firebaseapp.com",
+    projectId: "wasl-523b4",
+    storageBucket: "wasl-523b4.appspot.com",
+    messagingSenderId: "410509570015",
+    appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const params = new URLSearchParams(window.location.search);
+  const uid = params.get("uid");
+
+  if (uid) {
+    const userRef = doc(db, "users", uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const user = userSnap.data();
+      document.getElementById("username").textContent = user.username || "مستخدم مجهول";
+      document.getElementById("profile-img").src = user.profileImage || "images/default-avatar.png";
+      document.getElementById("user-bio").textContent = user.bio || "لا توجد نبذة حالياً.";
+      document.getElementById("x-handle").textContent = user.contactInfo?.xHandle || "غير متاح";
+      document.getElementById("linkedin-handle").textContent = user.contactInfo?.linkedinHandle || "غير متاح";
+
+      loadUserIdeas(uid);
+    }
+  }
+
+  async function loadUserIdeas(userId) {
+    const container = document.getElementById("ideas-container");
+    container.innerHTML = "";
+
+    const ideasQuery = query(collection(db, "ideas"), where("userId", "==", userId));
+    const ideasSnap = await getDocs(ideasQuery);
+
+    if (ideasSnap.empty) {
+      container.innerHTML = "<p style='text-align:center;color:gray;'>لا توجد أفكار.</p>";
+      return;
+    }
+
+    ideasSnap.forEach(docSnap => {
+      const idea = docSnap.data();
+      const div = document.createElement("div");
+      div.className = "profile-idea-box";
+      div.innerHTML = `
+        <p class="profile-idea-title">
+          <a href="IdeaDetails.html?id=${docSnap.id}" class="no-style-link">${idea.title}</a>
+        </p>
+        <p class="profile-idea-field">مجال الفكرة: ${idea.domain}</p>
+        <p class="profile-idea-date">${idea.createdAtHijri}</p>
+      `;
+      container.appendChild(div);
+    });
+  }
+</script>
 
 </body>
 </html>
+
+
