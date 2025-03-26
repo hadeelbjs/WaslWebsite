@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <title>المفضلة</title>
-
+ 
     <!-- Import Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-
+ 
     <style>
         /* Reset basic styles */
         * {
@@ -16,7 +16,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+ 
         /* Page styling */
         body {
             font-family: 'Tajawal', 'Cairo', sans-serif;
@@ -25,7 +25,7 @@
             color: #09315D;
             background: #FFFFFF;
         }
-
+ 
         /* Navbar styling */
         .navbar-fav {
             display: flex;
@@ -36,13 +36,13 @@
             position: relative;
             width: 100%;
         }
-
+ 
         /* Logo styling */
         .logo-fav img {
             width: 60px;
             height: auto;
         }
-
+ 
         /* Hamburger menu styling */
         .humburger-fav {
             display: flex;
@@ -55,7 +55,7 @@
             justify-content: center;
             align-items: center;
         }
-
+ 
         .humburger-fav .bar-fav {
             width: 30px;
             height: 4px;
@@ -64,18 +64,18 @@
             border-radius: 2px;
             transition: opacity 0.3s ease;
         }
-
+ 
         /* Hide the bars when menu is active and show "X" */
         .humburger-fav.active .bar-fav {
             display: none;
         }
-
+ 
         .humburger-fav.active::before {
             content: "✖"; /* X icon */
             font-size: 28px;
             color: #09315D;
         }
-
+ 
         /* Page title */
         .favourite-page-title {
             font-size: 26px;
@@ -83,7 +83,7 @@
             margin: 20px;
             text-align: right;
         }
-
+ 
         /* Favorite card styling */
         .favourite-page-card {
             background: #F0F0F0;
@@ -98,7 +98,7 @@
             height: 180px;
             position: relative;
         }
-
+ 
         /* Close button */
         .favourite-page-close {
             position: absolute;
@@ -110,7 +110,7 @@
             background: none;
             border: none;
         }
-
+ 
         /* Innovator image */
         .favourite-page-card img {
             width: 90px;
@@ -119,34 +119,34 @@
             border: 3px solid #09315D;
             object-fit: cover;
         }
-
+ 
         /* Image container */
         .favourite-page-card-image {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
+ 
         /* Innovator's name */
         .favourite-page-card-creator {
             font-size: 14px;
             color: #09315D;
             margin-top: 5px;
         }
-
+ 
         /* Card content */
         .favourite-page-card-content {
             flex: 1;
             text-align: right;
             margin-right: 20px;
         }
-
+ 
         /* Idea title */
         .favourite-page-card-title {
             font-size: 20px;
             font-weight: bold;
         }
-
+ 
         /* Date styling */
         .favourite-page-card-date {
             font-size: 16px;
@@ -156,7 +156,7 @@
             text-decoration: none;
             color:#09315D
         }
-
+ 
         /* Sidebar menu */
         .menu-overlay-fav {
             position: fixed;
@@ -172,11 +172,11 @@
             transition: right 0.4s ease-in-out;
             z-index: 1000;
         }
-
+ 
         .menu-overlay-fav.active {
             right: 0;
         }
-
+ 
         .menu-overlay-fav a {
             font-size: 24px;
             color: #09315D;
@@ -191,34 +191,34 @@
     text-decoration: none;
     color: #09315D;
 }
-
+ 
 .profile-link {
     text-decoration: none;
     color: #09315D;
 }
-
+ 
 .menu-overlay-fav a:visited,
 .profile-link:visited {
     color: #09315D;
 }
-
+ 
 .profile-link img {
-    width: 90px; 
-    height: 90px; 
-    border-radius: 50%; 
-    border: 3px solid #09315D; 
-    object-fit: cover; 
-    display: block; 
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid #09315D;
+    object-fit: cover;
+    display: block;
 }
-
+ 
 .modal {
-    display: none; 
+    display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 280px;
-    background: rgba(0, 0, 0, 0.8); 
+    background: rgba(0, 0, 0, 0.8);
     color: white;
     border-radius: 10px;
     text-align: center;
@@ -226,13 +226,13 @@
     z-index: 1000;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
-
+ 
 .modal-content {
     background: #2a2d34;
     padding: 15px;
     border-radius: 10px;
 }
-
+ 
 .modal-content h2 {
     font-size: 14px;
     font-weight: bold;
@@ -244,13 +244,13 @@
     color: #ccc;
     margin-bottom: 15px;
 }
-
+ 
 .modal-buttons {
     display: flex;
     justify-content: space-between;
     gap: 10px;
 }
-
+ 
 .modal-buttons button {
     flex: 1;
     padding: 8px 0;
@@ -259,137 +259,84 @@
     cursor: pointer;
     font-size: 12px;
 }
-
+ 
 .modal-buttons button:last-child {
     background: #0c2340;
     color: white;
     font-weight: bold;
 }
-
+ 
 .modal-buttons button:first-child {
     background: transparent;
     border: 1px solid #ccc;
     color: #ccc;
 }
-
+ 
 .favourite-page-card-date {
     text-decoration: none !important;
     color: #09315D !important;
     cursor: default !important;
 }
     </style>
-
+ 
 
 <script>
-       
-
+      
+ 
     function openLogoutModal() {
         document.getElementById("logoutModal").style.display = "block";
     }
-    
+   
     function closeLogoutModal() {
         document.getElementById("logoutModal").style.display = "none";
     }
-    
+   
     function confirmLogout() {
-        window.location.href = "index.html"; 
+        window.location.href = "index.html";
     }
-    
+   
     
     function toggleMenu() {
         var menu = document.getElementById("menuOverlay");
         var hamburgerIcon = document.querySelector("#hamburgerIcon");
         var closeIcon = document.getElementById("closeIcon");
-    
+   
         if (menu.classList.contains("active")) {
             menu.classList.remove("active");
-        hamburgerIcon.style.display = "block"; 
-        closeIcon.style.display = "none"; 
+        hamburgerIcon.style.display = "block";
+        closeIcon.style.display = "none";
     } else {
         menu.classList.add("active");
-        hamburgerIcon.style.display = "none"; 
-        closeIcon.style.display = "block"; 
+        hamburgerIcon.style.display = "none";
+        closeIcon.style.display = "block";
     }
 }
     </script>
-
+ 
 
 </head>
 <body>
-
+ 
     <!-- Navbar -->
-    <nav id="navbar-fav" class="navbar-fav">
-        <div id="logo-fav" class="logo-fav">
-            <a href="#">
-                <img src="images/Logo.png" alt="الشعار">
-            </a>
-        </div>
-        <div id="humburger-icon" class="humburger-fav" onclick="toggleMenuFav()">
-            <span class="bar-fav"></span>
-            <span class="bar-fav"></span>
-            <span class="bar-fav"></span>
-        </div>
-    </nav>
-
-    <!-- Page title -->
-    <h2 id="favourite-page-title" class="favourite-page-title">المفضلة</h2>
-
-    <!-- Favorite cards -->
-    
-    <div id="fav-card-1" class="favourite-page-card">
-        <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
-        
-        <div class="favourite-page-card-content">
-            <div class="favourite-page-card-title" onclick="window.location.href='IdeaDetails.html';" style="cursor: pointer;">
-                أجهزة استشعار لمراقبة الجودة
-            </div>
-            <div class="favourite-page-card-date">١٤٤٤/٨/٢٩</div>
-        </div>
-    
-        <div class="favourite-page-card-image">
-            <a href="account1.html" class="profile-link">
-                <img src="images/innovator7.jpg" alt="صورة المبتكر">
-            </a>
-            <div class="favourite-page-card-creator">سارة عبدالله</div>
-        </div>
+<nav id="navbar-fav" class="navbar-fav">
+    <div id="logo-fav" class="logo-fav">
+        <a href="#">
+            <img src="images/Logo.png" alt="الشعار">
+        </a>
     </div>
-    
-    <div id="fav-card-2" class="favourite-page-card">
-        <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
-        
-        <div class="favourite-page-card-content">
-            <div class="favourite-page-card-title" >
-                تطبيق لمراقبة الأنشطة
-            </div>
-            <div class="favourite-page-card-date">١٤٤٤/١٠/٢٤</div>
-        </div>
-    
-        <div class="favourite-page-card-image">
-         
-                <img src="images/innovator5.jpg" alt="صورة المبتكر">
-            </a>
-            <div class="favourite-page-card-creator">فهد محمد</div>
-        </div>
+    <div id="humburger-icon" class="humburger-fav" onclick="toggleMenuFav()">
+        <span class="bar-fav"></span>
+        <span class="bar-fav"></span>
+        <span class="bar-fav"></span>
     </div>
-    
-    <div id="fav-card-3" class="favourite-page-card">
-        <button class="favourite-page-close" onclick="removeCardFav(this)">&times;</button>
-        
-        <div class="favourite-page-card-content">
-            <div class="favourite-page-card-title">
-                تحليل الحمض النووي بسهولة
-            </div>
-            <div class="favourite-page-card-date">١٤٤٥/١٠/٢٤</div>
-        </div>
-    
-        <div class="favourite-page-card-image">
-           
-                <img src="images/innovator6.jpg" alt="صورة المبتكر">
-            </a>
-            <div class="favourite-page-card-creator">عبدالرحمن صالح</div>
-        </div>
-    </div>
-
+</nav>
+ 
+<!-- Page title -->
+<h2 id="favourite-page-title" class="favourite-page-title">المفضلة</h2>
+ 
+<!-- ✅ حاوية الكروت الديناميكية -->
+<div id="favorites-container" style="padding: 20px;"></div>
+ 
 
     <!-- Sidebar menu -->
     <div id="menuOverlayFav" class="menu-overlay-fav">
@@ -399,8 +346,8 @@
         <a href="FavouritePage.html">المفضلة</a>
         <a href="#" onclick="openLogoutModal()">تسجيل الخروج</a>
     </div>
-    </div>
-
+   </div>
+ 
     <div id="logoutModal" class="modal">
         <div class="modal-content">
             <h2>تسجيل الخروج</h2>
@@ -411,27 +358,131 @@
             </div>
         </div>
     </div>
-
-    
+ 
+   
     <!-- JavaScript -->
     <script>
-        function removeCardFav(button) {
-            button.parentElement.remove();
-        }
-
+        //function removeCardFav(button) {
+            //button.parentElement.remove();
+        //}
+ 
         function toggleMenuFav() {
             var menu = document.getElementById("menuOverlayFav");
             var humburger = document.getElementById("humburger-icon");
-
+ 
             menu.classList.toggle("active");
             humburger.classList.toggle("active"); // Change the icon to X when opened
         }
-
+ 
         function confirmLogout() {
             window.location.href = "index.html"; // Redirect to logout at HomePage
         }
-          
+         
+    </script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+    import { updateDoc, arrayRemove } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
+      authDomain: "wasl-523b4.firebaseapp.com",
+      projectId: "wasl-523b4",
+      storageBucket: "wasl-523b4.appspot.com",
+      messagingSenderId: "410509570015",
+      appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a"
+    };
+   
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth();
+   
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return window.location.href = "Login.html";
+   
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+   
+      if (!userSnap.exists()) return;
+   
+      const favorites = userSnap.data().favorites || [];
+      console.log("🌟 الأفكار المفضلة:", favorites);
+   
+      const validFavorites = favorites.filter(id => id); // يحذف الـ null أو undefined
+   
+      if (validFavorites.length === 0) {
+        document.body.innerHTML += "<p style='text-align:center; color:#777;'>لا توجد أفكار مفضلة حالياً.</p>";
+        return;
+      }
+   
+      for (const ideaId of validFavorites) {
+        const ideaRef = doc(db, "ideas", ideaId);
+        const ideaSnap = await getDoc(ideaRef);
+   
+        if (ideaSnap.exists()) {
+          const idea = ideaSnap.data();
+   
+          const card = document.createElement("div");
+          card.className = "favourite-page-card";
+   
+          card.innerHTML = `
+            <button class="favourite-page-close" onclick="removeFromFavorites(this, '${ideaId}')">&times;</button>
+
+            <div class="favourite-page-card-content">
+              <div class="favourite-page-card-title" onclick="window.location.href='IdeaDetails.html?id=${ideaId}'" style="cursor: pointer;">
+                ${idea.title}
+              </div>
+              <div class="favourite-page-card-date">${idea.createdAtHijri || "بدون تاريخ"}</div>
+            </div>
+            <div class="favourite-page-card-image">
+              <img src="${idea.userProfilePic || 'images/default-avatar.png'}" alt="صورة المبتكر">
+              <div class="favourite-page-card-creator">${idea.username || "مستخدم"}</div>
+            </div>
+          `;
+   
+          document.body.appendChild(card);
+        } else {
+          console.warn("⚠️ لم يتم العثور على فكرة بمعرف:", ideaId);
+        }
+      }
+    });
+    window.db = db;
+   window.auth = auth;
+   window.doc= doc;
+   window.updateDoc= updateDoc;
+   window.arrayRemove=arrayRemove;
     </script>
 
+
+   <script>
+    async function removeFromFavorites(button, ideaId) {
+    console.log("زر الحذف تم النقر عليه", ideaId);
+
+    const user = window.auth.currentUser;
+    if (!user) {
+        console.error("❌ لا يوجد مستخدم مسجل للدخول.");
+        return;
+    }
+
+    const userRef = window.doc(window.db, "users", user.uid); // ✅ استخدام window.doc
+
+    try {
+        await window.updateDoc(userRef, {
+            favorites: window.arrayRemove(ideaId) // ✅ استخدام window.arrayRemove
+        });
+
+        button.parentElement.remove();
+        console.log(`✅ الفكرة ${ideaId} حذفت من المفضلة بنجاح!`);
+    } catch (error) {
+        console.error("❌ خطأ أثناء حذف الفكرة:", error);
+    }
+}
+
+
+
+
+</script>
 </body>
 </html>
+ 
