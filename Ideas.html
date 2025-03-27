@@ -540,7 +540,7 @@ onSnapshot(filteredIdeasQuery, snapshot => {
         }
         const card = document.createElement("div");
         card.className = "idea-card";
- card.innerHTML = 
+ card.innerHTML = `
   <div class="profile">
     <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
       <img src="${photoSrc}" alt="${idea.username}" 
@@ -555,7 +555,7 @@ onSnapshot(filteredIdeasQuery, snapshot => {
     <p>مجال الفكرة: ${idea.domain}</p>
     <p>${idea.createdAtHijri}</p>
   </div>
-;
+`;
         ideasContainer.appendChild(card);
     });
 });
@@ -614,7 +614,7 @@ if (minDate && maxDate) {
 
             const card = document.createElement("div");
             card.className = "idea-card";
-card.innerHTML = 
+card.innerHTML = `
   <div class="profile">
     <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
       <img src="${photoSrc}" alt="${idea.username}" 
@@ -629,7 +629,7 @@ card.innerHTML =
     <p>مجال الفكرة: ${idea.domain}</p>
     <p>${idea.createdAtHijri}</p>
   </div>
-;
+`;
             ideasContainer.appendChild(card);
         });
     });
@@ -691,7 +691,7 @@ if (category && minDate && maxDate) {
 
             const card = document.createElement("div");
             card.className = "idea-card";
-card.innerHTML = 
+card.innerHTML = `
   <div class="profile">
     <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
       <img src="${photoSrc}" alt="${idea.username}" 
@@ -706,7 +706,7 @@ card.innerHTML =
     <p>مجال الفكرة: ${idea.domain}</p>
     <p>${idea.createdAtHijri}</p>
   </div>
-;
+`;
 
 
             ideasContainer.appendChild(card);
@@ -744,7 +744,7 @@ searchInput.addEventListener("keypress", function(event) {
                 //  إنشاء بطاقة لكل فكرة مطابقة
                 const card = document.createElement("div");
                 card.className = "idea-card";
-card.innerHTML = 
+card.innerHTML = `
   <div class="profile">
     <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
       <img src="${photoSrc}" alt="${idea.username}" 
@@ -759,7 +759,7 @@ card.innerHTML =
     <p>مجال الفكرة: ${idea.domain}</p>
     <p>${idea.createdAtHijri}</p>
   </div>
-;
+`;
                 ideasContainer.appendChild(card);
             });
         });
