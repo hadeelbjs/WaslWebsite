@@ -483,7 +483,7 @@
         }
         noIdeasMessage.style.display = "none";
         for (const docSnap of docs) {
-            const idea = typeof docSnap.data === "function" ? docSnap.data() : docSnap;
+            const idea = (docSnap && typeof docSnap.data === "function") ? docSnap.data() : docSnap;
             const ideaId = docSnap.id || idea.id;
             await displayIdeaCard(idea, ideaId);
         }
@@ -541,7 +541,6 @@
         });
     }
 </script>
-
 
 </body>
 </html>
