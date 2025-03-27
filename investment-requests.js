@@ -136,7 +136,7 @@ async function fetchInvestmentRequests() {
             <p><strong>عنوان الفكرة:</strong> ${ideaData.title}</p>
             <p><strong>المستثمر:</strong> ${investorData.username} (${investorData.email})</p>
             <div class="user-info">
-                        <img src= ${investorData.profileImage ? $investorData.profileImage :"images/default-avatar.png"  }" alt="صورة ${investorData.username}">
+                        <img src= ${investorData.profileImage ? investorData.profileImage :"images/default-avatar.png"  }" alt="صورة ${investorData.username}">
                         <p>${investorData.username}</p>
             </div>
             <hr>
@@ -157,7 +157,7 @@ async function fetchInvestmentRequests() {
             <p><strong>عنوان الفكرة:</strong> ${ideaData.title}</p>
             <p><strong>المستثمر:</strong> ${investorData.username} (${investorData.email})</p>
             <div class="user-info">
-                       <img src="${investorData.profileImage ? investorData.profileImage : 'images/default-avatar.png'}" alt="صورة ${investorData.username}">
+                       <img src= ${investorData.profileImage ? investorData.profileImage : 'images/default-avatar.png'} alt="صورة ${investorData.username}">
                         <p>${investorData.username}</p>
             </div>
             <hr>
@@ -195,6 +195,8 @@ async function updateRequestStatus(newStatus, requestId) {
             status: newStatus
           });
         alert(`تم إرسال الرد بنجاح!`);
+        window.location.reload(true);
+
     } catch (error) {
         console.error("Error updating request status:", error);
     }
