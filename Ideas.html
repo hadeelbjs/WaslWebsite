@@ -536,7 +536,7 @@ onSnapshot(filteredIdeasQuery, snapshot => {
         
         let photoSrc = idea.userProfilePic || "images/default-avatar.png";
         if (photoSrc && !photoSrc.startsWith("http")) {
-            photoSrc = /${photoSrc.replace(/^\/?/, "")};
+         photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
         }
         const card = document.createElement("div");
         card.className = "idea-card";
@@ -609,7 +609,7 @@ if (minDate && maxDate) {
         filteredIdeas.forEach(idea => {
             let photoSrc = idea.userProfilePic || "images/default-avatar.png";
             if (photoSrc && !photoSrc.startsWith("http")) {
-                photoSrc = /${photoSrc.replace(/^\/?/, "")};
+            photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
             }
 
             const card = document.createElement("div");
@@ -686,7 +686,7 @@ if (category && minDate && maxDate) {
         filteredIdeas.forEach(idea => {
             let photoSrc = idea.userProfilePic || "images/default-avatar.png";
             if (photoSrc && !photoSrc.startsWith("http")) {
-                photoSrc = /${photoSrc.replace(/^\/?/, "")};
+          photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
             }
 
             const card = document.createElement("div");
@@ -739,7 +739,7 @@ searchInput.addEventListener("keypress", function(event) {
                 const idea = docSnap.data();
                 let photoSrc = idea.userProfilePic || "images/default-avatar.png";
                 if (photoSrc && !photoSrc.startsWith("http")) {
-                    photoSrc = /${photoSrc.replace(/^\/?/, "")};
+               photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
                 }
                 //  إنشاء بطاقة لكل فكرة مطابقة
                 const card = document.createElement("div");
