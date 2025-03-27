@@ -1,42 +1,199 @@
-import{db, app, auth, storage} from "./index.js";
-import {onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-import { collection, query, where, getDocs, setDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { getFirestore, collection, addDoc, doc, query, where, getDocs, serverTimestamp, getDoc, updateDoc  } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
+// إعداد Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
+    authDomain: "wasl-523b4.firebaseapp.com",
+    projectId: "wasl-523b4",
+    storageBucket: "wasl-523b4.appspot.com",
+    messagingSenderId: "410509570015",
+    appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a",
+    measurementId: "G-DD60XW5EVT"
+};
 
+// التأكد من عدم تهيئة التطبيق مسبقًا لتجنب الخطأ
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const database = getFirestore(app);
+const auth = getAuth(app);
+
+// التأكد من أن المستخدم مسجل دخول
 window.onload = function () {
     onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        alert("Must be signed in to access this page");
-        window.location.href = "index.html";
-      }
+        if (!user) {
+            alert("يتطلب تسجيل الدخول");
+            window.location.href = "index.html";
+        }
     });
-  };
+};
 
-//Get All Invetment Requests 
-async function getInvetmentRequests(){
-    const q = query(collection(db, "requests"), where("user", "==", true));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
-    });
+// إرسال طلب استثمار
+async function requestInvestment() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const ideaId = urlParams.get('id'); // الحصول على الـ id من الرابط
+
+        if (!auth.currentUser) {
+            alert("يتطلب تسجيل الدخول");
+            return;
+        }
+
+        const requestDate = serverTimestamp();
+        const investorId = auth.currentUser.uid;
+        const status = "بانتظار الرد"; // Default status
+        const ideaRef = doc(database, "ideas", ideaId);
+        const ideaSnapshot = await getDoc(ideaRef);
+
+        if (!ideaSnapshot.exists()) {
+            console.error(" Idea not found");
+            return;
+        }
+
+        const innovatorId = ideaSnapshot.data().userId;
+
+        if (innovatorId === investorId) {
+            console.warn(" Investor cannot invest in their own idea!");
+            return;
+        }
+        const q = query(
+            requestsRef,
+            where("investorId", "==", investorId),
+            where("ideaId", "==", ideaId)
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+            alert("لقد قمت بالفعل بإرسال طلب استثمار لهذه الفكرة!");
+            return;
+        }
+
+        const request = {
+            requestDate,
+            status,
+            investorId,
+            ideaId
+        };
+        
+        const requestsRef = collection(database, "requests");
+        await addDoc(requestsRef, request);
+        alert("Request sent successfully!");
+    } catch (error) {
+        console.error(" Error sending investment request:", error);
+    }
 }
 
-async function requestInvestment(){
-    const urlParams = new URLSearchParams(window.location.search);
+async function fetchInvestmentRequests() {
+    const auth = getAuth(app);
 
-    const ideaId = urlParams.get('id'); // الحصول على الـ id من الرابط
-    requestDate = serverTimestamp();
-    const investorId = user.uid;
-    var status = "pending"; // Default
+    if (!auth.currentUser) {
+        console.error(" No user is currently signed in.");
+        return;
+    }
+
+    console.log(auth.currentUser.uid);
+
+    const userIdeas = await getUserIdeas(auth.currentUser.uid);
+    let ideaIDs = Object.keys(userIdeas || {});
+
+    if (!ideaIDs || ideaIDs.length === 0) {
+        console.log("لا توجد أفكار لهذا المستخدم.");
+        return;
+    }
+
+    console.log(ideaIDs);
     
-    const request = {
-        requestDate,
-        status,
-        investorId,
-        ideaId
-    };
+    const allRequestsSnapshot = await getDocs(collection(database, "requests"));
+    const filteredRequests = allRequestsSnapshot.docs
+    .map(docSnap => ({ id: docSnap.id, ...docSnap.data() })) // استخراج البيانات من كل مستند
+    .filter(request => ideaIDs.includes(request.ideaId));
+    console.log(filteredRequests);
+    const container = document.getElementById("requestsContainer");
+    container.innerHTML = "";
 
-    await addDoc(collection(db, "requests"), request);
-    alert("request sent");
+    for (const data of filteredRequests)  {
+       console.log(filteredRequests);
+        //  جلب بيانات المستثمر (صاحب الطلب)
+        const investorRef = data.investorId;
+        const investorSnapshot = await getDoc(doc(database, "users", investorRef));
+        const investorData = investorSnapshot.exists() ? investorSnapshot.data() : { username: "غير معروف", email: "غير متوفر" };
+        
+        const ideaDocRef = doc(database, "ideas", data.ideaId);
+        const ideaSnapshot = await getDoc(ideaDocRef);
+        if (!ideaSnapshot.exists()) continue;
+        const ideaData = ideaSnapshot.data();
+        console.log(investorData);
+        console.log(ideaData);
+        //  إنشاء عنصر الطلب
+        const requestElement = document.createElement("div");
+        requestElement.classList.add("invRequest");
+        if(data.status == "بانتظار الرد" ){
+        requestElement.innerHTML = `
+            <p><strong>عنوان الفكرة:</strong> ${ideaData.title}</p>
+            <p><strong>المستثمر:</strong> ${investorData.username} (${investorData.email})</p>
+            <div class="user-info">
+                        <img src="${investorData.profileImage ? investorData.profileImage :"images/default-avatar.png"  }" alt="صورة ${investorData.username}">
+                        <p>${investorData.username}</p>
+            </div>
+            <hr>
+            <p><strong>تاريخ الطلب:</strong>  ${data.requestDate?.toDate ? data.requestDate.toDate().toLocaleString() : "غير متوفر"}</p>
+            <p><strong>حالة الطلب:</strong> ${data.status}</p>
+            <div class="actions">
+                <button class="btn approve" id="accept" data-id=${data.id}><span class="material-symbols-outlined">check</span></button>
+                <button class="btn reject" id ="reject" data-id=${data.id}>><span class="material-symbols-outlined">close</span></button>
+            </div>
+        `;
+        container.appendChild(requestElement);
+        const aButton = document.getElementById("accept");
+        const rButton = document.getElementById("reject");
+        aButton.addEventListener("click", () => updateRequestStatus("مقبول", data.id));
+        rButton.addEventListener("click", () => updateRequestStatus("مرفوض", data.id));
+        } else{
+            requestElement.innerHTML = `
+            <p><strong>عنوان الفكرة:</strong> ${ideaData.title}</p>
+            <p><strong>المستثمر:</strong> ${investorData.username} (${investorData.email})</p>
+            <div class="user-info">
+                        <img src="${investorData.profileImage ? investorData.profileImage :"images/default-avatar.png"  }" alt="صورة ${investorData.username}">
+                        <p>${investorData.username}</p>
+            </div>
+            <hr>
+            <p><strong>تاريخ الطلب:</strong>  ${data.requestDate?.toDate ? data.requestDate.toDate().toLocaleString() : "غير متوفر"}</p>
+            <p><strong>حالة الطلب:</strong> ${data.status}</p>
+            
+        `;
+        container.appendChild(requestElement);
+        }
+            
+    }
 }
+//  وظيفة لجلب جميع الأفكار التي يملكها المستخدم
+async function getUserIdeas(userId) {
+    const userRef = collection(database, "users"); 
+    const q = query(userRef, where("userId", "==", userId)); 
+
+    const querySnapshot = await getDocs(q);
+    
+    if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0]; 
+        console.log(doc.data().ideas);
+        return doc.data().ideas;
+        
+    }
+    
+    return null; // في حالة عدم وجود بيانات
+}
+async function updateRequestStatus(newStatus, requestId) {
+    
+    try {
+        
+        const requestRef = doc(database, "requests", requestId);
+        await updateDoc(requestRef, {
+            status: newStatus
+          });
+        alert(`تم إرسال الرد بنجاح!`);
+    } catch (error) {
+        console.error("Error updating request status:", error);
+    }
+}
+export { requestInvestment, fetchInvestmentRequests, updateRequestStatus };

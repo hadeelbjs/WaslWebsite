@@ -146,7 +146,7 @@ color: #09315D;
  
 
       
-        <button class="investment-btn">طلب استثمار</button>
+        <button class="investment-btn"  id="rb">طلب استثمار</button>
     </div>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
@@ -234,6 +234,15 @@ color: #09315D;
           }
         });
         </script>
+        <script type="module">
+          import { requestInvestment } from "./investment-requests.js"; 
+          
+          document.addEventListener("DOMContentLoaded", () => {
+              const button = document.getElementById("rb");
+              button.addEventListener("click", requestInvestment);
+          });
+      
+      </script>
        
 </body>
 </html>

@@ -7,7 +7,10 @@
     <title>طلبات الاستثمار</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
     <style>
         /* الألوان والخطوط */
         body {
@@ -382,20 +385,22 @@
             document.getElementById("logoutModal").style.display = "block";
         }
         
-function closeLogoutModal() {
-    document.getElementById("logoutModal").style.display = "none";
-}
+        function closeLogoutModal() {
+            document.getElementById("logoutModal").style.display = "none";
+        }
 
-function confirmLogout() {
-    window.location.href = "index.html"; 
-}
+        function confirmLogout() {
+            window.location.href = "index.html"; 
+        }
 
     </script>
     
     </header>
     <main>
         <div class="wrapper">
+            
             <h1>الطلبات</h1>
+            <div id="requestsContainer">
             <div class="container">
                 <div class="invRequest">
                     <p><strong>عنوان الفكرة:</strong></p>
@@ -453,7 +458,26 @@ function confirmLogout() {
                     </div>
                 </div>
             </div>
+            </div>
         </div>
     </main>
+    <script type="module" >
+        import {fetchInvestmentRequests, updateRequestStatus} from "./investment-requests.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+        
+        const auth = getAuth();
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                console.log("✅ User is signed in:", user);
+                console.log("User ID:", user.uid);
+                fetchInvestmentRequests(); // استدعاء جلب البيانات بعد التأكد من تسجيل الدخول
+            }else {
+                console.log("❌ No user is signed in.");
+            }
+        });
+
+    </script>
 </body>
 </html>
+ 
