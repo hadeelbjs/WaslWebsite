@@ -475,72 +475,51 @@
         ideasContainer.appendChild(card);
     };
 
-    const displayIdeasFromSnapshot = async (snapshot) => {
+    const displayIdeasFromDocs = async (docs) => {
         ideasContainer.innerHTML = "";
-        if (snapshot.empty) {
+        if (!docs.length) {
             noIdeasMessage.style.display = "block";
             return;
         }
         noIdeasMessage.style.display = "none";
-
-        for (const docSnap of snapshot.docs) {
+        for (const docSnap of docs) {
             const idea = docSnap.data();
-            await displayIdeaCard(idea, docSnap.id);
+            await displayIdeaCard(idea, docSnap.id || idea.id);
         }
     };
 
-    const ideasQuery = query(collection(db, "ideas"));
-    onSnapshot(ideasQuery, displayIdeasFromSnapshot);
+    const applyFiltersAndDisplayIdeas = async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const minDate = urlParams.get("minDate")?.trim() || "";
+        const maxDate = urlParams.get("maxDate")?.trim() || "";
+        const category = urlParams.get("category")?.trim() || "";
 
-    // فلترة حسب الفئة والتاريخ
-    const urlParams = new URLSearchParams(window.location.search);
-    const minDate = urlParams.get("minDate")?.trim() || "";
-    const maxDate = urlParams.get("maxDate")?.trim() || "";
-    const category = urlParams.get("category")?.trim() || "";
-
-    let ideasRef = collection(db, "ideas");
-    let filters = [];
-
-    if (category && !(minDate && maxDate)) {
-        filters.push(where("domain", "==", category));
-    }
-
-    if (!(category && minDate && maxDate)) {
-        const filteredIdeasQuery = filters.length > 0 ? query(ideasRef, ...filters) : ideasRef;
-        onSnapshot(filteredIdeasQuery, displayIdeasFromSnapshot);
-    }
-
-    if ((minDate && maxDate) || (category && minDate && maxDate)) {
-        getDocs(collection(db, "ideas")).then(async snapshot => {
-            let filteredIdeas = [];
-
-            snapshot.docs.forEach(docSnap => {
+        if ((minDate && maxDate) || (category && minDate && maxDate)) {
+            const snapshot = await getDocs(collection(db, "ideas"));
+            const filteredIdeas = snapshot.docs.filter(docSnap => {
                 const idea = docSnap.data();
                 let hijriDate = idea.createdAtHijri?.replace(/\s/g, "").replace("هـ", "") || "";
                 const arabicToEnglishNumbers = str => str.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
                 hijriDate = arabicToEnglishNumbers(hijriDate);
                 let hijriYear = hijriDate.slice(-4);
-
                 const matchCategory = category ? idea.domain === category : true;
                 const matchDate = hijriYear >= minDate && hijriYear <= maxDate;
+                return matchCategory && matchDate;
+            }).map(docSnap => ({ ...docSnap.data(), id: docSnap.id }));
 
-                if (matchCategory && matchDate) {
-                    filteredIdeas.push({ ...idea, id: docSnap.id });
-                }
+            await displayIdeasFromDocs(filteredIdeas);
+
+        } else {
+            let filters = [];
+            if (category) filters.push(where("domain", "==", category));
+            const filteredIdeasQuery = filters.length ? query(collection(db, "ideas"), ...filters) : collection(db, "ideas");
+            onSnapshot(filteredIdeasQuery, async snapshot => {
+                await displayIdeasFromDocs(snapshot.docs);
             });
+        }
+    };
 
-            ideasContainer.innerHTML = "";
-            if (filteredIdeas.length === 0) {
-                noIdeasMessage.style.display = "block";
-                return;
-            }
-            noIdeasMessage.style.display = "none";
-
-            for (const idea of filteredIdeas) {
-                await displayIdeaCard(idea, idea.id);
-            }
-        });
-    }
+    applyFiltersAndDisplayIdeas();
 
     const searchInput = document.getElementById("searchInput");
     searchInput.addEventListener("keypress", function(event) {
@@ -548,7 +527,9 @@
             const searchQuery = searchInput.value.trim();
             if (searchQuery === "") return;
             const searchQueryRef = query(collection(db, "ideas"), where("title", "==", searchQuery));
-            onSnapshot(searchQueryRef, displayIdeasFromSnapshot);
+            onSnapshot(searchQueryRef, async snapshot => {
+                await displayIdeasFromDocs(snapshot.docs);
+            });
         }
     });
 
@@ -559,6 +540,7 @@
         });
     }
 </script>
+
 
 
 </body>
