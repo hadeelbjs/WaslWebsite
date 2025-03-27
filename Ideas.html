@@ -435,36 +435,50 @@ onSnapshot(ideasQuery, snapshot => {
         return;
     }
     noIdeasMessage.style.display = "none";
-    snapshot.docs.forEach(docSnap => {
-        const idea = docSnap.data();
-      
-        // التأكد من الصورة الصحيحة
-        let photoSrc = idea.userProfilePic || "images/default-avatar.png"; // استخدام الحقل الصحيح
-        if (photoSrc && !photoSrc.startsWith("http")) {
-            photoSrc = `/${photoSrc.replace(/^\/?/, "")}`; // تأكد من عدم وجود / في بداية الرابط
-        }
-        const card = document.createElement("div");
-        card.className = "idea-card";
-      
-card.innerHTML = `
-  <div class="profile">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
-        ideasContainer.appendChild(card);
-    });
+// دالة للحصول على اسم المستخدم الأحدث من قاعدة البيانات
+async function getUsernameByUserId(userId) {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("uid", "==", userId));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        return userData.username || "مستخدم";
+    }
+    return "مستخدم";
+}
+
+snapshot.docs.forEach(async docSnap => {
+    const idea = docSnap.data();
+
+    let photoSrc = idea.userProfilePic || "images/default-avatar.png";
+    if (photoSrc && !photoSrc.startsWith("http")) {
+        photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+    }
+
+    // جلب الاسم المحدث من users
+    const username = await getUsernameByUserId(idea.userId);
+
+    const card = document.createElement("div");
+    card.className = "idea-card";
+    card.innerHTML = `
+      <div class="profile">
+        <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
+          <img src="${photoSrc}" alt="${username}" 
+               onerror="this.onerror=null; this.src='images/default-avatar.png';">
+        </a>
+        <p class="creator">${username}</p>
+      </div>
+      <div class="idea-content">
+        <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
+          <p><strong>${idea.title}</strong></p>
+        </a>
+        <p>مجال الفكرة: ${idea.domain}</p>
+        <p>${idea.createdAtHijri}</p>
+      </div>
+    `;
+    ideasContainer.appendChild(card);
 });
+
 // استخراج الفلاتر من URL والتأكد أنها ليست فارغة
 const urlParams = new URLSearchParams(window.location.search);
 const minDate = urlParams.get("minDate")?.trim() || "";
@@ -516,35 +530,49 @@ onSnapshot(filteredIdeasQuery, snapshot => {
     }
     noIdeasMessage.style.display = "none";
  
-    snapshot.docs.forEach(docSnap => {
-        const idea = docSnap.data();
-        
-        let photoSrc = idea.userProfilePic || "images/default-avatar.png";
-        if (photoSrc && !photoSrc.startsWith("http")) {
-            photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
-        }
-        const card = document.createElement("div");
-        card.className = "idea-card";
- card.innerHTML = `
-  <div class="profile">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
-        ideasContainer.appendChild(card);
-    });
-});
+// دالة للحصول على اسم المستخدم الأحدث من قاعدة البيانات
+async function getUsernameByUserId(userId) {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("uid", "==", userId));
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+        const userData = querySnapshot.docs[0].data();
+        return userData.username || "مستخدم";
+    }
+    return "مستخدم";
 }
+
+snapshot.docs.forEach(async docSnap => {
+    const idea = docSnap.data();
+
+    let photoSrc = idea.userProfilePic || "images/default-avatar.png";
+    if (photoSrc && !photoSrc.startsWith("http")) {
+        photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+    }
+
+    // جلب الاسم المحدث من users
+    const username = await getUsernameByUserId(idea.userId);
+
+    const card = document.createElement("div");
+    card.className = "idea-card";
+    card.innerHTML = `
+      <div class="profile">
+        <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
+          <img src="${photoSrc}" alt="${username}" 
+               onerror="this.onerror=null; this.src='images/default-avatar.png';">
+        </a>
+        <p class="creator">${username}</p>
+      </div>
+      <div class="idea-content">
+        <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
+          <p><strong>${idea.title}</strong></p>
+        </a>
+        <p>مجال الفكرة: ${idea.domain}</p>
+        <p>${idea.createdAtHijri}</p>
+      </div>
+    `;
+    ideasContainer.appendChild(card);
+});
 
 // استخراج بيانات التاريخ من الـ URL
 if (category && minDate && maxDate) {
