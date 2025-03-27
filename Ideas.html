@@ -449,7 +449,7 @@
     const displayIdeaCard = async (idea, ideaId) => {
         const userData = await getUserInfo(idea.userId);
         const username = userData?.username ?? "اسم غير متوفر";
-        let photoSrc = userData?.userProfilePic || "images/default-avatar.png";
+        let photoSrc = userData?.profileImage?.trim() ? userData.profileImage : "images/default-avatar.png";
 
         if (photoSrc && !photoSrc.startsWith("http")) {
             photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
