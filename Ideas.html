@@ -483,8 +483,9 @@
         }
         noIdeasMessage.style.display = "none";
         for (const docSnap of docs) {
-            const idea = docSnap.data();
-            await displayIdeaCard(idea, docSnap.id || idea.id);
+            const idea = typeof docSnap.data === "function" ? docSnap.data() : docSnap;
+            const ideaId = docSnap.id || idea.id;
+            await displayIdeaCard(idea, ideaId);
         }
     };
 
@@ -540,6 +541,7 @@
         });
     }
 </script>
+
 
 </body>
 </html>
