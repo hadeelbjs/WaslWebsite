@@ -427,7 +427,7 @@
     const getUserInfo = async (userId) => {
         try {
             const userDocRef = collection(db, "users");
-            const userSnapshot = await getDocs(query(userDocRef, where("uid", "==", userId)));
+            const userSnapshot = await getDocs(query(userDocRef, where("userId", "==", userId)));
             if (!userSnapshot.empty) {
                 return userSnapshot.docs[0].data();
             } else {
@@ -448,8 +448,8 @@
 
     const displayIdeaCard = async (idea, ideaId) => {
         const userData = await getUserInfo(idea.userId);
-        const username = userData?.username || idea.username;
-        let photoSrc = userData?.userProfilePic || idea.userProfilePic || "images/default-avatar.png";
+        const username = userData?.username ?? "اسم غير متوفر";
+        let photoSrc = userData?.userProfilePic || "images/default-avatar.png";
 
         if (photoSrc && !photoSrc.startsWith("http")) {
             photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
@@ -540,8 +540,6 @@
         });
     }
 </script>
-
-
 
 </body>
 </html>
