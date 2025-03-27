@@ -353,7 +353,7 @@
             <p>هل أنت متأكد أنك تريد تسجيل الخروج؟</p>
             <div class="modal-buttons">
                 <button onclick="closeLogoutModal()">تراجع</button>
-                <button onclick="confirmLogout()">تسجيل الخروج</button>
+                <button id="confirmLogoutBtn">تسجيل الخروج</button>   
             </div>
         </div>
     </div>
@@ -423,6 +423,25 @@
         });
 
     </script>
+    <script type="module">
+        import { logoutUser } from './Logout.js';
+      
+        window.openLogoutModal = function () {
+          document.getElementById("logoutModal").style.display = "block";
+        }
+      
+        window.closeLogoutModal = function () {
+          document.getElementById("logoutModal").style.display = "none";
+        }
+      
+        window.addEventListener("DOMContentLoaded", () => {
+          const logoutBtn = document.getElementById("confirmLogoutBtn");
+          if (logoutBtn) {
+            logoutBtn.addEventListener("click", logoutUser);
+          }
+        });
+      </script>
+      
 </body>
 </html>
  
