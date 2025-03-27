@@ -424,332 +424,124 @@
     const ideasCollection = collection(db,"ideas");
     const ideasContainer = document.getElementById("ideas-container");
     const noIdeasMessage = document.getElementById("no-ideas-message");
-    onAuthStateChanged(auth, user => {
-        if (!user) window.location.href = "login.html";
-    });
-const ideasQuery = query(collection(db, "ideas"));
-onSnapshot(ideasQuery, snapshot => {
+    
+
+onAuthStateChanged(auth, user => {
+    if (!user) window.location.href = "login.html";
+});
+
+async function getUsernameByUserId(userId) {
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("uid", "==", userId));
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
+        return snapshot.docs[0].data().username || "مستخدم";
+    }
+    return "مستخدم";
+}
+
+async function renderIdeas(snapshot) {
     ideasContainer.innerHTML = "";
     if (snapshot.empty) {
         noIdeasMessage.style.display = "block";
         return;
     }
     noIdeasMessage.style.display = "none";
-    snapshot.docs.forEach(docSnap => {
+
+    const cards = await Promise.all(snapshot.docs.map(async docSnap => {
         const idea = docSnap.data();
-      
-        // التأكد من الصورة الصحيحة
-        let photoSrc = idea.userProfilePic || "images/default-avatar.png"; // استخدام الحقل الصحيح
-        if (photoSrc && !photoSrc.startsWith("http")) {
-            photoSrc = `/${photoSrc.replace(/^\/?/, "")}`; // تأكد من عدم وجود / في بداية الرابط
-        }
-        const card = document.createElement("div");
-        card.className = "idea-card";
-      
-card.innerHTML = `
-  <div class="profile">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
-        ideasContainer.appendChild(card);
-    });
-});
-// استخراج الفلاتر من URL والتأكد أنها ليست فارغة
-const urlParams = new URLSearchParams(window.location.search);
-const minDate = urlParams.get("minDate")?.trim() || "";
-const maxDate = urlParams.get("maxDate")?.trim() || "";
-const category = urlParams.get("category")?.trim() || "";
-// check
-console.log("✅ الفلاتر المستلمة:");
-console.log("📌 الفئة:", category);
-console.log("📅 التاريخ الأدنى:", minDate);
-console.log("📅 التاريخ الأقصى:", maxDate);
-//  تأكد أن البيانات تُرسل من `FilterIdea.html`
-console.log("📌 الفلترة المستلمة:", { category, minDate, maxDate });
-//check
-const testQuery = query(collection(db, "ideas"));
-onSnapshot(testQuery, snapshot => {
-    console.log("جميع البيانات بدون فلترة:", snapshot.docs.map(doc => doc.data()));
-});
- 
-let ideasRef = collection(db, "ideas");
-
-let filters = [];
-//فلترة بناءً على الفئة إذا كانت محددة
-if (category && category.trim() !== "") {
-    console.log("🛠️ إضافة فلترة بناءً على الفئة:", category);
-    filters.push(where("domain", "==", category.trim()));
-}
-//  منع تشغيل فلترة الفئة إذا كان الفئة + التاريخ معًا محددين
-if (category && minDate && maxDate) {
-    console.log("⏳ تجاوز فلترة الفئة لأنها مدموجة مع التاريخ.");
-} else {
-
-//  تطبيق الاستعلام
-const filteredIdeasQuery = filters.length > 0 ? query(ideasRef, ...filters) : ideasRef;
-console.log("📌 الاستعلام النهائي:", filteredIdeasQuery);
-// تنفيذ الاستعلام
-onSnapshot(filteredIdeasQuery, snapshot => {
-    console.log("⚡ نتائج الاستعلام بعد الفلترة:", snapshot.docs.map(doc => doc.data()));
-});
-
-console.log("📌 الاستعلام النهائي:", filteredIdeasQuery);
-//  تنفيذ الاستعلام وجلب البيانات
-onSnapshot(filteredIdeasQuery, snapshot => {
-    console.log("⚡ نتائج الاستعلام بعد الفلترة:", snapshot.docs.map(doc => doc.data()));
-    ideasContainer.innerHTML = ""; // تفريغ المحتوى السابق
-    if (snapshot.empty) {
-        console.log("❌ لا توجد أفكار مطابقة للفلترة.");
-        noIdeasMessage.style.display = "block";
-        return;
-    }
-    noIdeasMessage.style.display = "none";
- 
-    snapshot.docs.forEach(docSnap => {
-        const idea = docSnap.data();
-        
+        const username = await getUsernameByUserId(idea.userId);
         let photoSrc = idea.userProfilePic || "images/default-avatar.png";
-        if (photoSrc && !photoSrc.startsWith("http")) {
+        if (!photoSrc.startsWith("http")) {
             photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
         }
         const card = document.createElement("div");
         card.className = "idea-card";
- card.innerHTML = `
-  <div class="profile">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
-        ideasContainer.appendChild(card);
-    });
-});
+        card.innerHTML = `
+          <div class="profile">
+            <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
+              <img src="${photoSrc}" alt="${username}" onerror="this.onerror=null; this.src='images/default-avatar.png';">
+            </a>
+            <p class="creator">${username}</p>
+          </div>
+          <div class="idea-content">
+            <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
+              <p><strong>${idea.title}</strong></p>
+            </a>
+            <p>مجال الفكرة: ${idea.domain}</p>
+            <p>${idea.createdAtHijri}</p>
+          </div>
+        `;
+        return card;
+    }));
+
+    cards.forEach(card => ideasContainer.appendChild(card));
 }
 
-// استخراج بيانات التاريخ من الـ URL
-if (category && minDate && maxDate) {
-    console.log("⏳ تجاوز فلترة الفئة لأنها مدموجة مع التاريخ.");
-} else {
+// الاستعلام الأساسي
+const ideasQuery = query(collection(db, "ideas"));
+onSnapshot(ideasQuery, renderIdeas);
 
+// فلترة من الرابط
+const urlParams = new URLSearchParams(window.location.search);
+const minDate = urlParams.get("minDate")?.trim() || "";
+const maxDate = urlParams.get("maxDate")?.trim() || "";
+const category = urlParams.get("category")?.trim() || "";
 
-if (minDate && maxDate) {
-    console.log("🛠️ تفعيل فلترة بناءً على التاريخ:", minDate, "-", maxDate);
-    
-    // جلب جميع الأفكار بدون فلترة
-    getDocs(collection(db, "ideas")).then(snapshot => {
-        let filteredIdeas = [];
+let filters = [];
+if (category && !(minDate && maxDate)) {
+    filters.push(where("domain", "==", category));
+}
 
-        snapshot.docs.forEach(docSnap => {
+const filteredIdeasQuery = filters.length > 0 ? query(collection(db, "ideas"), ...filters) : collection(db, "ideas");
+onSnapshot(filteredIdeasQuery, renderIdeas);
+
+if (minDate && maxDate && !category) {
+    getDocs(collection(db, "ideas")).then(async snapshot => {
+        const filtered = snapshot.docs.filter(docSnap => {
             const idea = docSnap.data();
-            let hijriDate = idea.createdAtHijri || ""; // جلب التاريخ الهجري من الداتا بيس
-
-            // إزالة المسافات والعلامات غير الضرورية
-            hijriDate = hijriDate.replace(/\s/g, "").replace("هـ", "");
-
-            // تحويل الأرقام العربية إلى أرقام لاتينية
-            const arabicToEnglishNumbers = str => str.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
-            hijriDate = arabicToEnglishNumbers(hijriDate);
-
-            // استخراج السنة (آخر 4 أرقام)
-            let hijriYear = hijriDate.slice(-4);
-
-            console.log(`📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear}`);
-
-            // التحقق مما إذا كانت السنة ضمن النطاق المطلوب
-            if (hijriYear >= minDate && hijriYear <= maxDate) {
-                filteredIdeas.push(idea);
-            }
+            let hijriDate = idea.createdAtHijri?.replace(/\s/g, "").replace("هـ", "") || "";
+            hijriDate = hijriDate.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+            const hijriYear = hijriDate.slice(-4);
+            return hijriYear >= minDate && hijriYear <= maxDate;
         });
-
-        // تحديث واجهة المستخدم بالنتائج
-        ideasContainer.innerHTML = ""; // تفريغ المحتوى السابق
-        if (filteredIdeas.length === 0) {
-            console.log("❌ لا توجد أفكار ضمن هذا النطاق الزمني.");
-            noIdeasMessage.style.display = "block";
-            return;
-        }
-        noIdeasMessage.style.display = "none";
-
-        //  عرض الأفكار المطابقة
-        filteredIdeas.forEach(idea => {
-            let photoSrc = idea.userProfilePic || "images/default-avatar.png";
-            if (photoSrc && !photoSrc.startsWith("http")) {
-                photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
-            }
-
-            const card = document.createElement("div");
-            card.className = "idea-card";
-card.innerHTML = `
-  <div class="profile">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
-            ideasContainer.appendChild(card);
-        });
+        renderIdeas({ empty: filtered.length === 0, docs: filtered });
     });
 }
 
-// إلغاء الفلترة عند الضغط على زر إعادة التعيين
+if (category && minDate && maxDate) {
+    getDocs(collection(db, "ideas")).then(async snapshot => {
+        const filtered = snapshot.docs.filter(docSnap => {
+            const idea = docSnap.data();
+            let hijriDate = idea.createdAtHijri?.replace(/\s/g, "").replace("هـ", "") || "";
+            hijriDate = hijriDate.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+            const hijriYear = hijriDate.slice(-4);
+            return idea.domain === category && hijriYear >= minDate && hijriYear <= maxDate;
+        });
+        renderIdeas({ empty: filtered.length === 0, docs: filtered });
+    });
+}
+
+// البحث
+const searchInput = document.getElementById("searchInput");
+searchInput.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        const searchQuery = searchInput.value.trim();
+        if (searchQuery === "") return;
+        const searchQueryRef = query(collection(db, "ideas"), where("title", "==", searchQuery));
+        onSnapshot(searchQueryRef, renderIdeas);
+    }
+});
+
+// زر إعادة التصفية
 const resetButton = document.getElementById("resetFilter");
 if (resetButton) {
     resetButton.addEventListener("click", () => {
-        window.location.href = "Ideas.html"; // يعيد تحميل الصفحة بدون فلاتر
+        window.location.href = "Ideas.html";
     });
 }
-}
-//  فلترة بناءً على الفئة + التاريخ معًا (يجب أن يتحقق الشرطان معًا)
-if (category && minDate && maxDate) {
-    console.log("🛠️ تفعيل فلترة بناءً على الفئة والتاريخ:", category, minDate, "-", maxDate);
-    
-    getDocs(collection(db, "ideas")).then(snapshot => {
-        let filteredIdeas = [];
 
-        snapshot.docs.forEach(docSnap => {
-            const idea = docSnap.data();
-            let hijriDate = idea.createdAtHijri || ""; // جلب التاريخ الهجري من الداتا بيس
-
-            // إزالة المسافات والعلامات غير الضرورية
-            hijriDate = hijriDate.replace(/\s/g, "").replace("هـ", "");
-
-            // تحويل الأرقام العربية إلى أرقام لاتينية
-            const arabicToEnglishNumbers = str => str.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
-            hijriDate = arabicToEnglishNumbers(hijriDate);
-
-            // استخراج السنة (آخر 4 أرقام)
-            let hijriYear = hijriDate.slice(-4);
-
-            console.log(`📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear}`);
-
-            //  التحقق مما إذا كانت الفكرة تطابق "كلا" الشرطين (الفئة + التاريخ)
-            if (idea.domain === category && hijriYear >= minDate && hijriYear <= maxDate) {
-               idea.id = docSnap.id; 
-                filteredIdeas.push(idea);
-            }
-        });
-
-        // تحديث واجهة المستخدم بالنتائج
-        ideasContainer.innerHTML = ""; // تفريغ المحتوى السابق
-        if (filteredIdeas.length === 0) {
-            console.log("❌ لا توجد أفكار مطابقة للفئة والتاريخ.");
-            noIdeasMessage.style.display = "block";
-            return;
-        }
-        noIdeasMessage.style.display = "none";
-
-        // عرض الأفكار المطابقة
-        filteredIdeas.forEach(idea => {
-            let photoSrc = idea.userProfilePic || "images/default-avatar.png";
-            if (photoSrc && !photoSrc.startsWith("http")) {
-                photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
-            }
-
-            const card = document.createElement("div");
-            card.className = "idea-card";
-card.innerHTML = `
-  <div class="profile">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${idea.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
-
-
-            ideasContainer.appendChild(card);
-        });
-    });
-}
-//  مرجع إلى حقل البحث
-const searchInput = document.getElementById("searchInput");
-// الاستماع لحدث "Enter" عند إدخال النص
-searchInput.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        const searchQuery = searchInput.value.trim(); // جلب النص المدخل وإزالة الفراغات
-        if (searchQuery === "") {
-            console.log("❌ لا يوجد نص في البحث.");
-            return;
-        }
-        console.log("🔍 البحث عن العنوان:", searchQuery);
-        // استعلام البحث عن العنوان
-        const searchQueryRef = query(collection(db, "ideas"), where("title", "==", searchQuery));
-        // تنفيذ الاستعلام وجلب البيانات
-        onSnapshot(searchQueryRef, snapshot => {
-            ideasContainer.innerHTML = ""; // تفريغ المحتوى السابق
-            if (snapshot.empty) {
-                console.log("❌ لا توجد أفكار مطابقة للبحث.");
-                noIdeasMessage.style.display = "block";
-                return;
-            }
-            noIdeasMessage.style.display = "none";
-            snapshot.docs.forEach(docSnap => {
-                const idea = docSnap.data();
-                let photoSrc = idea.userProfilePic || "images/default-avatar.png";
-                if (photoSrc && !photoSrc.startsWith("http")) {
-                    photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
-                }
-                //  إنشاء بطاقة لكل فكرة مطابقة
-                const card = document.createElement("div");
-                card.className = "idea-card";
-card.innerHTML = `
-  <div class="profile">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
-      <img src="${photoSrc}" alt="${idea.username}" 
-           onerror="this.onerror=null; this.src='images/default-avatar.png';">
-    </a>
-    <p class="creator">${idea.username}</p>
-  </div>
-  <div class="idea-content">
-    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-      <p><strong>${idea.title}</strong></p>
-    </a>
-    <p>مجال الفكرة: ${idea.domain}</p>
-    <p>${idea.createdAtHijri}</p>
-  </div>
-`;
-                ideasContainer.appendChild(card);
-            });
-        });
-    }
-});
 </script>
+
 </body>
 </html>
