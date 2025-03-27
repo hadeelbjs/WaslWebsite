@@ -143,8 +143,8 @@ async function fetchInvestmentRequests() {
             <p><strong>تاريخ الطلب:</strong>  ${data.requestDate?.toDate ? data.requestDate.toDate().toLocaleString() : "غير متوفر"}</p>
             <p><strong>حالة الطلب:</strong> ${data.status}</p>
             <div class="actions">
-                <button class="btn approve" id="accept" data-id=${data.id}><span class="material-symbols-outlined">check</span></button>
-                <button class="btn reject" id ="reject" data-id=${data.id}>><span class="material-symbols-outlined">close</span></button>
+                <button class="btn approve" id="accept" data-id="${data.id}"><span class="material-symbols-outlined">check</span></button>
+                <button class="btn reject" id ="reject" data-id="${data.id}">><span class="material-symbols-outlined">close</span></button>
             </div>
         `;
         container.appendChild(requestElement);
