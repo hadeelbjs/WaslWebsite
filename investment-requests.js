@@ -2,7 +2,7 @@ import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebase
 import { getFirestore, collection, addDoc, doc, query, where, getDocs, serverTimestamp, getDoc, updateDoc  } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
-// إعداد Firebase
+// Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
     authDomain: "wasl-523b4.firebaseapp.com",
@@ -13,12 +13,10 @@ const firebaseConfig = {
     measurementId: "G-DD60XW5EVT"
 };
 
-// التأكد من عدم تهيئة التطبيق مسبقًا لتجنب الخطأ
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const database = getFirestore(app);
 const auth = getAuth(app);
 
-// التأكد من أن المستخدم مسجل دخول
 window.onload = function () {
     onAuthStateChanged(auth, (user) => {
         if (!user) {
@@ -32,7 +30,7 @@ window.onload = function () {
 async function requestInvestment() {
     try {
         const urlParams = new URLSearchParams(window.location.search);
-        const ideaId = urlParams.get('id'); // الحصول على الـ id من الرابط
+        const ideaId = urlParams.get('id'); 
 
         if (!auth.currentUser) {
             alert("يتطلب تسجيل الدخول");
@@ -95,8 +93,6 @@ async function fetchInvestmentRequests() {
         return;
     }
 
-    console.log(auth.currentUser.uid);
-
     const userIdeas = await getUserIdeas(auth.currentUser.uid);
     let ideaIDs = Object.keys(userIdeas || {});
 
@@ -104,20 +100,16 @@ async function fetchInvestmentRequests() {
         console.log("لا توجد أفكار لهذا المستخدم.");
         return;
     }
-
-    console.log(ideaIDs);
     
     const allRequestsSnapshot = await getDocs(collection(database, "requests"));
     const filteredRequests = allRequestsSnapshot.docs
     .map(docSnap => ({ id: docSnap.id, ...docSnap.data() })) // استخراج البيانات من كل مستند
     .filter(request => ideaIDs.includes(request.ideaId));
-    console.log(filteredRequests);
     const container = document.getElementById("requestsContainer");
     container.innerHTML = "";
 
     for (const data of filteredRequests)  {
-       console.log(filteredRequests);
-        //  جلب بيانات المستثمر (صاحب الطلب)
+        // بيانات المستثمر (صاحب الطلب)
         const investorRef = data.investorId;
         const investorSnapshot = await getDoc(doc(database, "users", investorRef));
         const investorData = investorSnapshot.exists() ? investorSnapshot.data() : { username: "غير معروف", email: "غير متوفر" };
@@ -126,9 +118,7 @@ async function fetchInvestmentRequests() {
         const ideaSnapshot = await getDoc(ideaDocRef);
         if (!ideaSnapshot.exists()) continue;
         const ideaData = ideaSnapshot.data();
-        console.log(investorData);
-        console.log(ideaData);
-        //  إنشاء عنصر الطلب
+        // إنشاء الطلب
         const requestElement = document.createElement("div");
         requestElement.classList.add("invRequest");
         if(data.status == "بانتظار الرد" ){
@@ -179,7 +169,6 @@ async function getUserIdeas(userId) {
     
     if (!querySnapshot.empty) {
         const doc = querySnapshot.docs[0]; 
-        console.log(doc.data().ideas);
         return doc.data().ideas;
         
     }
