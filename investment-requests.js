@@ -1,6 +1,7 @@
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, query, where, getDocs, serverTimestamp, getDoc, updateDoc  } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+import swal from 'sweetalert';
 
 // Firebase
 const firebaseConfig = {
@@ -56,6 +57,8 @@ async function requestInvestment() {
 
         if (innovatorId === investorId) {
             console.warn(" Investor cannot invest in their own idea!");
+            swal("خطأ!", "لا يمكن لك الاستثمار بفكرة لك", "error");
+
             return;
         }
         const q = query(
@@ -67,7 +70,8 @@ async function requestInvestment() {
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-            alert("لقد قمت بالفعل بإرسال طلب استثمار لهذه الفكرة!");
+            //alert("لقد قمت بالفعل بإرسال طلب استثمار لهذه الفكرة!");
+            swal("خطأ!", "لقد قمت بالفعل بإرسال طلب استثمار لهذه الفكرة", "error");
             return;
         }
 
