@@ -127,8 +127,8 @@ async function fetchInvestmentRequests() {
             <p><strong>عنوان الفكرة:</strong> ${ideaData.title}</p>
             <p><strong>المستثمر:</strong> ${investorData.username} (${investorData.email})</p>
             <div class="user-info">
-                        <img src= ${investorData.profileImage ? investorData.profileImage :"images/default-avatar.png" } alt="صورة ${investorData.username}">
-                        <p>${investorData.username}</p>
+                <img src= ${investorData.profileImage ? investorData.profileImage :"images/default-avatar.png" } alt="صورة ${investorData.username}">
+                <p>${investorData.username}</p>
             </div>
             <hr>
             <p><strong>تاريخ الطلب:</strong>  ${data.requestDate?.toDate ? data.requestDate.toDate().toLocaleString() : "غير متوفر"}</p>
