@@ -424,47 +424,45 @@
     const ideasCollection = collection(db,"ideas");
     const ideasContainer = document.getElementById("ideas-container");
     const noIdeasMessage = document.getElementById("no-ideas-message");
-    onAuthStateChanged(auth, user => {
-        if (!user) window.location.href = "login.html";
-    });
-const ideasQuery = query(collection(db, "ideas"));
-onSnapshot(ideasQuery, snapshot => {
-    ideasContainer.innerHTML = "";
-    if (snapshot.empty) {
-        noIdeasMessage.style.display = "block";
-        return;
-    }
-    noIdeasMessage.style.display = "none";
-// دالة للحصول على اسم المستخدم الأحدث من قاعدة البيانات
+    
+   onAuthStateChanged(auth, user => {
+  if (!user) window.location.href = "login.html";
+});
+
+// 🔄 دالة تجلب اسم المستخدم المحدث
 async function getUsernameByUserId(userId) {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("uid", "==", userId));
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data();
-        return userData.username || "مستخدم";
-    }
-    return "مستخدم";
+  const usersRef = collection(db, "users");
+  const q = query(usersRef, where("uid", "==", userId));
+  const snapshot = await getDocs(q);
+  if (!snapshot.empty) {
+    return snapshot.docs[0].data().username || "مستخدم";
+  }
+  return "مستخدم";
 }
 
-snapshot.docs.forEach(async docSnap => {
+// 🧠 عرض جميع الأفكار (الأساسية)
+const ideasQuery = query(collection(db, "ideas"));
+onSnapshot(ideasQuery, async snapshot => {
+  ideasContainer.innerHTML = "";
+  if (snapshot.empty) {
+    noIdeasMessage.style.display = "block";
+    return;
+  }
+  noIdeasMessage.style.display = "none";
+
+  const cards = await Promise.all(snapshot.docs.map(async docSnap => {
     const idea = docSnap.data();
-
-    let photoSrc = idea.userProfilePic || "images/default-avatar.png";
-    if (photoSrc && !photoSrc.startsWith("http")) {
-        photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
-    }
-
-    // جلب الاسم المحدث من users
     const username = await getUsernameByUserId(idea.userId);
-
+    let photoSrc = idea.userProfilePic || "images/default-avatar.png";
+    if (!photoSrc.startsWith("http")) {
+      photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+    }
     const card = document.createElement("div");
     card.className = "idea-card";
     card.innerHTML = `
       <div class="profile">
         <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
-          <img src="${photoSrc}" alt="${username}" 
-               onerror="this.onerror=null; this.src='images/default-avatar.png';">
+          <img src="${photoSrc}" alt="${username}" onerror="this.onerror=null; this.src='images/default-avatar.png';">
         </a>
         <p class="creator">${username}</p>
       </div>
@@ -476,7 +474,10 @@ snapshot.docs.forEach(async docSnap => {
         <p>${idea.createdAtHijri}</p>
       </div>
     `;
-    ideasContainer.appendChild(card);
+    return card;
+  }));
+
+  cards.forEach(card => ideasContainer.appendChild(card));
 });
 
 // استخراج الفلاتر من URL والتأكد أنها ليست فارغة
@@ -489,7 +490,7 @@ console.log("✅ الفلاتر المستلمة:");
 console.log("📌 الفئة:", category);
 console.log("📅 التاريخ الأدنى:", minDate);
 console.log("📅 التاريخ الأقصى:", maxDate);
-//  تأكد أن البيانات تُرسل من `FilterIdea.html`
+//  تأكد أن البيانات تُرسل من FilterIdea.html
 console.log("📌 الفلترة المستلمة:", { category, minDate, maxDate });
 //check
 const testQuery = query(collection(db, "ideas"));
@@ -530,49 +531,35 @@ onSnapshot(filteredIdeasQuery, snapshot => {
     }
     noIdeasMessage.style.display = "none";
  
-// دالة للحصول على اسم المستخدم الأحدث من قاعدة البيانات
-async function getUsernameByUserId(userId) {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("uid", "==", userId));
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-        const userData = querySnapshot.docs[0].data();
-        return userData.username || "مستخدم";
-    }
-    return "مستخدم";
-}
-
-snapshot.docs.forEach(async docSnap => {
-    const idea = docSnap.data();
-
-    let photoSrc = idea.userProfilePic || "images/default-avatar.png";
-    if (photoSrc && !photoSrc.startsWith("http")) {
-        photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
-    }
-
-    // جلب الاسم المحدث من users
-    const username = await getUsernameByUserId(idea.userId);
-
-    const card = document.createElement("div");
-    card.className = "idea-card";
-    card.innerHTML = `
-      <div class="profile">
-        <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
-          <img src="${photoSrc}" alt="${username}" 
-               onerror="this.onerror=null; this.src='images/default-avatar.png';">
-        </a>
-        <p class="creator">${username}</p>
-      </div>
-      <div class="idea-content">
-        <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
-          <p><strong>${idea.title}</strong></p>
-        </a>
-        <p>مجال الفكرة: ${idea.domain}</p>
-        <p>${idea.createdAtHijri}</p>
-      </div>
-    `;
-    ideasContainer.appendChild(card);
+    snapshot.docs.forEach(docSnap => {
+        const idea = docSnap.data();
+        
+        let photoSrc = idea.userProfilePic || "images/default-avatar.png";
+        if (photoSrc && !photoSrc.startsWith("http")) {
+            photoSrc = /${photoSrc.replace(/^\/?/, "")};
+        }
+        const card = document.createElement("div");
+        card.className = "idea-card";
+ card.innerHTML = 
+  <div class="profile">
+    <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
+      <img src="${photoSrc}" alt="${idea.username}" 
+           onerror="this.onerror=null; this.src='images/default-avatar.png';">
+    </a>
+    <p class="creator">${idea.username}</p>
+  </div>
+  <div class="idea-content">
+    <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
+      <p><strong>${idea.title}</strong></p>
+    </a>
+    <p>مجال الفكرة: ${idea.domain}</p>
+    <p>${idea.createdAtHijri}</p>
+  </div>
+;
+        ideasContainer.appendChild(card);
+    });
 });
+}
 
 // استخراج بيانات التاريخ من الـ URL
 if (category && minDate && maxDate) {
@@ -601,7 +588,7 @@ if (minDate && maxDate) {
             // استخراج السنة (آخر 4 أرقام)
             let hijriYear = hijriDate.slice(-4);
 
-            console.log(`📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear}`);
+            console.log(📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear});
 
             // التحقق مما إذا كانت السنة ضمن النطاق المطلوب
             if (hijriYear >= minDate && hijriYear <= maxDate) {
@@ -622,12 +609,12 @@ if (minDate && maxDate) {
         filteredIdeas.forEach(idea => {
             let photoSrc = idea.userProfilePic || "images/default-avatar.png";
             if (photoSrc && !photoSrc.startsWith("http")) {
-                photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+                photoSrc = /${photoSrc.replace(/^\/?/, "")};
             }
 
             const card = document.createElement("div");
             card.className = "idea-card";
-card.innerHTML = `
+card.innerHTML = 
   <div class="profile">
     <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
       <img src="${photoSrc}" alt="${idea.username}" 
@@ -642,7 +629,7 @@ card.innerHTML = `
     <p>مجال الفكرة: ${idea.domain}</p>
     <p>${idea.createdAtHijri}</p>
   </div>
-`;
+;
             ideasContainer.appendChild(card);
         });
     });
@@ -677,7 +664,7 @@ if (category && minDate && maxDate) {
             // استخراج السنة (آخر 4 أرقام)
             let hijriYear = hijriDate.slice(-4);
 
-            console.log(`📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear}`);
+            console.log(📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear});
 
             //  التحقق مما إذا كانت الفكرة تطابق "كلا" الشرطين (الفئة + التاريخ)
             if (idea.domain === category && hijriYear >= minDate && hijriYear <= maxDate) {
@@ -699,12 +686,12 @@ if (category && minDate && maxDate) {
         filteredIdeas.forEach(idea => {
             let photoSrc = idea.userProfilePic || "images/default-avatar.png";
             if (photoSrc && !photoSrc.startsWith("http")) {
-                photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+                photoSrc = /${photoSrc.replace(/^\/?/, "")};
             }
 
             const card = document.createElement("div");
             card.className = "idea-card";
-card.innerHTML = `
+card.innerHTML = 
   <div class="profile">
     <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
       <img src="${photoSrc}" alt="${idea.username}" 
@@ -719,7 +706,7 @@ card.innerHTML = `
     <p>مجال الفكرة: ${idea.domain}</p>
     <p>${idea.createdAtHijri}</p>
   </div>
-`;
+;
 
 
             ideasContainer.appendChild(card);
@@ -752,12 +739,12 @@ searchInput.addEventListener("keypress", function(event) {
                 const idea = docSnap.data();
                 let photoSrc = idea.userProfilePic || "images/default-avatar.png";
                 if (photoSrc && !photoSrc.startsWith("http")) {
-                    photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+                    photoSrc = /${photoSrc.replace(/^\/?/, "")};
                 }
                 //  إنشاء بطاقة لكل فكرة مطابقة
                 const card = document.createElement("div");
                 card.className = "idea-card";
-card.innerHTML = `
+card.innerHTML = 
   <div class="profile">
     <a href="https://hadeelbjs.github.io/WaslWebsite/account1.html?uid=${idea.userId}">
       <img src="${photoSrc}" alt="${idea.username}" 
@@ -772,12 +759,13 @@ card.innerHTML = `
     <p>مجال الفكرة: ${idea.domain}</p>
     <p>${idea.createdAtHijri}</p>
   </div>
-`;
+;
                 ideasContainer.appendChild(card);
             });
         });
     }
 });
 </script>
+
 </body>
 </html>
