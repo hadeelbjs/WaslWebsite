@@ -455,7 +455,7 @@ onSnapshot(ideasQuery, async snapshot => {
     const username = await getUsernameByUserId(idea.userId);
     let photoSrc = idea.userProfilePic || "images/default-avatar.png";
     if (!photoSrc.startsWith("http")) {
-      photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
+photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
     }
     const card = document.createElement("div");
     card.className = "idea-card";
