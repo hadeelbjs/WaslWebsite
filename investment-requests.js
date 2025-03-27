@@ -42,6 +42,10 @@ async function requestInvestment() {
         const requestDate = serverTimestamp();
         const investorId = auth.currentUser.uid;
         const status = "بانتظار الرد"; // Default status
+
+        const requestsRef = collection(database, "requests");
+
+
         const ideaRef = doc(database, "ideas", ideaId);
         const ideaSnapshot = await getDoc(ideaRef);
 
@@ -76,7 +80,6 @@ async function requestInvestment() {
             ideaId
         };
         
-        const requestsRef = collection(database, "requests");
         await addDoc(requestsRef, request);
         alert("Request sent successfully!");
     } catch (error) {
