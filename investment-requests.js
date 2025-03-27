@@ -81,7 +81,7 @@ async function requestInvestment() {
         };
         
         await addDoc(requestsRef, request);
-        alert("Request sent successfully!");
+        alert("تم إرسال الطلب بنجاح!");
     } catch (error) {
         console.error(" Error sending investment request:", error);
     }
@@ -136,7 +136,7 @@ async function fetchInvestmentRequests() {
             <p><strong>عنوان الفكرة:</strong> ${ideaData.title}</p>
             <p><strong>المستثمر:</strong> ${investorData.username} (${investorData.email})</p>
             <div class="user-info">
-                        <img src="${investorData.profileImage ? investorData.profileImage :"images/default-avatar.png"  }" alt="صورة ${investorData.username}">
+                        <img src= ${investorData.profileImage ? $investorData.profileImage :"images/default-avatar.png"  }" alt="صورة ${investorData.username}">
                         <p>${investorData.username}</p>
             </div>
             <hr>
@@ -144,7 +144,7 @@ async function fetchInvestmentRequests() {
             <p><strong>حالة الطلب:</strong> ${data.status}</p>
             <div class="actions">
                 <button class="btn approve" id="accept" data-id="${data.id}"><span class="material-symbols-outlined">check</span></button>
-                <button class="btn reject" id ="reject" data-id="${data.id}">><span class="material-symbols-outlined">close</span></button>
+                <button class="btn reject" id ="reject" data-id="${data.id}"><span class="material-symbols-outlined">close</span></button>
             </div>
         `;
         container.appendChild(requestElement);
@@ -157,7 +157,7 @@ async function fetchInvestmentRequests() {
             <p><strong>عنوان الفكرة:</strong> ${ideaData.title}</p>
             <p><strong>المستثمر:</strong> ${investorData.username} (${investorData.email})</p>
             <div class="user-info">
-                        <img src="${investorData.profileImage ? investorData.profileImage :"images/default-avatar.png"  }" alt="صورة ${investorData.username}">
+                       <img src="${investorData.profileImage ? investorData.profileImage : 'images/default-avatar.png'}" alt="صورة ${investorData.username}">
                         <p>${investorData.username}</p>
             </div>
             <hr>
