@@ -410,6 +410,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
     import { getFirestore, collection, query, orderBy, onSnapshot, where, getDocs } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
     const firebaseConfig = {
         apiKey: "AIzaSyC68KD9M_rGGOoyfQaW925LT8ipoj9jE44",
         authDomain: "wasl-523b4.firebaseapp.com",
@@ -418,43 +419,42 @@
         messagingSenderId: "410509570015",
         appId: "1:410509570015:web:4c9a86048b3e8be0bd1e6a"
     };
+
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
-    const ideasCollection = collection(db,"ideas");
+
+    const getUserInfo = async (userId) => {
+        try {
+            const userDocRef = collection(db, "users");
+            const userSnapshot = await getDocs(query(userDocRef, where("uid", "==", userId)));
+            if (!userSnapshot.empty) {
+                return userSnapshot.docs[0].data();
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error("\u062e\u0637\u0623 \u0641\u064a \u062c\u0644\u0628 \u0628\u064a\u0627\u0646\u0627\u062a \u0627\u0644\u0645\u0633\u062a\u062e\u062f\u0645:", error);
+            return null;
+        }
+    };
+
     const ideasContainer = document.getElementById("ideas-container");
     const noIdeasMessage = document.getElementById("no-ideas-message");
-    
 
-onAuthStateChanged(auth, user => {
-    if (!user) window.location.href = "login.html";
-});
+    onAuthStateChanged(auth, user => {
+        if (!user) window.location.href = "login.html";
+    });
 
-async function getUsernameByUserId(userId) {
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("uid", "==", userId));
-    const snapshot = await getDocs(q);
-    if (!snapshot.empty) {
-        return snapshot.docs[0].data().username || "مستخدم";
-    }
-    return "مستخدم";
-}
+    const displayIdeaCard = async (idea, ideaId) => {
+        const userData = await getUserInfo(idea.userId);
+        const username = userData?.username || idea.username;
+        let photoSrc = userData?.userProfilePic || idea.userProfilePic || "images/default-avatar.png";
 
-async function renderIdeas(snapshot) {
-    ideasContainer.innerHTML = "";
-    if (snapshot.empty) {
-        noIdeasMessage.style.display = "block";
-        return;
-    }
-    noIdeasMessage.style.display = "none";
-
-    const cards = await Promise.all(snapshot.docs.map(async docSnap => {
-        const idea = docSnap.data();
-        const username = await getUsernameByUserId(idea.userId);
-        let photoSrc = idea.userProfilePic || "images/default-avatar.png";
-        if (!photoSrc.startsWith("http")) {
+        if (photoSrc && !photoSrc.startsWith("http")) {
             photoSrc = `/${photoSrc.replace(/^\/?/, "")}`;
         }
+
         const card = document.createElement("div");
         card.className = "idea-card";
         card.innerHTML = `
@@ -465,83 +465,83 @@ async function renderIdeas(snapshot) {
             <p class="creator">${username}</p>
           </div>
           <div class="idea-content">
-            <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${docSnap.id}" style="text-decoration: none; color: inherit;">
+            <a href="https://hadeelbjs.github.io/WaslWebsite/IdeaDetails.html?id=${ideaId}" style="text-decoration: none; color: inherit;">
               <p><strong>${idea.title}</strong></p>
             </a>
             <p>مجال الفكرة: ${idea.domain}</p>
             <p>${idea.createdAtHijri}</p>
           </div>
         `;
-        return card;
-    }));
+        ideasContainer.appendChild(card);
+    };
 
-    cards.forEach(card => ideasContainer.appendChild(card));
-}
-
-// الاستعلام الأساسي
-const ideasQuery = query(collection(db, "ideas"));
-onSnapshot(ideasQuery, renderIdeas);
-
-// فلترة من الرابط
-const urlParams = new URLSearchParams(window.location.search);
-const minDate = urlParams.get("minDate")?.trim() || "";
-const maxDate = urlParams.get("maxDate")?.trim() || "";
-const category = urlParams.get("category")?.trim() || "";
-
-let filters = [];
-if (category && !(minDate && maxDate)) {
-    filters.push(where("domain", "==", category));
-}
-
-const filteredIdeasQuery = filters.length > 0 ? query(collection(db, "ideas"), ...filters) : collection(db, "ideas");
-onSnapshot(filteredIdeasQuery, renderIdeas);
-
-if (minDate && maxDate && !category) {
-    getDocs(collection(db, "ideas")).then(async snapshot => {
-        const filtered = snapshot.docs.filter(docSnap => {
+    const displayIdeasFromDocs = async (docs) => {
+        ideasContainer.innerHTML = "";
+        if (!docs.length) {
+            noIdeasMessage.style.display = "block";
+            return;
+        }
+        noIdeasMessage.style.display = "none";
+        for (const docSnap of docs) {
             const idea = docSnap.data();
-            let hijriDate = idea.createdAtHijri?.replace(/\s/g, "").replace("هـ", "") || "";
-            hijriDate = hijriDate.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
-            const hijriYear = hijriDate.slice(-4);
-            return hijriYear >= minDate && hijriYear <= maxDate;
-        });
-        renderIdeas({ empty: filtered.length === 0, docs: filtered });
-    });
-}
+            await displayIdeaCard(idea, docSnap.id || idea.id);
+        }
+    };
 
-if (category && minDate && maxDate) {
-    getDocs(collection(db, "ideas")).then(async snapshot => {
-        const filtered = snapshot.docs.filter(docSnap => {
-            const idea = docSnap.data();
-            let hijriDate = idea.createdAtHijri?.replace(/\s/g, "").replace("هـ", "") || "";
-            hijriDate = hijriDate.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
-            const hijriYear = hijriDate.slice(-4);
-            return idea.domain === category && hijriYear >= minDate && hijriYear <= maxDate;
-        });
-        renderIdeas({ empty: filtered.length === 0, docs: filtered });
-    });
-}
+    const applyFiltersAndDisplayIdeas = async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const minDate = urlParams.get("minDate")?.trim() || "";
+        const maxDate = urlParams.get("maxDate")?.trim() || "";
+        const category = urlParams.get("category")?.trim() || "";
 
-// البحث
-const searchInput = document.getElementById("searchInput");
-searchInput.addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        const searchQuery = searchInput.value.trim();
-        if (searchQuery === "") return;
-        const searchQueryRef = query(collection(db, "ideas"), where("title", "==", searchQuery));
-        onSnapshot(searchQueryRef, renderIdeas);
+        if ((minDate && maxDate) || (category && minDate && maxDate)) {
+            const snapshot = await getDocs(collection(db, "ideas"));
+            const filteredIdeas = snapshot.docs.filter(docSnap => {
+                const idea = docSnap.data();
+                let hijriDate = idea.createdAtHijri?.replace(/\s/g, "").replace("هـ", "") || "";
+                const arabicToEnglishNumbers = str => str.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+                hijriDate = arabicToEnglishNumbers(hijriDate);
+                let hijriYear = hijriDate.slice(-4);
+                const matchCategory = category ? idea.domain === category : true;
+                const matchDate = hijriYear >= minDate && hijriYear <= maxDate;
+                return matchCategory && matchDate;
+            }).map(docSnap => ({ ...docSnap.data(), id: docSnap.id }));
+
+            await displayIdeasFromDocs(filteredIdeas);
+
+        } else {
+            let filters = [];
+            if (category) filters.push(where("domain", "==", category));
+            const filteredIdeasQuery = filters.length ? query(collection(db, "ideas"), ...filters) : collection(db, "ideas");
+            onSnapshot(filteredIdeasQuery, async snapshot => {
+                await displayIdeasFromDocs(snapshot.docs);
+            });
+        }
+    };
+
+    applyFiltersAndDisplayIdeas();
+
+    const searchInput = document.getElementById("searchInput");
+    searchInput.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            const searchQuery = searchInput.value.trim();
+            if (searchQuery === "") return;
+            const searchQueryRef = query(collection(db, "ideas"), where("title", "==", searchQuery));
+            onSnapshot(searchQueryRef, async snapshot => {
+                await displayIdeasFromDocs(snapshot.docs);
+            });
+        }
+    });
+
+    const resetButton = document.getElementById("resetFilter");
+    if (resetButton) {
+        resetButton.addEventListener("click", () => {
+            window.location.href = "Ideas.html";
+        });
     }
-});
-
-// زر إعادة التصفية
-const resetButton = document.getElementById("resetFilter");
-if (resetButton) {
-    resetButton.addEventListener("click", () => {
-        window.location.href = "Ideas.html";
-    });
-}
-
 </script>
+
+
 
 </body>
 </html>
