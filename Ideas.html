@@ -588,7 +588,7 @@ if (minDate && maxDate) {
             // استخراج السنة (آخر 4 أرقام)
             let hijriYear = hijriDate.slice(-4);
 
-            console.log(📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear});
+console.log(`📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear}`);
 
             // التحقق مما إذا كانت السنة ضمن النطاق المطلوب
             if (hijriYear >= minDate && hijriYear <= maxDate) {
@@ -664,7 +664,7 @@ if (category && minDate && maxDate) {
             // استخراج السنة (آخر 4 أرقام)
             let hijriYear = hijriDate.slice(-4);
 
-            console.log(📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear});
+console.log(`📅 التاريخ المحول: ${hijriDate}, السنة المستخرجة: ${hijriYear}`);
 
             //  التحقق مما إذا كانت الفكرة تطابق "كلا" الشرطين (الفئة + التاريخ)
             if (idea.domain === category && hijriYear >= minDate && hijriYear <= maxDate) {
