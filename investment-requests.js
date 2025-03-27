@@ -67,8 +67,7 @@ async function requestInvestment() {
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-            //alert("لقد قمت بالفعل بإرسال طلب استثمار لهذه الفكرة!");
-            swal("خطأ!", "لقد قمت بالفعل بإرسال طلب استثمار لهذه الفكرة", "error");
+            alert("لقد قمت بالفعل بإرسال طلب استثمار لهذه الفكرة!");
             return;
         }
 
@@ -99,6 +98,8 @@ async function fetchInvestmentRequests() {
 
     if (!ideaIDs || ideaIDs.length === 0) {
         console.log("لا توجد أفكار لهذا المستخدم.");
+        const pS = document.getElementById("load-i");
+        pS.innerHTML = "لا توجد طلبات استثمار حتى الان...";
         return;
     }
     
@@ -107,8 +108,13 @@ async function fetchInvestmentRequests() {
     .map(docSnap => ({ id: docSnap.id, ...docSnap.data() })) // استخراج البيانات من كل مستند
     .filter(request => ideaIDs.includes(request.ideaId));
     const container = document.getElementById("requestsContainer");
+    if(filteredRequests.length == 0){
+      const pS = document.getElementById("load-i");
+      pS.innerHTML = "لا توجد طلبات استثمار حتى الان...";
+      return;
+    }
     container.innerHTML = "";
-
+    
     for (const data of filteredRequests)  {
         // بيانات المستثمر (صاحب الطلب)
         const investorRef = data.investorId;
@@ -122,6 +128,17 @@ async function fetchInvestmentRequests() {
         // إنشاء الطلب
         const requestElement = document.createElement("div");
         requestElement.classList.add("invRequest");
+        const formattedHijriDate = data.requestDate?.toDate ? 
+        new Intl.DateTimeFormat("ar-SA", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            weekday: "long",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        }).format(data.requestDate.toDate()) : 
+        "غير متوفر";
         if(data.status == "بانتظار الرد" ){
         requestElement.innerHTML = `
             <p><strong>عنوان الفكرة:</strong> ${ideaData.title}</p>
@@ -131,7 +148,7 @@ async function fetchInvestmentRequests() {
                 <p>${investorData.username}</p>
             </div>
             <hr>
-            <p><strong>تاريخ الطلب:</strong>  ${data.requestDate?.toDate ? data.requestDate.toDate().toLocaleString() : "غير متوفر"}</p>
+            <p><strong>تاريخ الطلب:</strong>  ${formattedHijriDate}</p>
             <p><strong>حالة الطلب:</strong> ${data.status}</p>
             <div class="actions">
                 <button class="btn approve" id="accept" data-id="${data.id}"><span class="material-symbols-outlined">check</span>موافقة</button>
@@ -152,7 +169,7 @@ async function fetchInvestmentRequests() {
                         <p>${investorData.username}</p>
             </div>
             <hr>
-            <p><strong>تاريخ الطلب:</strong>  ${data.requestDate?.toDate ? data.requestDate.toDate().toLocaleString() : "غير متوفر"}</p>
+            <p><strong>تاريخ الطلب:</strong>  ${formattedHijriDate}</p>
             <p><strong>حالة الطلب:</strong> ${data.status}</p>
             
         `;
