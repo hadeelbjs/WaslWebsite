@@ -1,7 +1,6 @@
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getFirestore, collection, addDoc, doc, query, where, getDocs, serverTimestamp, getDoc, updateDoc  } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
-import swal from 'sweetalert';
 
 // Firebase
 const firebaseConfig = {
@@ -57,8 +56,6 @@ async function requestInvestment() {
 
         if (innovatorId === investorId) {
             console.warn(" Investor cannot invest in their own idea!");
-            swal("خطأ!", "لا يمكن لك الاستثمار بفكرة لك", "error");
-
             return;
         }
         const q = query(
@@ -137,7 +134,7 @@ async function fetchInvestmentRequests() {
             <p><strong>تاريخ الطلب:</strong>  ${data.requestDate?.toDate ? data.requestDate.toDate().toLocaleString() : "غير متوفر"}</p>
             <p><strong>حالة الطلب:</strong> ${data.status}</p>
             <div class="actions">
-                <button class="btn approve" id="accept" data-id="${data.id}"><span class="material-symbols-outlined">check</span></button>
+                <button class="btn approve" id="accept" data-id="${data.id}"><span class="material-symbols-outlined">check</span>موافقة</button>
                 <button class="btn reject" id ="reject" data-id="${data.id}"><span class="material-symbols-outlined">close</span></button>
             </div>
         `;
