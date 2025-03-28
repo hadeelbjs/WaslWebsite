@@ -523,23 +523,44 @@
     applyFiltersAndDisplayIdeas();
 
     const searchInput = document.getElementById("searchInput");
-    searchInput.addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            const searchQuery = searchInput.value.trim();
-            if (searchQuery === "") return;
-            const searchQueryRef = query(collection(db, "ideas"), where("title", "==", searchQuery));
-            onSnapshot(searchQueryRef, async snapshot => {
-                await displayIdeasFromDocs(snapshot.docs);
-            });
-        }
-    });
 
-    const resetButton = document.getElementById("resetFilter");
-    if (resetButton) {
-        resetButton.addEventListener("click", () => {
-            window.location.href = "Ideas.html";
+searchInput.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        let searchQuery = searchInput.value.trim().toLowerCase(); 
+        if (searchQuery === "") return;
+
+        const searchQueryRef = query(collection(db, "ideas"));
+        onSnapshot(searchQueryRef, async snapshot => {
+            let exactMatch = [];  // نتائج المطابقة الكاملة
+            let keywordMatches = [];  // نتائج البحث بالكلمات المفتاحية
+
+            snapshot.docs.forEach(doc => {
+                let title = doc.data().title.toLowerCase();
+
+                if (title === searchQuery) {
+                    exactMatch.push(doc);  // إذا كان العنوان مطابقًا تمامًا
+                } else if (searchQuery.split(" ").some(word => title.includes(word))) {
+                    keywordMatches.push(doc);  // إذا كان العنوان يحتوي على الكلمة المفتاحية
+                }
+            });
+
+            // عرض النتائج
+            if (exactMatch.length > 0) {
+                await displayIdeasFromDocs(exactMatch);
+            } else {
+                await displayIdeasFromDocs(keywordMatches);
+            }
         });
     }
+});
+
+// زر إعادة التصفية
+const resetButton = document.getElementById("resetFilter");
+if (resetButton) {
+    resetButton.addEventListener("click", () => {
+        window.location.href = "Ideas.html";
+    });
+}
 </script>
 <script type="module">
     import { logoutUser } from './Logout.js';
