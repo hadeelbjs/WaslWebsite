@@ -27,8 +27,9 @@ const storage = getStorage(app);
 
 
 export async function registerUser() {
-    const username = document.getElementById("username").value.trim();
     
+    const username = document.getElementById("username").value.trim();
+  
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const dob = document.getElementById("dob").value.trim();
@@ -74,18 +75,26 @@ export async function registerUser() {
         console.log(" التحقق من توفر الاسم والإيميل...");
        
         const querySnapshot = await getDocs(collection(db, "users"));
-        let usernameExists = false;
-        let emailExists = false;
+       
+let usernameExists = false;
+let emailExists = false;
 
-        querySnapshot.forEach(doc => {
-            const data = doc.data();
-            if (data.username.toLowerCase() === username.toLowerCase()) {
-                usernameExists = true;
-            }
-            if (data.email.toLowerCase() === email.toLowerCase()) {
-                emailExists = true;
-            }
-        });
+querySnapshot.forEach(doc => {
+    const data = doc.data();
+    console.log("📦 فحص وثيقة:", doc.id, data);
+
+    if (data.username && data.username.toLowerCase() === username.toLowerCase()) {
+        usernameExists = true;
+    }
+
+    if (data.email && data.email.toLowerCase() === email.toLowerCase()) {
+        emailExists = true;
+    }
+
+    if (!data.username || !data.email) {
+        console.warn("⚠️ وثيقة ناقصة:", doc.id, data);
+    }
+});
 
         if (usernameExists || emailExists) {
             alert("عذرًا، يبدو أن اسم المستخدم أو البريد الإلكتروني مستخدم مسبقًا. يُرجى اختيار بيانات مختلفة أو تسجيل الدخول إذا كان لديك حساب.");
