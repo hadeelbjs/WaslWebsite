@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getFirestore, collection, addDoc, doc, query, where, getDocs, serverTimestamp, getDoc, updateDoc  } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, doc, query, where, getDocs, serverTimestamp, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
 
 // Firebase
@@ -43,7 +43,6 @@ async function requestInvestment() {
 
         const requestsRef = collection(database, "requests");
 
-
         const ideaRef = doc(database, "ideas", ideaId);
         const ideaSnapshot = await getDoc(ideaRef);
 
@@ -86,8 +85,6 @@ async function requestInvestment() {
 }
 
 async function fetchInvestmentRequests() {
-    const auth = getAuth(app);
-
     if (!auth.currentUser) {
         console.error(" No user is currently signed in.");
         return;
@@ -208,4 +205,109 @@ async function updateRequestStatus(newStatus, requestId) {
         console.error("Error updating request status:", error);
     }
 }
-export { requestInvestment, fetchInvestmentRequests, updateRequestStatus };
+
+// طريقة أكثر كفاءة باستخدام المراجع المجمعة لتقليل عدد الطلبات
+async function getRequestsWithIdeaTitles(userId) {
+    try {
+        // 1. الحصول على طلبات المستخدم
+        const requestsRef = collection(database, "requests");
+        const q = query(requestsRef, where("investorId", "==", userId));
+        const requestsSnapshot = await getDocs(q);
+        
+        if (requestsSnapshot.empty) {
+            return [];
+        }
+        
+        // 2. استخراج جميع معرفات الأفكار من الطلبات
+        const ideaIds = [];
+        const requestsData = [];
+        
+        requestsSnapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            ideaIds.push(data.ideaId);
+            requestsData.push({
+                id: docSnap.id,
+                ideaId: data.ideaId,
+                status: data.status
+            });
+        });
+        
+        // 3. استخدام عمليات الحصول المجمعة للأفكار
+        const ideaPromises = ideaIds.map(ideaId => 
+            getDoc(doc(database, "ideas", ideaId))
+        );
+        
+        // 4. انتظار جميع الوعود (Promises)
+        const ideaSnapshots = await Promise.all(ideaPromises);
+        
+        // 5. إنشاء قاموس من معرفات الأفكار إلى عناوينها
+        const ideaTitles = {};
+        ideaSnapshots.forEach(ideaDoc => {
+            if (ideaDoc.exists()) {
+                ideaTitles[ideaDoc.id] = ideaDoc.data().title;
+            } else {
+                ideaTitles[ideaDoc.id] = "غير متوفر";
+            }
+        });
+        
+        // 6. إضافة عناوين الأفكار إلى بيانات الطلبات
+        const result = requestsData.map(request => ({
+            id: request.id,
+            ideaTitle: ideaTitles[request.ideaId] || "غير متوفر",
+            status: request.status
+        }));
+        
+        return result;
+        
+    } catch (error) {
+        console.error("خطأ في الحصول على الطلبات مع عناوين الأفكار:", error);
+        throw error;
+    }
+}
+
+// استدعاء الدالة مع واجهة المستخدم
+async function displayRequestsEfficiently() {
+    try {
+        const requestsContainer = document.getElementById("sent-requests-container");
+        requestsContainer.innerHTML = '<div class="loading">جاري تحميل الطلبات...</div>';
+        
+        // الحصول على معرف المستخدم الحالي
+        if (!auth.currentUser) {
+            console.error("No user is currently signed in.");
+            return;
+        }
+        const userId = auth.currentUser.uid;
+        
+        // استدعاء الدالة الأكثر كفاءة
+        const requests = await getRequestsWithIdeaTitles(userId);
+        
+        if (requests.length === 0) {
+            requestsContainer.innerHTML = "<p>لا توجد طلبات حالياً</p>";
+            return;
+        }
+        
+        // عرض الطلبات
+        let requestsHTML = '<ul class="requests-list">';
+        
+        requests.forEach(request => {
+            requestsHTML += `
+                <li class="request-item">
+                    <div class="request-info">
+                        <p class="request-title">عنوان الفكرة: ${request.ideaTitle}</p>
+                        <span class="request-status">الحالة: ${request.status}</span>
+                    </div>
+                </li>
+            `;
+        });
+        
+        requestsHTML += '</ul>';
+        requestsContainer.innerHTML = requestsHTML;
+        
+    } catch (error) {
+        console.error("حدث خطأ:", error);
+        document.getElementById("sent-requests-container").innerHTML = 
+            '<p class="error">حدث خطأ أثناء تحميل الطلبات. الرجاء المحاولة مرة أخرى.</p>';
+    }
+}
+
+export { requestInvestment, fetchInvestmentRequests, updateRequestStatus, displayRequestsEfficiently };
