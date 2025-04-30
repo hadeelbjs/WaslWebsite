@@ -260,6 +260,46 @@
             color: #ccc;
             margin-bottom: 15px;
         }
+        .requests-list {
+            list-style: none;
+            padding: 0;
+        }
+        .request-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            padding: 15px;
+            transition: all 0.2s ease;
+        }
+        .request-item:hover {
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+        .request-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .request-title {
+            font-weight: bold;
+            color: #333;
+        }
+        .request-status {
+            background-color: #e8f4ff;
+            color: #0066cc;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .error {
+            color: #d32f2f;
+            text-align: center;
+            padding: 10px;
+        }
 
         .modal-buttons {
             display: flex;
@@ -329,6 +369,43 @@
                 object-fit: cover; 
                 }
         }
+       
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 5px;
+  position: relative;
+}
+
+.tab {
+  cursor: pointer;
+  padding: 10px;
+  font-weight: bold;
+  color: black;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab.active {
+  color: #1a237e; /* كحلي */
+  border-bottom: 2px solid #1a237e;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
     </style>
 </head>
 <body>
@@ -357,7 +434,29 @@
             </div>
         </div>
     </div>
+
+    <main>
+        <div class="wrapper">
+            
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('sent')">الطلبات المرسلة</div>
+                <div class="tab" onclick="switchTab('received')">الطلبات المستقبلة</div>
+              </div>
+              <hr class="divider">
+              
+              <div id="sent" class="tab-content active" >
+              <div id="sent-requests-container"></div>
+              </div>
+              <div id="received" class="tab-content"><div class="container" id="requestsContainer">
+                <p id="load-i" style="font-size: 25px;"> جاري تحميل البيانات ...</p>
+             </div></div>
+            
+            
+        </div>
+    </main>
+
     <script>
+        // ملف JavaScript مدمج للواجهة
         const menu = document.getElementById("menu");
         const sidebar = document.getElementById("sidebar");
         const closeBtn = document.getElementById("closeBtn");
@@ -379,69 +478,66 @@
             }
         });
         
-            function confirmLogout() {
-                window.location.href = "index.html"; 
-            }
-            
-        function openLogoutModal() {
+        // تعريف دوال النافذة المنبثقة
+        window.openLogoutModal = function() {
             document.getElementById("logoutModal").style.display = "block";
         }
         
-        function closeLogoutModal() {
+        window.closeLogoutModal = function() {
             document.getElementById("logoutModal").style.display = "none";
         }
 
-        function confirmLogout() {
-            window.location.href = "index.html"; 
+        // وظيفة تبديل التبويبات - إصلاح المشكلة
+        function switchTab(tabId) {
+          // إزالة الفئة النشطة من جميع التبويبات
+          document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+          // إخفاء جميع محتويات التبويبات
+          document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+          // إضافة الفئة النشطة للتبويب المحدد
+          document.querySelector(`.tab[onclick="switchTab('${tabId}')"]`).classList.add('active');
+          // إظهار محتوى التبويب المحدد
+          document.getElementById(tabId).classList.add('active');
+          
+          // حفظ التبويب النشط في التخزين المحلي
+          localStorage.setItem('activeTabId', tabId);
         }
 
+        // استعادة التبويب النشط عند تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', () => {
+          const savedTabId = localStorage.getItem('activeTabId');
+          if (savedTabId) {
+            switchTab(savedTabId);
+          }
+        });
     </script>
     
-    </header>
-    <main>
-        <div class="wrapper">
-            
-            <h1>الطلبات</h1>
-            
-            <div class="container" id="requestsContainer">
-               <p id="load-i" style="font-size: 25px;"> جاري تحميل البيانات ...</p>
-            </div>
-        </div>
-    </main>
-    <script type="module" >
-        import {fetchInvestmentRequests, updateRequestStatus} from "./investment-requests.js";
+    <script type="module">
+        import {fetchInvestmentRequests, updateRequestStatus, displayRequestsEfficiently} from "./investment-requests.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
         
         const auth = getAuth();
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                fetchInvestmentRequests(); // عرض طلبات الاصتثمار بعد التأكد من تسجيل الدخول
-            }else {
+                fetchInvestmentRequests(); // عرض طلبات الاستثمار بعد التأكد من تسجيل الدخول
+                displayRequestsEfficiently();
+            } else {
                 console.log("No user is signed in.");
             }
         });
-
     </script>
+    
     <script type="module">
         import { logoutUser } from './Logout.js';
       
-        window.openLogoutModal = function () {
-          document.getElementById("logoutModal").style.display = "block";
-        }
-      
-        window.closeLogoutModal = function () {
-          document.getElementById("logoutModal").style.display = "none";
-        }
-      
+        // ربط زر تأكيد تسجيل الخروج بالدالة
         window.addEventListener("DOMContentLoaded", () => {
           const logoutBtn = document.getElementById("confirmLogoutBtn");
           if (logoutBtn) {
             logoutBtn.addEventListener("click", logoutUser);
           }
         });
-      </script>
-      
+    </script>
 </body>
 </html>
- 
