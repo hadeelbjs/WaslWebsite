@@ -27,111 +27,137 @@ const storage = getStorage(app);
 
 
 export async function registerUser() {
-    const username = document.getElementById("username").value.trim();
-    
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const dob = document.getElementById("dob").value.trim();
-
-    const xHandle = document.getElementById("xHandle").value.trim() || "";
-    const linkedinHandle = document.getElementById("linkedinHandle").value.trim() || "";
-    const profileImage = document.getElementById("profileImage").files[0];
-
-    if (!username) {
-        alert("يرجى إدخال اسم المستخدم!");
-        return;
-    }
-    if (!email) {
-        alert("يرجى إدخال البريد الإلكتروني");
-        return;
-    }
-    
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-        alert("يرجى إدخال بريد إلكتروني صالح مثل example@example.com");
-        return;
-    }
-    
-    
-    if (!password) {
-        alert("يرجى إدخال كلمة المرور");
-        return;
-    }
-    if (!dob) {
-        alert("يرجى إدخال تاريخ الميلاد!");
-        return;
-    }
-    
-
-
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-    if (!passwordPattern.test(password)) {
-        alert("كلمة المرور يجب أن تحتوي على 8 خانات على الأقل، وحرف صغير وكبير، ورقم، ورمز خاص.");
-        return;
-    }
-
     try {
-        console.log(" التحقق من توفر الاسم والإيميل...");
-       
-        const querySnapshot = await getDocs(collection(db, "users"));
-        let usernameExists = false;
-        let emailExists = false;
+        // 1. جمع بيانات المستخدم والتحقق منها
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const dob = document.getElementById("dob").value.trim();
+        const xHandle = document.getElementById("xHandle").value.trim() || "";
+        const linkedinHandle = document.getElementById("linkedinHandle").value.trim() || "";
+        const profileImage = document.getElementById("profileImage").files[0];
 
-        querySnapshot.forEach(doc => {
-            const data = doc.data();
-            if (data.username.toLowerCase() === username.toLowerCase()) {
-                usernameExists = true;
-            }
-            if (data.email.toLowerCase() === email.toLowerCase()) {
-                emailExists = true;
-            }
-        });
-
-        if (usernameExists || emailExists) {
-            alert("عذرًا، يبدو أن اسم المستخدم أو البريد الإلكتروني مستخدم مسبقًا. يُرجى اختيار بيانات مختلفة أو تسجيل الدخول إذا كان لديك حساب.");
+        // 2. التحقق من الحقول الإلزامية
+        if (!username) {
+            alert("يرجى إدخال اسم المستخدم!");
             return;
         }
+        if (!email) {
+            alert("يرجى إدخال البريد الإلكتروني");
+            return;
+        }
+        if (!password) {
+            alert("يرجى إدخال كلمة المرور");
+            return;
+        }
+        if (!dob) {
+            alert("يرجى إدخال تاريخ الميلاد!");
+            return;
+        }
+
+        // 3. التحقق من صحة البريد الإلكتروني
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            alert("يرجى إدخال بريد إلكتروني صالح مثل example@example.com");
+            return;
+        }
+
+        // 4. التحقق من قوة كلمة المرور
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        if (!passwordPattern.test(password)) {
+            alert("كلمة المرور يجب أن تحتوي على 8 خانات على الأقل، وحرف صغير وكبير، ورقم، ورمز خاص.");
+            return;
+        }
+
+        // 5. تعطيل زر التسجيل لمنع النقرات المتعددة
         const registerBtn = document.getElementById("registerBtn");
         registerBtn.disabled = true;
         registerBtn.textContent = "جاري التسجيل...";
+
+        // 6. التحقق من توفر اسم المستخدم والبريد الإلكتروني
+        console.log("التحقق من توفر الاسم والإيميل...");
         
-        console.log(" جاري إنشاء الحساب...");
+        // استخدام الاستعلامات المباشرة بدلاً من جلب جميع المستخدمين
+        const usernameQuery = query(collection(db, "users"), where("username", "==", username));
+        const usernameSnapshot = await getDocs(usernameQuery);
+        
+        if (!usernameSnapshot.empty) {
+            alert("عذرًا، اسم المستخدم مستخدم بالفعل. يرجى اختيار اسم مستخدم آخر.");
+            registerBtn.disabled = false;
+            registerBtn.textContent = "قم بالتسجيل";
+            return;
+        }
+        
+        const emailQuery = query(collection(db, "users"), where("email", "==", email));
+        const emailSnapshot = await getDocs(emailQuery);
+        
+        if (!emailSnapshot.empty) {
+            alert("عذرًا، البريد الإلكتروني مستخدم بالفعل. يرجى استخدام بريد إلكتروني آخر أو تسجيل الدخول.");
+            registerBtn.disabled = false;
+            registerBtn.textContent = "قم بالتسجيل";
+            return;
+        }
+
+        // 7. إنشاء الحساب في Firebase Authentication
+        console.log("جاري إنشاء الحساب...");
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
+        // 8. معالجة صورة الملف الشخصي (إذا تم تحميلها)
         let profileImageUrl = "";
         if (profileImage) {
-            const storageRef = ref(storage, `profileImages/${user.uid}`);
-            const snapshot = await uploadBytes(storageRef, profileImage);
-            profileImageUrl = await getDownloadURL(snapshot.ref);
+            try {
+                console.log("جاري رفع صورة الملف الشخصي...");
+                const storageRef = ref(storage, `profileImages/${user.uid}`);
+                const snapshot = await uploadBytes(storageRef, profileImage);
+                profileImageUrl = await getDownloadURL(snapshot.ref);
+                console.log("تم رفع الصورة بنجاح:", profileImageUrl);
+            } catch (imageError) {
+                console.error("خطأ في رفع الصورة:", imageError);
+                // استمر في إنشاء الحساب حتى لو فشل رفع الصورة
+            }
         }
 
+        // 9. إنشاء وثيقة المستخدم في Firestore
         await setDoc(doc(db, "users", user.uid), {
             username,
             email,
             userId: user.uid,
             dob,
-         
             favorites: [], 
             contactInfo: {
                 xHandle,
                 linkedinHandle
             },
             profileImage: profileImageUrl,
-            ideas: []
+            ideas: [],
+            createdAt: new Date().toISOString()
         });
 
         alert("تم إنشاء الحساب بنجاح!");
         window.location.href = "Login.html";
     } catch (error) {
-        console.error(" خطأ أثناء التسجيل:", error.message);
-        alert("حدث خطأ أثناء إنشاء الحساب. يرجى المحاولة لاحقًا.");
-        registerBtn.disabled = false;
-registerBtn.textContent = "قم بالتسجيل";
-
+        console.error("خطأ أثناء التسجيل:", error.code, error.message);
+        
+        // رسائل خطأ أكثر تفصيلاً حسب نوع الخطأ
+        if (error.code === "auth/email-already-in-use") {
+            alert("هذا البريد الإلكتروني مستخدم بالفعل. يرجى استخدام بريد إلكتروني آخر أو تسجيل الدخول.");
+        } else if (error.code === "auth/weak-password") {
+            alert("كلمة المرور ضعيفة جداً. يرجى اختيار كلمة مرور أقوى.");
+        } else if (error.code === "auth/network-request-failed") {
+            alert("حدث خطأ في الاتصال بالشبكة. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.");
+        } else {
+            alert("حدث خطأ أثناء إنشاء الحساب: " + error.message);
+        }
+        
+        // إعادة تمكين زر التسجيل
+        const registerBtn = document.getElementById("registerBtn");
+        if (registerBtn) {
+            registerBtn.disabled = false;
+            registerBtn.textContent = "قم بالتسجيل";
+        }
     }
 }
-
 export async function loginUser() {
     const input = document.getElementById("email").value.trim(); 
     const password = document.getElementById("password").value;
