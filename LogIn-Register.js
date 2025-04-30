@@ -27,9 +27,8 @@ const storage = getStorage(app);
 
 
 export async function registerUser() {
-    
     const username = document.getElementById("username").value.trim();
-  
+    
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const dob = document.getElementById("dob").value.trim();
@@ -75,26 +74,18 @@ export async function registerUser() {
         console.log(" التحقق من توفر الاسم والإيميل...");
        
         const querySnapshot = await getDocs(collection(db, "users"));
-       
-let usernameExists = false;
-let emailExists = false;
+        let usernameExists = false;
+        let emailExists = false;
 
-querySnapshot.forEach(doc => {
-    const data = doc.data();
-    console.log("📦 فحص وثيقة:", doc.id, data);
-
-    if (data.username && data.username.toLowerCase() === username.toLowerCase()) {
-        usernameExists = true;
-    }
-
-    if (data.email && data.email.toLowerCase() === email.toLowerCase()) {
-        emailExists = true;
-    }
-
-    if (!data.username || !data.email) {
-        console.warn("⚠️ وثيقة ناقصة:", doc.id, data);
-    }
-});
+        querySnapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.username.toLowerCase() === username.toLowerCase()) {
+                usernameExists = true;
+            }
+            if (data.email.toLowerCase() === email.toLowerCase()) {
+                emailExists = true;
+            }
+        });
 
         if (usernameExists || emailExists) {
             alert("عذرًا، يبدو أن اسم المستخدم أو البريد الإلكتروني مستخدم مسبقًا. يُرجى اختيار بيانات مختلفة أو تسجيل الدخول إذا كان لديك حساب.");
@@ -141,47 +132,75 @@ registerBtn.textContent = "قم بالتسجيل";
     }
 }
 
-
-
 export async function loginUser() {
     const input = document.getElementById("email").value.trim(); 
     const password = document.getElementById("password").value;
+    
+    if (!input || !password) {
+        alert("يرجى إدخال اسم المستخدم/البريد الإلكتروني وكلمة المرور");
+        return;
+    }
 
     try {
-        let emailToUse = input;
-
-    
-        if (!input.includes("@")) {
-            const usersSnapshot = await getDocs(collection(db, "users"));
-            let foundUser = null;
-
-            usersSnapshot.forEach((doc) => {
-                const data = doc.data();
-                if (data.username.toLowerCase() === input.toLowerCase()) {
-                    foundUser = data;
-                }
-            });
-
-            if (!foundUser) {
-                alert("بيانات الدخول غير صحيحة. تأكد من اسم المستخدم أو البريد الإلكتروني وكلمة المرور.");
-                return;
-            }
-
-            emailToUse = foundUser.email;
+        // تعطيل زر تسجيل الدخول أثناء المعالجة
+        const loginBtn = document.getElementById("loginBtn");
+        if (loginBtn) {
+            loginBtn.disabled = true;
+            loginBtn.textContent = "جاري تسجيل الدخول...";
         }
 
+        let emailToUse = input;
+
+        // إذا كان المدخل لا يحتوي على @ (أي أنه اسم مستخدم وليس بريدًا إلكترونيًا)
+        if (!input.includes("@")) {
+            console.log("البحث عن المستخدم باستخدام اسم المستخدم:", input);
+            
+            // إنشاء استعلام للبحث عن المستخدم بناءً على اسم المستخدم
+            const usersRef = collection(db, "users");
+            const q = query(usersRef, where("username", "==", input));
+            const querySnapshot = await getDocs(q);
+            
+            if (querySnapshot.empty) {
+                alert("لم يتم العثور على مستخدم بهذا الاسم");
+                if (loginBtn) {
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = "تسجيل الدخول";
+                }
+                return;
+            }
+            
+            // استخراج البريد الإلكتروني من الوثيقة الأولى المطابقة
+            const userDoc = querySnapshot.docs[0];
+            emailToUse = userDoc.data().email;
+            console.log("تم العثور على البريد الإلكتروني المرتبط:", emailToUse);
+        }
+
+        // تسجيل الدخول باستخدام البريد الإلكتروني وكلمة المرور
+        console.log("محاولة تسجيل الدخول باستخدام البريد الإلكتروني:", emailToUse);
         const userCredential = await signInWithEmailAndPassword(auth, emailToUse, password);
+        
+        // حفظ معرف المستخدم في التخزين المحلي
         localStorage.setItem("uid", userCredential.user.uid);
-
-
-
+        
         alert("تم تسجيل الدخول بنجاح!");
         window.location.href = "profile1.html";
     } catch (error) {
-        console.error(" خطأ أثناء تسجيل الدخول:", error.message);
-        alert("بيانات الدخول غير صحيحة. تأكد من اسم المستخدم أو البريد الإلكتروني وكلمة المرور.");
+        console.error("خطأ أثناء تسجيل الدخول:", error.message);
+        
+        // رسالة خطأ أكثر تفصيلاً
+        if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
+            alert("بيانات الدخول غير صحيحة. تأكد من اسم المستخدم/البريد الإلكتروني وكلمة المرور.");
+        } else {
+            alert("حدث خطأ أثناء تسجيل الدخول: " + error.message);
+        }
+        
+        // إعادة تمكين زر تسجيل الدخول
+        const loginBtn = document.getElementById("loginBtn");
+        if (loginBtn) {
+            loginBtn.disabled = false;
+            loginBtn.textContent = "تسجيل الدخول";
+        }
     }
 }
-
 
 export { db, auth };
